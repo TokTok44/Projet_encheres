@@ -7,7 +7,7 @@ import fr.eni.encheres.bo.Utilisateur;
 public interface UtilisateurDAO {
 
 	List<Utilisateur> selectAll();
-	void insert_user (Utilisateur utilisateur);
-	void update_user (Utilisateur utilisateur);
-	void delete_user (Utilisateur utilisateur);
+	void insertUser (Utilisateur utilisateur);
+	void updateUser (Utilisateur utilisateur);
+	void deleteUser (Utilisateur utilisateur);
 }

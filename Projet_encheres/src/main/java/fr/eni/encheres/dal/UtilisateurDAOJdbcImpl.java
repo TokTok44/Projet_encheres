@@ -19,7 +19,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public void insert_user(Utilisateur utilisateur) {
+	public void insertUser(Utilisateur utilisateur) {
 
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 
@@ -53,7 +53,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public void update_user(Utilisateur utilisateur) {
+	public void updateUser(Utilisateur utilisateur) {
 
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 
@@ -92,7 +92,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public void delete_user(Utilisateur utilisateur) {
+	public void deleteUser(Utilisateur utilisateur) {
 		// TODO Auto-generated method stub
 
 	}
