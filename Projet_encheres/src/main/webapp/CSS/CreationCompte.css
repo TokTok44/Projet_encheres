@@ -1,0 +1,18 @@
+@charset "ISO-8859-1";
+
+form {
+	display: grid;
+	grid-template-columns: repeat(4,1fr);
+	justify-items: center;
+	align-items: center;
+	row-gap: 20px;
+	width: max(700px,min(800px,40vw));
+}
+
+.creer {
+	grid-column: 1 / 3;
+}
+
+.annuler {
+	grid-column: 3 / 5;
+}

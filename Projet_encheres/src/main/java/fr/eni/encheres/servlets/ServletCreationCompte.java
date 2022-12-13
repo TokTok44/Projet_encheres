@@ -1,6 +1,8 @@
 package fr.eni.encheres.servlets;
 
 import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -22,7 +24,8 @@ public class ServletCreationCompte extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/JSP/CreationCompte.jsp");
+		rd.forward(request, response);
 		
 	}
 
@@ -31,23 +34,32 @@ public class ServletCreationCompte extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String pseudo = request.getParameter("pseudo");
-		String nom = request.getParameter("nom");
-		String prenom = request.getParameter("prenom");
-		String email = request.getParameter("email");
-		String telephone = null;
-		if(request.getParameter("telephone") != null) {
-			telephone = request.getParameter("telephone");
-		}
-		String rue = request.getParameter("rue");
-		String codePostal = request.getParameter("codePostal");
-		String ville = request.getParameter("ville");
 		String mdp = request.getParameter("mdp");
+		RequestDispatcher rd = null;
 		
-		Utilisateur utilisateur = new Utilisateur(pseudo,nom,prenom,email,telephone,rue,codePostal,ville,mdp);
+		if(mdp.equals(request.getParameter("confirmation"))) {
+			String pseudo = request.getParameter("pseudo");
+			String nom = request.getParameter("nom");
+			String prenom = request.getParameter("prenom");
+			String email = request.getParameter("email");
+			String telephone = null;
+			if(request.getParameter("telephone") != null) {
+				telephone = request.getParameter("telephone");
+			}
+			String rue = request.getParameter("rue");
+			String codePostal = request.getParameter("codePostal");
+			String ville = request.getParameter("ville");
+			
+			Utilisateur utilisateur = new Utilisateur(pseudo,nom,prenom,email,telephone,rue,codePostal,ville,mdp);
+			
+			UtilisateurManager.getManager().insertUser(utilisateur);
 		
-		UtilisateurManager.getManager().insertUser(utilisateur);
+			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueil.jsp");
+		}else {
+			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageConnexion.jsp");
+		}
 		
+		rd.forward(request, response);
 		
 	}
 

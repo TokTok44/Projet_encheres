@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="ISO-8859-1">
-		<title>Insert title here</title>
+		<title>Création de profil</title>
+		<link href="../../${pageContext.request.contextPath }/CSS/CreationCompte.css" rel="stylesheet">
 	</head>
 	
 	<body>
@@ -15,7 +17,7 @@
 			
 			<h1>Création de profil</h1>
 			
-			<form action="/Encheres/ServletCreationCompte" method="post">
+			<form action="${pageContext.request.contextPath }/Encheres/ServletCreationCompte" method="post">
 				<label>Pseudo :</label>
 				<input type="text" name="pseudo" required />
 				
@@ -41,14 +43,14 @@
 				<input type="text" name="ville" required />
 				
 				<label>Mot de passe :</label>
-				<input type="text" name="mdp" required />
+				<input type="password" name="mdp" required />
 				
 				<label>Confirmation :</label>
-				<input type="text" name="confirmation" required />
+				<input type="password" name="confirmation" required />
 				
-				<input type="submit" value="Créer">
+				<input class="creer" type="submit" value="Créer">
 				
-				<a href="/Encheres/ServletPageAccueil">Annuler</a>
+				<a class="annuler" href="${pageContext.request.contextPath }/Encheres/ServletPageAccueil">Annuler</a>
 			</form>
 		</main>
 		<footer>

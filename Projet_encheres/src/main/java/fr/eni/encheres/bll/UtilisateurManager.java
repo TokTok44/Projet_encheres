@@ -1,6 +1,7 @@
 package fr.eni.encheres.bll;
 
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.dal.DAOFactory;
 
 public class UtilisateurManager {
 	
@@ -16,7 +17,8 @@ public class UtilisateurManager {
 	}
 	
 	public void insertUser(Utilisateur utilisateur) {
-		
+		//TODO : Vérification informations
+		DAOFactory.getUtilisateurDAO().insertUser(utilisateur);
 	}
 
 }

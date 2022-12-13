@@ -1,19 +1,20 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 	<head>
 		<meta charset="ISO-8859-1">
-		<title>Insert title here</title>
+		<title>Page Accuei</title>
 		
 	</head>
 	
 	<body>
 		<header>
 			<p>ENI-Enchere</p>
-			<a href="/Encheres/ServletCreationCompte">S'inscrire</a>
+			<a href="${pageContext.request.contextPath }/Encheres/ServletCreationCompte">S'inscrire</a>
 			<p> - </p>
-			<a href="/Encheres/ServletPageConnexion">Seconnecter</a>
+			<a href="${pageContext.request.contextPath }/Encheres/ServletPageConnexion">Seconnecter</a>
 		</header>
 		
 		<main>
