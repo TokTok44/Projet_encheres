@@ -11,8 +11,8 @@
 		<header>
 			<p>ENI-Encheres</p>
 			<a href="">Enchères</a>
-			<a href="">Vendre un article</a>
-			<a href="${pageContext.request.contextPath }/Encheres/ServletModificationProfil">Mon profil</a>
+			<a href="${pageContext.request.contextPath }/Encheres/ServletVendre">Vendre un article</a>
+			<a href="${pageContext.request.contextPath }/Encheres/ServletAffichageCompte">Mon compte</a>
 			<a href="${pageContext.request.contextPath }/Encheres/ServletDeconnexion">Déconnexion</a>
 		</header>
 		<main>

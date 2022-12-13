@@ -11,10 +11,10 @@
 	
 	<body>
 		<header>
-			<p>ENI-Enchere</p>
+			<p>ENI-Encheres</p>
 			<a href="${pageContext.request.contextPath }/Encheres/ServletCreationCompte">S'inscrire</a>
 			<p> - </p>
-			<a href="${pageContext.request.contextPath }/Encheres/ServletPageConnexion">Seconnecter</a>
+			<a href="${pageContext.request.contextPath }/Encheres/ServletPageConnexion">Se connecter</a>
 		</header>
 		
 		<jsp:include page="ListeEnchere.jsp">
