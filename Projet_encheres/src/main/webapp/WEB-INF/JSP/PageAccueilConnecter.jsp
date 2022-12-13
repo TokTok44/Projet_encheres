@@ -16,8 +16,8 @@
 			<a href="${pageContext.request.contextPath }/Encheres/ServletDeconnexion">Déconnexion</a>
 		</header>
 		<main>
-			<p>${sessionScope.noUtilisateur }</p>
-			<p>Bienvenue ${sessionScope.pseudo }</p>
+			
+			<p>Bienvenue ${sessionScope.utilisateur.pseudo }</p>
 			<jsp:include page="ListeEnchere.jsp">
 				<jsp:param value="" name=""/>
 			</jsp:include>
