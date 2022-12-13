@@ -10,4 +10,5 @@ public interface UtilisateurDAO {
 	void insertUser (Utilisateur utilisateur);
 	void updateUser (Utilisateur utilisateur);
 	void deleteUser (Utilisateur utilisateur);
+	Utilisateur selectUser (int noUtilisateur);
 }
