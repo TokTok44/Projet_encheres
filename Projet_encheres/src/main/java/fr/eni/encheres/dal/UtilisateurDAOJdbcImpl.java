@@ -206,7 +206,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				String pseudo = rs.getString("pseudo");
 
 				utilisateur = new Utilisateur(pseudo);
-				utilisateur.setNoUtilisateur(rs.getInt("noUtilisateur"));
+				utilisateur.setNoUtilisateur(rs.getInt("no_utilisateur"));
 			}
 
 		} catch (Exception e) {
