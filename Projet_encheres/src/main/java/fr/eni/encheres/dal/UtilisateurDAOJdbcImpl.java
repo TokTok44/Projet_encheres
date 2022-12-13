@@ -3,17 +3,19 @@ package fr.eni.encheres.dal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.exception.BusinessException;
 
 public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 
 	private static final String INSERT_USER = "INSERT INTO UTILISATEURS(pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
 	private static final String UPDATE_USER = "UPDATE UTILISATEURS SET pseudo = ?, nom = ?, prenom = ?, email = ?, telephone = ?, rue = ?, code_postal = ?, ville = ?, mot_de_passe = ? WHERE no_utilisateur = ?;";
 	private static final String SELECT_USER = "SELECT pseudo, nom, prenom, email, telephone, rue, code_postal, ville FROM UTILISATEURS WHERE no_utilisateur = ?;";
-	private static final String SELECT_CONNEXION = "SELECT pseudo, email, mot_de_passe FROM UTILISATEURS WHERE ((pseudo = ? OR email = ?) AND mot_de_passe = ?);";
+	private static final String SELECT_CONNEXION = "SELECT pseudo, email, mot_de_passe,no_utilisateur FROM UTILISATEURS WHERE ((pseudo = ? OR email = ?) AND mot_de_passe = ?);";
 	private static final String DELETE_USER = "DELETE FROM UTILISATEURS WHERE no_utilisateur = ?;";
 
 	@Override
@@ -23,7 +25,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public void insertUser(Utilisateur utilisateur) {
+	public void insertUser(Utilisateur utilisateur) throws BusinessException {
 
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 
@@ -43,22 +45,39 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				pstmt.setByte(11, (byte) 0);
 
 				pstmt.executeUpdate();
+				ResultSet rs = pstmt.getGeneratedKeys();
+				
+				if(rs.next()) {
+					utilisateur.setNoUtilisateur(rs.getInt(1));
+				}
 
 				cnx.commit();
+				
 			} catch (Exception e) {
 				cnx.rollback();
 				e.printStackTrace();
+				BusinessException be = new BusinessException();
+				
+				if(e.getMessage().contains("pseudo_UNIQUE")) {
+					be.ajouterErreur(CodesResultatDAL.PSEUDO_UNIQUE);
+				}
+				if(e.getMessage().contains("email_UNIQUE")) {
+					be.ajouterErreur(CodesResultatDAL.EMAIL_UNIQUE);
+				}
+				be.ajouterErreur(CodesResultatDAL.ECHEC_INSERTION);
+				
+				throw be;
 
 			}
 
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
 	}
 
 	@Override
-	public void updateUser(Utilisateur utilisateur) {
+	public void updateUser(Utilisateur utilisateur) throws BusinessException {
 
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 
@@ -87,9 +106,21 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 			} catch (Exception e) {
 				cnx.rollback();
 				e.printStackTrace();
+				BusinessException be = new BusinessException();
+				
+				if(e.getMessage().contains("pseudo_UNIQUE")) {
+					be.ajouterErreur(CodesResultatDAL.PSEUDO_UNIQUE);
+				}
+				if(e.getMessage().contains("email_UNIQUE")) {
+					be.ajouterErreur(CodesResultatDAL.EMAIL_UNIQUE);
+				}
+				
+				be.ajouterErreur(CodesResultatDAL.ECHEC_UPDATE);
+				throw be;
+				
 			}
 
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 
@@ -103,10 +134,12 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				PreparedStatement pstmt = cnx.prepareStatement(DELETE_USER);
 				pstmt.setInt(1, noUtilisateur);
 				int nbDelete = pstmt.executeUpdate();
+				
 				if (nbDelete <= 1) {
 					cnx.commit();
 				} else {
 					cnx.rollback();
+					
 				}
 			} catch (Exception e) {
 				cnx.rollback();
@@ -161,6 +194,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				String pseudo = rs.getString("pseudo");
 
 				utilisateur = new Utilisateur(pseudo);
+				utilisateur.setNoUtilisateur(rs.getInt("noUtilisateur"));
 			}
 
 		} catch (Exception e) {

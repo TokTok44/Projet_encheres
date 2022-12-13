@@ -2,6 +2,7 @@ package fr.eni.encheres.bll;
 
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.dal.DAOFactory;
+import fr.eni.encheres.exception.BusinessException;
 
 public class UtilisateurManager {
 	
@@ -16,12 +17,14 @@ public class UtilisateurManager {
 		return manager;
 	}
 	
-	public void insertUser(Utilisateur utilisateur) {
-		//TODO : Vérification informations
+	public void insertUser(Utilisateur utilisateur) throws BusinessException {
+		
+		
+		
 		DAOFactory.getUtilisateurDAO().insertUser(utilisateur);
 	}
 	
-	public void updateUser(Utilisateur utilisateur) {
+	public void updateUser(Utilisateur utilisateur) throws BusinessException {
 		//TODO : Gestion
 		DAOFactory.getUtilisateurDAO().updateUser(utilisateur);
 	}
@@ -39,6 +42,12 @@ public class UtilisateurManager {
 	public Utilisateur selectConnexion(String identifiant, String mdp) {
 		//TODO : gestion
 		return DAOFactory.getUtilisateurDAO().selectConnexion(identifiant, mdp);
+	}
+	
+	private void verificationUtilisateur(Utilisateur utilisateur) {
+		
+		
+		
 	}
 
 }
