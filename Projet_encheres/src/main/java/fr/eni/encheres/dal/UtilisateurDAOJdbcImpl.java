@@ -208,8 +208,20 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				String pseudo = rs.getString("pseudo");
+				String nom = rs.getString("nom");
+				String prenom = rs.getString("prenom");
+				String email = rs.getString("email");
+				String telephone = rs.getString("telephone");
+				String rue = rs.getString("rue");
+				String codePostal = rs.getString("code_postal");
+				String ville = rs.getString("ville");
+				int credit = rs.getInt("credit");
+				boolean administrateur = false;
+				if(rs.getByte("administrateur") == 1) {
+					administrateur = true;
+				}
 
-				utilisateur = new Utilisateur(pseudo);
+				utilisateur = new Utilisateur(pseudo,nom,prenom,email,telephone,rue,codePostal,ville,motDePasse,credit,administrateur);
 				utilisateur.setNoUtilisateur(rs.getInt("no_utilisateur"));
 			}else {
 				throw new Exception();
