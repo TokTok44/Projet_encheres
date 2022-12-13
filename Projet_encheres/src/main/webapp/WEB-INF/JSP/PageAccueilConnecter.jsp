@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 	<head>
@@ -14,9 +15,12 @@
 			<a href="${pageContext.request.contextPath }/Encheres/ServletModificationProfil">Mon profil</a>
 			<a href="${pageContext.request.contextPath }/Encheres/ServletDeconnexion">Déconnexion</a>
 		</header>
-		<jsp:include page="ListeEnchere.jsp">
-			<jsp:param value="" name=""/>
-		</jsp:include>
+		<main>
+			<p>Bienvenue ${requestScope.pseudo }</p>
+			<jsp:include page="ListeEnchere.jsp">
+				<jsp:param value="" name=""/>
+			</jsp:include>
+		</main>
 		<footer>
 		
 		</footer>

@@ -36,10 +36,23 @@ public class ServletPageConnexion extends HttpServlet {
 		
 		String identifiant = request.getParameter("identifiant");
 		String mdp = request.getParameter("mdp");
+		RequestDispatcher rd = null;
+		
+		Utilisateur utilisateur = UtilisateurManager.getManager().selectConnexion(identifiant, mdp);
+		
+		if(utilisateur != null) {
+			
+			request.setAttribute("pseudo", utilisateur.getPseudo());
+			
+			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueilConnecter.jsp");
+			
+		}else {
+			
+			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageConnexion.jsp");
+			
+		}
 		
 		
-		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueilConnecter.jsp");
 		rd.forward(request, response);
 		
 	}

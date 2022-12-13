@@ -30,5 +30,15 @@ public class UtilisateurManager {
 		//TODO : gestion
 		DAOFactory.getUtilisateurDAO().deleteUser(noUtilisateur);
 	}
+	
+	public Utilisateur selectUser(int noUtilisateur) {
+		//TODO : gestion
+		return DAOFactory.getUtilisateurDAO().selectUser(noUtilisateur);
+	}
+	
+	public Utilisateur selectConnexion(String identifiant, String mdp) {
+		//TODO : gestion
+		return DAOFactory.getUtilisateurDAO().selectConnexion(identifiant, mdp);
+	}
 
 }
