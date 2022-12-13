@@ -53,9 +53,9 @@ public class ServletCreationCompte extends HttpServlet {
 			Utilisateur utilisateur = new Utilisateur(pseudo,nom,prenom,email,telephone,rue,codePostal,ville,mdp);
 			
 			UtilisateurManager.getManager().insertUser(utilisateur);
-		
+			
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueilConnecter.jsp");
-		
+			
 		}else {
 			
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/CreationCompte.jsp");
