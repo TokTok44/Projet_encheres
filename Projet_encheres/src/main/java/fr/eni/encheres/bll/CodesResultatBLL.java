@@ -1,0 +1,16 @@
+package fr.eni.encheres.bll;
+
+public interface CodesResultatBLL {
+	
+	int CHAMP_OBLIGATOIRE = 20_000;
+	int ECHEC_CONFIRMATION = 20_001;
+	int PSEUDO_INVALIDE = 20_002;
+	int NOM_PRENOM_INVALIDE = 20_003;
+	int EMAIL_INVALIDE = 20_004;
+	int RUE_INVALIDE = 20_005;
+	int CODE_POSTAL_INVALIDE = 20_006;
+	int VILLE_INVALIDE = 20_007;
+	int MOT_DE_PASSE_INVALIDE = 20_008;
+	int CREDIT_INVALIDE = 20_009;
+
+}

@@ -17,7 +17,16 @@ public class UtilisateurManager {
 		return manager;
 	}
 	
-	public Utilisateur insertUser(Utilisateur utilisateur) throws BusinessException {
+	public Utilisateur insertUser(Utilisateur utilisateur, String confirmation) throws BusinessException {
+		
+		BusinessException be = new BusinessException();
+		if(utilisateur.getMotDePasse().equals(confirmation)) {
+			be.ajouterErreur(CodesResultatBLL.ECHEC_CONFIRMATION);
+		}
+		verificationDonneesUtilisateur(utilisateur,be);
+		if(be.getListeCodesErreur().size() > 0) {
+			throw be;
+		}
 		
 		return DAOFactory.getUtilisateurDAO().insertUser(utilisateur);
 	}
@@ -42,9 +51,37 @@ public class UtilisateurManager {
 		return DAOFactory.getUtilisateurDAO().selectConnexion(identifiant, mdp);
 	}
 	
-	private void verificationUtilisateur(Utilisateur utilisateur) {
+	private void verificationDonneesUtilisateur(Utilisateur utilisateur, BusinessException be) {
 		
+		be = new BusinessException();
 		
+		if (utilisateur.getCodePostal() == null || utilisateur.getEmail() == null || utilisateur.getMotDePasse() == null
+				|| utilisateur.getNom() == null || utilisateur.getPrenom() == null || utilisateur.getPseudo() == null
+				|| utilisateur.getRue() == null || utilisateur.getVille() == null) {
+			be.ajouterErreur(CodesResultatBLL.CHAMP_OBLIGATOIRE);
+		}
+		
+		if(utilisateur.getPseudo().length() > 30 || utilisateur.getPseudo().matches("")) {
+			be.ajouterErreur(CodesResultatBLL.PSEUDO_INVALIDE);
+		}
+		if(utilisateur.getNom().length() > 30 || utilisateur.getPrenom().length() > 30) {
+			be.ajouterErreur(CodesResultatBLL.NOM_PRENOM_INVALIDE);
+		}
+		if(utilisateur.getEmail().length() > 40 || utilisateur.getEmail().matches("")) {
+			be.ajouterErreur(CodesResultatBLL.EMAIL_INVALIDE);
+		}
+		if(utilisateur.getRue().length() > 30) {
+			be.ajouterErreur(CodesResultatBLL.RUE_INVALIDE);
+		}
+		if(utilisateur.getCodePostal().length() > 10 || utilisateur.getCodePostal().length() < 5 || utilisateur.getCodePostal().matches("")) {
+			be.ajouterErreur(CodesResultatBLL.RUE_INVALIDE);
+		}
+		if (utilisateur.getVille().length() > 30) {
+			be.ajouterErreur(CodesResultatBLL.VILLE_INVALIDE);
+		}
+		if (utilisateur.getMotDePasse().length() > 30 || utilisateur.getMotDePasse().length() < 6 || utilisateur.getMotDePasse().matches("")) {
+			be.ajouterErreur(CodesResultatBLL.MOT_DE_PASSE_INVALIDE);
+		}
 		
 	}
 

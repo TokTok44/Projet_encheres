@@ -1,6 +1,7 @@
 package fr.eni.encheres.servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -36,44 +37,42 @@ public class ServletCreationCompte extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		String mdp = request.getParameter("mdp");
 		RequestDispatcher rd = null;
 		
-		if(mdp.equals(request.getParameter("confirmation"))) {
-			String pseudo = request.getParameter("pseudo");
-			String nom = request.getParameter("nom");
-			String prenom = request.getParameter("prenom");
-			String email = request.getParameter("email");
-			String telephone = null;
-			if(request.getParameter("telephone") != null) {
-				telephone = request.getParameter("telephone");
-			}
-			String rue = request.getParameter("rue");
-			String codePostal = request.getParameter("codePostal");
-			String ville = request.getParameter("ville");
+		String pseudo = request.getParameter("pseudo");
+		String nom = request.getParameter("nom");
+		String prenom = request.getParameter("prenom");
+		String email = request.getParameter("email");
+		String telephone = request.getParameter("telephone");
+		String rue = request.getParameter("rue");
+		String codePostal = request.getParameter("codePostal");
+		String ville = request.getParameter("ville");
+		String mdp = request.getParameter("mdp");
+		String confirmation = request.getParameter("confirmation");
 			
-			Utilisateur utilisateur = new Utilisateur(pseudo,nom,prenom,email,telephone,rue,codePostal,ville,mdp);
+		Utilisateur utilisateur = new Utilisateur(pseudo,nom,prenom,email,telephone,rue,codePostal,ville,mdp);
+		
+		try {
 			
-			try {
-				
-				utilisateur = UtilisateurManager.getManager().insertUser(utilisateur);
-				
-				HttpSession session = request.getSession();
-				session.setAttribute("utilisateur", utilisateur);
-				
-				
-			} catch (BusinessException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+			utilisateur = UtilisateurManager.getManager().insertUser(utilisateur,confirmation);
+			
+			HttpSession session = request.getSession();
+			session.setAttribute("utilisateur", utilisateur);
 			
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueilConnecter.jsp");
 			
-		}else {
+		} catch (BusinessException e) {
+			e.printStackTrace();
+			
+			List<Integer> listeErreur = e.getListeCodesErreur();
+			request.setAttribute("listeErreur", listeErreur);
 			
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/CreationCompte.jsp");
-		
 		}
+		
+		
+			
+
 		
 		rd.forward(request, response);
 		
