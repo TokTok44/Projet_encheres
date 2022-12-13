@@ -11,4 +11,5 @@ public interface UtilisateurDAO {
 	void updateUser (Utilisateur utilisateur);
 	void deleteUser (Utilisateur utilisateur);
 	Utilisateur selectUser (int noUtilisateur);
+	Utilisateur selectConnexion (String identifiant, String motDePasse);
 }

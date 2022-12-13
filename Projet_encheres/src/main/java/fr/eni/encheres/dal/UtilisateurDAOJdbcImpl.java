@@ -13,6 +13,8 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	private static final String INSERT_USER = "INSERT INTO UTILISATEURS(pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
 	private static final String UPDATE_USER = "UPDATE UTILISATEURS SET pseudo = ?, nom = ?, prenom = ?, email = ?, telephone = ?, rue = ?, code_postal = ?, ville = ?, mot_de_passe = ? WHERE no_utilisateur = ?;";
 	private static final String SELECT_USER = "SELECT pseudo, nom, prenom, email, telephone, rue, code_postal, ville FROM UTILISATEURS WHERE no_utilisateur = ?;";
+	private static final String SELECT_CONNEXION = "SELECT pseudo, email, mot_de_passe FROM UTILISATEURS WHERE ((pseudo = ? OR email = ?) AND mot_de_passe = ?);";
+	private static final String DELETE_USER = "DELETE FROM UTILISATEURS WHERE no_utilisateur = ?;";
 
 	@Override
 	public List<Utilisateur> selectAll() {
@@ -95,7 +97,25 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 
 	@Override
 	public void deleteUser(Utilisateur utilisateur) {
-		// TODO Auto-generated method stub
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+			try {
+				cnx.setAutoCommit(false);
+				PreparedStatement pstmt = cnx.prepareStatement(DELETE_USER);
+				pstmt.setInt(1, utilisateur.getNoUtilisateur());
+				int nbDelete = pstmt.executeUpdate();
+				if (nbDelete <= 1) {
+					cnx.commit();
+				} else {
+					cnx.rollback();
+				}
+			} catch (Exception e) {
+				cnx.rollback();
+				e.printStackTrace();
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
 	}
 
@@ -118,6 +138,29 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				String ville = rs.getString("ville");
 
 				utilisateur = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville);
+			}
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return utilisateur;
+	}
+
+	@Override
+	public Utilisateur selectConnexion(String identifiant, String motDePasse) {
+		Utilisateur utilisateur = null;
+		try (Connection cnx = ConnectionProvider.getConnection()) {
+
+			PreparedStatement pstmt = cnx.prepareStatement(SELECT_CONNEXION);
+			pstmt.setString(1, identifiant);
+			pstmt.setString(2, identifiant);
+			pstmt.setString(3, motDePasse);
+			ResultSet rs = pstmt.executeQuery();
+			if (rs.next()) {
+				String pseudo = rs.getString("pseudo");
+
+				utilisateur = new Utilisateur(pseudo);
 			}
 
 		} catch (Exception e) {

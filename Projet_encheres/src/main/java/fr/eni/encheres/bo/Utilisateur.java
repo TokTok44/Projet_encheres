@@ -27,6 +27,20 @@ public class Utilisateur {
 		this.encherit = new ArrayList<>();
 	}
 	
+	public Utilisateur(String pseudo) {
+		this();
+		this.pseudo = pseudo;
+
+	}
+	
+	public Utilisateur(String pseudo, String email, String motDePasse) {
+		this();
+		this.pseudo = pseudo;
+		this.email = email;
+		this.motDePasse = motDePasse;
+
+	}
+	
 	public Utilisateur(String pseudo, String nom, String prenom, String email, String telephone, String rue,
 			String codePostal, String ville) {
 		this();
