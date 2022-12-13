@@ -25,7 +25,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public void insertUser(Utilisateur utilisateur) throws BusinessException {
+	public Utilisateur insertUser(Utilisateur utilisateur) throws BusinessException {
 
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 
@@ -53,6 +53,8 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 
 				cnx.commit();
 				
+				return utilisateur;
+				
 			} catch (Exception e) {
 				cnx.rollback();
 				e.printStackTrace();
@@ -73,6 +75,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return utilisateur;
 
 	}
 
@@ -99,8 +102,9 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 
 				if (nbUpdate <= 1) {
 					cnx.commit();
-				} else {// TODO exception
+				} else {
 					cnx.rollback();
+					throw new Exception();
 				}
 
 			} catch (Exception e) {
@@ -127,7 +131,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public void deleteUser(int noUtilisateur) {
+	public void deleteUser(int noUtilisateur) throws BusinessException {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			try {
 				cnx.setAutoCommit(false);
@@ -139,11 +143,14 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 					cnx.commit();
 				} else {
 					cnx.rollback();
-					
+					throw new Exception();
 				}
 			} catch (Exception e) {
 				cnx.rollback();
 				e.printStackTrace();
+				BusinessException be = new BusinessException();
+				be.ajouterErreur(CodesResultatDAL.ECHEC_DELETE);
+				throw be;
 			}
 
 		} catch (Exception e) {
@@ -153,7 +160,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public Utilisateur selectUser(int noUtilisateur) {
+	public Utilisateur selectUser(int noUtilisateur) throws BusinessException {
 		Utilisateur utilisateur = null;
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 
@@ -171,10 +178,15 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				String ville = rs.getString("ville");
 
 				utilisateur = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville);
+			}else {
+				throw new Exception();
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.ECHEC_SELECT_USER);
+			throw be;
 		}
 
 		return utilisateur;

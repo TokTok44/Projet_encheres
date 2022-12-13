@@ -17,11 +17,9 @@ public class UtilisateurManager {
 		return manager;
 	}
 	
-	public void insertUser(Utilisateur utilisateur) throws BusinessException {
+	public Utilisateur insertUser(Utilisateur utilisateur) throws BusinessException {
 		
-		
-		
-		DAOFactory.getUtilisateurDAO().insertUser(utilisateur);
+		return DAOFactory.getUtilisateurDAO().insertUser(utilisateur);
 	}
 	
 	public void updateUser(Utilisateur utilisateur) throws BusinessException {
@@ -29,12 +27,12 @@ public class UtilisateurManager {
 		DAOFactory.getUtilisateurDAO().updateUser(utilisateur);
 	}
 	
-	public void deleteUser(int noUtilisateur) {
+	public void deleteUser(int noUtilisateur) throws BusinessException {
 		//TODO : gestion
 		DAOFactory.getUtilisateurDAO().deleteUser(noUtilisateur);
 	}
 	
-	public Utilisateur selectUser(int noUtilisateur) {
+	public Utilisateur selectUser(int noUtilisateur) throws BusinessException {
 		//TODO : gestion
 		return DAOFactory.getUtilisateurDAO().selectUser(noUtilisateur);
 	}

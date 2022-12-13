@@ -7,5 +7,6 @@ public interface CodesResultatDAL {
 	int ECHEC_INSERTION = 10_002;
 	int ECHEC_UPDATE = 10_003;
 	int ECHEC_DELETE = 10_004;
+	int ECHEC_SELECT_USER = 10_005;
 
 }
