@@ -2,7 +2,7 @@
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
-<html>
+<html lang="fr">
 	<head>
 		<meta charset="ISO-8859-1">
 		<title>Page Accuei</title>

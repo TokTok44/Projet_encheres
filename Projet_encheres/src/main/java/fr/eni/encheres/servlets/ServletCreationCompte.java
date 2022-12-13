@@ -58,7 +58,7 @@ public class ServletCreationCompte extends HttpServlet {
 		
 		}else {
 			
-			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageCreationCompte.jsp");
+			rd = request.getRequestDispatcher("/WEB-INF/JSP/CreationCompte.jsp");
 		
 		}
 		
