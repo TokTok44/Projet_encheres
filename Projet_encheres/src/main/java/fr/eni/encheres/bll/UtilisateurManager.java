@@ -32,12 +32,12 @@ public class UtilisateurManager {
 		DAOFactory.getUtilisateurDAO().deleteUser(noUtilisateur);
 	}
 	
-	public Utilisateur selectUser(int noUtilisateur) throws BusinessException {
+	public Utilisateur selectUser(String pseudo) throws BusinessException {
 		//TODO : gestion
-		return DAOFactory.getUtilisateurDAO().selectUser(noUtilisateur);
+		return DAOFactory.getUtilisateurDAO().selectUser(pseudo);
 	}
 	
-	public Utilisateur selectConnexion(String identifiant, String mdp) {
+	public Utilisateur selectConnexion(String identifiant, String mdp) throws BusinessException {
 		//TODO : gestion
 		return DAOFactory.getUtilisateurDAO().selectConnexion(identifiant, mdp);
 	}

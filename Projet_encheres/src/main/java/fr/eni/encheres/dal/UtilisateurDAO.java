@@ -11,6 +11,6 @@ public interface UtilisateurDAO {
 	Utilisateur insertUser (Utilisateur utilisateur) throws BusinessException;
 	void updateUser (Utilisateur utilisateur) throws BusinessException;
 	void deleteUser (int noUtilisateur) throws BusinessException;
-	Utilisateur selectUser (int noUtilisateur) throws BusinessException;
-	Utilisateur selectConnexion (String identifiant, String motDePasse);
+	Utilisateur selectConnexion (String identifiant, String motDePasse) throws BusinessException;
+	Utilisateur selectUser(String pseudo) throws BusinessException;
 }

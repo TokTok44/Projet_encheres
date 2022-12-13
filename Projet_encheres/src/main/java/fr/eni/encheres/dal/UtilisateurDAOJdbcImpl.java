@@ -14,8 +14,8 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 
 	private static final String INSERT_USER = "INSERT INTO UTILISATEURS(pseudo,nom,prenom,email,telephone,rue,code_postal,ville,mot_de_passe,credit,administrateur) VALUES (?,?,?,?,?,?,?,?,?,?,?);";
 	private static final String UPDATE_USER = "UPDATE UTILISATEURS SET pseudo = ?, nom = ?, prenom = ?, email = ?, telephone = ?, rue = ?, code_postal = ?, ville = ?, mot_de_passe = ? WHERE no_utilisateur = ?;";
-	private static final String SELECT_USER = "SELECT pseudo, nom, prenom, email, telephone, rue, code_postal, ville FROM UTILISATEURS WHERE no_utilisateur = ?;";
-	private static final String SELECT_CONNEXION = "SELECT pseudo, email, mot_de_passe,no_utilisateur FROM UTILISATEURS WHERE ((pseudo = ? OR email = ?) AND mot_de_passe = ?);";
+	private static final String SELECT_USER = "SELECT pseudo, nom, prenom, email, telephone, rue, code_postal, ville FROM UTILISATEURS WHERE pseudo = ?;";
+	private static final String SELECT_CONNEXION = "SELECT pseudo, email, mot_de_passe, no_utilisateur, nom, prenom, telephone, rue, code_postal, ville, credit, administrateur FROM UTILISATEURS WHERE ((pseudo = ? OR email = ?) AND mot_de_passe = ?);";
 	private static final String DELETE_USER = "DELETE FROM UTILISATEURS WHERE no_utilisateur = ?;";
 
 	@Override
@@ -49,6 +49,10 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				
 				if(rs.next()) {
 					utilisateur.setNoUtilisateur(rs.getInt(1));
+					utilisateur.setCredit(200);
+					utilisateur.setAdministrateur(false);
+				}else {
+					throw new Exception();
 				}
 
 				cnx.commit();
@@ -160,15 +164,15 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public Utilisateur selectUser(int noUtilisateur) throws BusinessException {
+	public Utilisateur selectUser(String pseudo) throws BusinessException {
 		Utilisateur utilisateur = null;
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_USER);
-			pstmt.setInt(1, noUtilisateur);
+			pstmt.setString(1, pseudo);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
-				String pseudo = rs.getString("pseudo");
+				String pseudoUtilisateur = rs.getString("pseudo");
 				String nom = rs.getString("nom");
 				String prenom = rs.getString("prenom");
 				String email = rs.getString("email");
@@ -177,7 +181,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				String codePostal = rs.getString("code_postal");
 				String ville = rs.getString("ville");
 
-				utilisateur = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville);
+				utilisateur = new Utilisateur(pseudoUtilisateur, nom, prenom, email, telephone, rue, codePostal, ville);
 			}else {
 				throw new Exception();
 			}
@@ -193,7 +197,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public Utilisateur selectConnexion(String identifiant, String motDePasse) {
+	public Utilisateur selectConnexion(String identifiant, String motDePasse) throws BusinessException {
 		Utilisateur utilisateur = null;
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 
@@ -207,10 +211,15 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 
 				utilisateur = new Utilisateur(pseudo);
 				utilisateur.setNoUtilisateur(rs.getInt("no_utilisateur"));
+			}else {
+				throw new Exception();
 			}
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.ECHEC_SELECT_CONNEXION);
+			throw be;
 		}
 
 		return utilisateur;
