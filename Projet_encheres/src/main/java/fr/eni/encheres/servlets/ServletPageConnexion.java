@@ -8,9 +8,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.eni.encheres.bll.UtilisateurManager;
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.exception.BusinessException;
 
 /**
  * Servlet implementation class ServletPageConnexion
@@ -38,19 +40,22 @@ public class ServletPageConnexion extends HttpServlet {
 		String mdp = request.getParameter("mdp");
 		RequestDispatcher rd = null;
 		
-		Utilisateur utilisateur = UtilisateurManager.getManager().selectConnexion(identifiant, mdp);
-		
-		if(utilisateur != null) {
-			
-			request.setAttribute("pseudo", utilisateur.getPseudo());
-			
-			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueilConnecter.jsp");
-			
-		}else {
-			
-			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageConnexion.jsp");
-			
+		Utilisateur utilisateur;
+		try {
+			utilisateur = UtilisateurManager.getManager().selectConnexion(identifiant, mdp);
+			if(utilisateur != null) {
+				HttpSession session = request.getSession();
+				session.setAttribute("utilisateur", utilisateur);
+				rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueilConnecter.jsp");
+			}else {
+				rd = request.getRequestDispatcher("/WEB-INF/JSP/PageConnexion.jsp");
+			}
+		} catch (BusinessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
+		
+		
 		
 		
 		rd.forward(request, response);

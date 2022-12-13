@@ -10,31 +10,38 @@
 <body>
 	<header>
 		<p>ENI-Encheres</p>
-		<a href="">Enchères</a>
-		<a href="${pageContext.request.contextPath }/Encheres/ServletVendre">Vendre un article</a>
-		<a href="${pageContext.request.contextPath }/Encheres/ServletDeconnexion">Déconnexion</a>
+		<a href="">Enchères</a> <a
+			href="${pageContext.request.contextPath }/Encheres/ServletVendre">Vendre
+			un article</a> <a
+			href="${pageContext.request.contextPath }/Encheres/ServletDeconnexion">Déconnexion</a>
 	</header>
-	<main>			
-				<p>Pseudo : $(requestScope.pseudo)</p>
-								
-				<p>Nom : $(requestScope.nom)</p>
-				
-				<p>Prénom : $(requestScope.prenom)</p>
-				
-				<p>Email : $(requestScope.email)</p>
-				
-				<p>Téléphone : $(requestScope.telephone)</p>
-				
-				<p>Rue : $(requestScope.rue)</p>
-				
-				<p>Code postal : $(requestScope.codePostal)</p>
-				
-				<p>Ville : $(requestScope.ville)</p>
-				
-				<a class="modifier" href="${pageContext.request.contextPath }/Encheres/ServletModificationCompte">Modifier</a>
-				<a class="annuler" href="${pageContext.request.contextPath }/Encheres/ServletPageAccueil">Accueil</a>
-	
-	
+	<main>
+
+		<core:if test="${!empty sessionScope.utilisateur }">
+			<p>Pseudo : ${utilisateur.pseudo }</p>
+
+			<p>Nom : ${utilisateur.nom }</p>
+
+			<p>Prénom : ${utilisateur.prenom }</p>
+
+			<p>Email : ${utilisateur.email }</p>
+
+			<p>Téléphone : ${utilisateur.telephone }</p>
+
+			<p>Rue : ${utilisateur.rue }</p>
+
+			<p>Code postal : ${utilisateur.codePostal }</p>
+
+			<p>Ville : ${utilisateur.ville }</p>
+
+
+			<a class="modifier"
+				href="${pageContext.request.contextPath }/Encheres/ServletModificationCompte">Modifier</a>
+		</core:if>
+		<a class="accueil"
+			href="${pageContext.request.contextPath }/Encheres/ServletPageAccueil">Accueil</a>
+
+
 	</main>
 
 

@@ -4,8 +4,8 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="ISO-8859-1">
-		<title>Insert title here</title>
+		<meta charset="UTF-8">
+		<title>Accueil</title>
 	</head>
 	<body>
 		<header>
@@ -16,7 +16,8 @@
 			<a href="${pageContext.request.contextPath }/Encheres/ServletDeconnexion">Déconnexion</a>
 		</header>
 		<main>
-			<p>Bienvenue ${requestScope.pseudo }</p>
+			<p>${sessionScope.noUtilisateur }</p>
+			<p>Bienvenue ${sessionScope.pseudo }</p>
 			<jsp:include page="ListeEnchere.jsp">
 				<jsp:param value="" name=""/>
 			</jsp:include>

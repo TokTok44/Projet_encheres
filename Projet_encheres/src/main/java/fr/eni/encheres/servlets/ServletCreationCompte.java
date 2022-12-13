@@ -8,9 +8,11 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import fr.eni.encheres.bll.UtilisateurManager;
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.exception.BusinessException;
 
 /**
  * Servlet implementation class ServletCreationCompte
@@ -52,7 +54,18 @@ public class ServletCreationCompte extends HttpServlet {
 			
 			Utilisateur utilisateur = new Utilisateur(pseudo,nom,prenom,email,telephone,rue,codePostal,ville,mdp);
 			
-			UtilisateurManager.getManager().insertUser(utilisateur);
+			try {
+				
+				utilisateur = UtilisateurManager.getManager().insertUser(utilisateur);
+				
+				HttpSession session = request.getSession();
+				session.setAttribute("utilisateur", utilisateur);
+				
+				
+			} catch (BusinessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueilConnecter.jsp");
 			
