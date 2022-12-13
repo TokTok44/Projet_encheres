@@ -9,7 +9,7 @@ public interface UtilisateurDAO {
 	List<Utilisateur> selectAll();
 	void insertUser (Utilisateur utilisateur);
 	void updateUser (Utilisateur utilisateur);
-	void deleteUser (Utilisateur utilisateur);
+	void deleteUser (int noUtilisateur);
 	Utilisateur selectUser (int noUtilisateur);
 	Utilisateur selectConnexion (String identifiant, String motDePasse);
 }

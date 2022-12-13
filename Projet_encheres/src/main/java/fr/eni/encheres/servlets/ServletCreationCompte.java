@@ -54,9 +54,12 @@ public class ServletCreationCompte extends HttpServlet {
 			
 			UtilisateurManager.getManager().insertUser(utilisateur);
 		
-			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueil.jsp");
+			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueilConnecter.jsp");
+		
 		}else {
-			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageConnexion.jsp");
+			
+			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageCreationCompte.jsp");
+		
 		}
 		
 		rd.forward(request, response);

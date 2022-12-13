@@ -96,12 +96,12 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public void deleteUser(Utilisateur utilisateur) {
+	public void deleteUser(int noUtilisateur) {
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 			try {
 				cnx.setAutoCommit(false);
 				PreparedStatement pstmt = cnx.prepareStatement(DELETE_USER);
-				pstmt.setInt(1, utilisateur.getNoUtilisateur());
+				pstmt.setInt(1, noUtilisateur);
 				int nbDelete = pstmt.executeUpdate();
 				if (nbDelete <= 1) {
 					cnx.commit();

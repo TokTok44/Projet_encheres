@@ -34,8 +34,12 @@ public class ServletPageConnexion extends HttpServlet {
 	 */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		String identifiant = request.getParameter("identifiant");
+		String mdp = request.getParameter("mdp");
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueil.jsp");
+		
+		
+		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueilConnecter.jsp");
 		rd.forward(request, response);
 		
 	}

@@ -20,5 +20,15 @@ public class UtilisateurManager {
 		//TODO : Vérification informations
 		DAOFactory.getUtilisateurDAO().insertUser(utilisateur);
 	}
+	
+	public void updateUser(Utilisateur utilisateur) {
+		//TODO : Gestion
+		DAOFactory.getUtilisateurDAO().updateUser(utilisateur);
+	}
+	
+	public void deleteUser(int noUtilisateur) {
+		//TODO : gestion
+		DAOFactory.getUtilisateurDAO().deleteUser(noUtilisateur);
+	}
 
 }
