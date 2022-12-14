@@ -70,10 +70,6 @@ public class ServletCreationCompte extends HttpServlet {
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/CreationCompte.jsp");
 		}
 		
-		
-			
-
-		
 		rd.forward(request, response);
 		
 	}

@@ -61,25 +61,25 @@ public class UtilisateurManager {
 			be.ajouterErreur(CodesResultatBLL.CHAMP_OBLIGATOIRE);
 		}
 		
-		if(utilisateur.getPseudo().length() > 30 || utilisateur.getPseudo().matches("")) {
+		if(utilisateur.getPseudo().length() > 30 /*|| utilisateur.getPseudo().matches("")*/) {
 			be.ajouterErreur(CodesResultatBLL.PSEUDO_INVALIDE);
 		}
 		if(utilisateur.getNom().length() > 30 || utilisateur.getPrenom().length() > 30) {
 			be.ajouterErreur(CodesResultatBLL.NOM_PRENOM_INVALIDE);
 		}
-		if(utilisateur.getEmail().length() > 40 || utilisateur.getEmail().matches("")) {
+		if(utilisateur.getEmail().length() > 40 /*|| utilisateur.getEmail().matches("")*/) {
 			be.ajouterErreur(CodesResultatBLL.EMAIL_INVALIDE);
 		}
 		if(utilisateur.getRue().length() > 30) {
 			be.ajouterErreur(CodesResultatBLL.RUE_INVALIDE);
 		}
-		if(utilisateur.getCodePostal().length() > 10 || utilisateur.getCodePostal().length() < 5 || utilisateur.getCodePostal().matches("")) {
+		if(utilisateur.getCodePostal().length() > 10 || utilisateur.getCodePostal().length() < 5 /*|| utilisateur.getCodePostal().matches("")*/) {
 			be.ajouterErreur(CodesResultatBLL.RUE_INVALIDE);
 		}
 		if (utilisateur.getVille().length() > 30) {
 			be.ajouterErreur(CodesResultatBLL.VILLE_INVALIDE);
 		}
-		if (utilisateur.getMotDePasse().length() > 30 || utilisateur.getMotDePasse().length() < 6 || utilisateur.getMotDePasse().matches("")) {
+		if (utilisateur.getMotDePasse().length() > 30 || utilisateur.getMotDePasse().length() < 6 /*|| utilisateur.getMotDePasse().matches("")*/) {
 			be.ajouterErreur(CodesResultatBLL.MOT_DE_PASSE_INVALIDE);
 		}
 		

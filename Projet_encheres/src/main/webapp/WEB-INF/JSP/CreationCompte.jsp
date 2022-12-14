@@ -1,3 +1,4 @@
+<%@page import="fr.eni.encheres.exception.LecteurMessage"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -16,7 +17,11 @@
 		<main>
 			
 			<h1>Création de profil</h1>
-			
+			<core:if test="${requestScope.listeErreur.size()>0 }">
+				<core:forEach var="erreur" items="${requestScope.listeErreur }">
+					<p>${LecteurMessage.getMessageErreur(erreur) }</p>
+				</core:forEach>
+			</core:if>
 			<form action="${pageContext.request.contextPath }/Encheres/ServletCreationCompte" method="post">
 				<label>Pseudo :</label>
 				<input type="text" name="pseudo" required />
