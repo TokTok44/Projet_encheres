@@ -52,11 +52,17 @@ public class UtilisateurManager {
 		return DAOFactory.getUtilisateurDAO().updateUser(utilisateur);
 	}
 	
-	public void deleteUser(int noUtilisateur, String motDePasse) throws BusinessException {
+	public void deleteUser(Utilisateur utilisateur, String motDePasse) throws BusinessException {
 		
+		if(utilisateur.getMotDePasse().equals(motDePasse)) {
 		
+			DAOFactory.getUtilisateurDAO().deleteUser(utilisateur.getNoUtilisateur());
 		
-		DAOFactory.getUtilisateurDAO().deleteUser(noUtilisateur);
+		}else {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.ECHEC_SUPPRESSION);
+			throw be;
+		}
 	}
 	
 	public Utilisateur selectUser(String pseudo) throws BusinessException {

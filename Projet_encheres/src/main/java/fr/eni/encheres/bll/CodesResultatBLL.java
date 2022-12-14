@@ -12,5 +12,6 @@ public interface CodesResultatBLL {
 	int VILLE_INVALIDE = 20_007;
 	int MOT_DE_PASSE_INVALIDE = 20_008;
 	int CREDIT_INVALIDE = 20_009;
+	int ECHEC_SUPPRESSION = 20_010;
 
 }
