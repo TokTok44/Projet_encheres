@@ -22,28 +22,28 @@
 			</jsp:include>
 			<form action="${pageContext.request.contextPath }/Encheres/ServletCreationCompte" method="post">
 				<label>Pseudo :</label>
-				<input type="text" name="pseudo" required />
+				<input value="${param.pseudo }" type="text" name="pseudo" required />
 				
 				<label>Nom :</label>
-				<input type="text" name="nom" required />
+				<input value="${param.nom }" type="text" name="nom" required />
 				
 				<label>Prénom :</label>
-				<input type="text" name="prenom" required />
+				<input value="${param.prenom }" type="text" name="prenom" required />
 				
 				<label>Email :</label>
-				<input type="text" name="email" required />
+				<input value="${param.email }" type="text" name="email" required />
 				
 				<label>Téléphone :</label>
-				<input type="text" name="telephone" />
+				<input value="${param.telephone }" type="text" name="telephone" />
 				
 				<label>Rue :</label>
-				<input type="text" name="rue" required />
+				<input value="${param.rue }" type="text" name="rue" required />
 				
 				<label>Code postal :</label>
-				<input type="text" name="codePostal" required />
+				<input value="${param.codePostal }" type="text" name="codePostal" required />
 				
 				<label>Ville :</label>
-				<input type="text" name="ville" required />
+				<input value="${param.ville }" type="text" name="ville" required />
 				
 				<label>Mot de passe :</label>
 				<input type="password" name="mdp" required />

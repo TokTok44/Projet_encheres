@@ -29,7 +29,7 @@ public class ServletPageAccueil extends HttpServlet {
 
 		HttpSession session = request.getSession();
 		
-		if (session.getAttribute("noUtilisateur") != null) {
+		if (session.getAttribute("utilisateur") != null) {
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueilConnecter.jsp");
 		} else {
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueil.jsp");

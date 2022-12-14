@@ -46,10 +46,10 @@
 				<input type="password" name="mdp" required>
 				
 				<label>Nouveau mot de passe : </label>
-				<input type="password" name="newMdp" required />
+				<input type="password" name="newMdp"/>
 				
 				<label>Confirmation du nouveau mot de passe : </label>
-				<input type="password" name="confirmationNewMdp" required />
+				<input type="password" name="confirmationNewMdp" />
 				
 				<p>Crédit : ${utilisateur.credit }</p>
 				
