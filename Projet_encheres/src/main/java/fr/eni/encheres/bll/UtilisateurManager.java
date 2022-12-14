@@ -41,6 +41,8 @@ public class UtilisateurManager {
 		
 		if(!(newMdp.equals(confirmationNewMdp))) {
 			be.ajouterErreur(CodesResultatBLL.ECHEC_CONFIRMATION);
+		}else if(!newMdp.isBlank()) {
+			utilisateur.setMotDePasse(newMdp);
 		}
 		
 		if(be.getListeCodesErreur().size() > 0) {

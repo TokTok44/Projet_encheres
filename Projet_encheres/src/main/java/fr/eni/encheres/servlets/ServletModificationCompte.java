@@ -52,18 +52,16 @@ public class ServletModificationCompte extends HttpServlet {
 		String mdp = request.getParameter("mdp");
 		String newMdp = request.getParameter("newMdp");
 		String confirmationNewMdp = request.getParameter("confirmationNewMdp");
-		Utilisateur user = (Utilisateur) request.getSession().getAttribute("utilisateur");
-		int credit = user.getCredit();
 
-		Utilisateur utilisateur = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, mdp, credit);
+		Utilisateur utilisateur = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, mdp);
 
 		try {
 			switch (request.getParameter("modifier")) {
 			case "Enregistrer":
-				Utilisateur utilisateur2 = UtilisateurManager.getManager().updateUser(utilisateur, newMdp, confirmationNewMdp);
+				utilisateur = UtilisateurManager.getManager().updateUser(utilisateur, newMdp, confirmationNewMdp);
 
 				HttpSession session = request.getSession();
-				session.setAttribute("utilisateur", utilisateur2);
+				session.setAttribute("utilisateur", utilisateur);
 
 				rd = request.getRequestDispatcher("/WEB-INF/JSP/AffichageCompte.jsp");
 				break;
