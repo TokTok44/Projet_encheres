@@ -13,5 +13,7 @@ public interface CodesResultatBLL {
 	int MOT_DE_PASSE_INVALIDE = 20_008;
 	int CREDIT_INVALIDE = 20_009;
 	int ECHEC_SUPPRESSION = 20_010;
+	int PSEUDO_UNIQUE = 20_011;
+	int EMAIL_UNIQUE = 20_012;
 
 }
