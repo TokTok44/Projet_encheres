@@ -20,7 +20,7 @@ public class UtilisateurManager {
 	public Utilisateur insertUser(Utilisateur utilisateur, String confirmation) throws BusinessException {
 		
 		BusinessException be = new BusinessException();
-		if(utilisateur.getMotDePasse().equals(confirmation)) {
+		if(!(utilisateur.getMotDePasse().equals(confirmation))) {
 			be.ajouterErreur(CodesResultatBLL.ECHEC_CONFIRMATION);
 		}
 		verificationDonneesUtilisateur(utilisateur,be);
@@ -31,13 +31,31 @@ public class UtilisateurManager {
 		return DAOFactory.getUtilisateurDAO().insertUser(utilisateur);
 	}
 	
-	public void updateUser(Utilisateur utilisateur) throws BusinessException {
-		//TODO : Gestion
-		DAOFactory.getUtilisateurDAO().updateUser(utilisateur);
+	public Utilisateur updateUser(Utilisateur utilisateur, String newMdp, String confirmationNewMdp) throws BusinessException {
+		
+		BusinessException be = new BusinessException();
+		
+		verificationDonneesUtilisateur(utilisateur,be);
+		
+		Utilisateur utilisateurTest = null;
+		
+		if(newMdp.equals(confirmationNewMdp)) {
+			
+			utilisateurTest = DAOFactory.getUtilisateurDAO().selectConnexion(newMdp, confirmationNewMdp);
+			
+		}
+		
+		if(be.getListeCodesErreur().size() > 0) {
+			throw be;
+		}
+		
+		return DAOFactory.getUtilisateurDAO().updateUser(utilisateur);
 	}
 	
-	public void deleteUser(int noUtilisateur) throws BusinessException {
-		//TODO : gestion
+	public void deleteUser(int noUtilisateur, String motDePasse) throws BusinessException {
+		
+		
+		
 		DAOFactory.getUtilisateurDAO().deleteUser(noUtilisateur);
 	}
 	

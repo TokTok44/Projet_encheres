@@ -17,11 +17,9 @@
 		<main>
 			
 			<h1>Création de profil</h1>
-			<core:if test="${requestScope.listeErreur.size()>0 }">
-				<core:forEach var="erreur" items="${requestScope.listeErreur }">
-					<p>${LecteurMessage.getMessageErreur(erreur) }</p>
-				</core:forEach>
-			</core:if>
+			<jsp:include page="ListeErreur.jsp">
+				<jsp:param value="" name=""/>
+			</jsp:include>
 			<form action="${pageContext.request.contextPath }/Encheres/ServletCreationCompte" method="post">
 				<label>Pseudo :</label>
 				<input type="text" name="pseudo" required />
