@@ -9,6 +9,7 @@ import java.util.List;
 
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.exception.BusinessException;
+import fr.eni.encheres.exception.ExceptionConnexionUtilisateur;
 
 public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 
@@ -212,14 +213,18 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				utilisateur = new Utilisateur(pseudo,nom,prenom,email,telephone,rue,codePostal,ville,motDePasse,credit,administrateur);
 				utilisateur.setNoUtilisateur(rs.getInt("no_utilisateur"));
 			}else {
-				throw new Exception();
+				throw new ExceptionConnexionUtilisateur();
 			}
 
-		} catch (Exception e) {
+		} catch (ExceptionConnexionUtilisateur e) {
 			e.printStackTrace();
 			BusinessException be = new BusinessException();
 			be.ajouterErreur(CodesResultatDAL.ECHEC_SELECT_CONNEXION);
 			throw be;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatDAL.ERREUR_INCONNUE);
 		}
 
 		return utilisateur;
