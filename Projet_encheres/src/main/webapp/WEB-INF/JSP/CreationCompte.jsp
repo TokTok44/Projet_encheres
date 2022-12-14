@@ -1,22 +1,22 @@
 <%@page import="fr.eni.encheres.exception.LecteurMessage"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="ISO-8859-1">
-		<title>Création de profil</title>
+		<meta charset="UTF-8">
+		<title>CrÃ©ation de profil</title>
 		<link href="../../${pageContext.request.contextPath }/CSS/CreationCompte.css" rel="stylesheet">
 	</head>
 	
 	<body>
 		<header>
-			<p>ENI-Enchères</p>
+			<p>ENI-EnchÃ¨res</p>
 		</header>
 		<main>
 			
-			<h1>Création de profil</h1>
+			<h1>CrÃ©ation de profil</h1>
 			<jsp:include page="ListeErreur.jsp">
 				<jsp:param value="" name=""/>
 			</jsp:include>
@@ -27,13 +27,13 @@
 				<label>Nom :</label>
 				<input value="${param.nom }" type="text" name="nom" required />
 				
-				<label>Prénom :</label>
+				<label>PrÃ©nom :</label>
 				<input value="${param.prenom }" type="text" name="prenom" required />
 				
 				<label>Email :</label>
 				<input value="${param.email }" type="text" name="email" required />
 				
-				<label>Téléphone :</label>
+				<label>TÃ©lÃ©phone :</label>
 				<input value="${param.telephone }" type="text" name="telephone" />
 				
 				<label>Rue :</label>
@@ -51,7 +51,7 @@
 				<label>Confirmation :</label>
 				<input type="password" name="confirmation" required />
 				
-				<input class="creer" type="submit" value="Créer">
+				<input class="creer" type="submit" value="CrÃ©er">
 				
 				<a class="annuler" href="${pageContext.request.contextPath }/Encheres/ServletPageAccueil">Annuler</a>
 			</form>
