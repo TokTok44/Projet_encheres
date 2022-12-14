@@ -219,4 +219,19 @@ public class Utilisateur {
 		this.encherit = encherit;
 	}
 
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Utilisateur [noUtilisateur=").append(noUtilisateur).append(", pseudo=").append(pseudo)
+				.append(", nom=").append(nom).append(", prenom=").append(prenom).append(", email=").append(email)
+				.append(", telephone=").append(telephone).append(", rue=").append(rue).append(", codePostal=")
+				.append(codePostal).append(", ville=").append(ville).append(", motDePasse=").append(motDePasse)
+				.append(", credit=").append(credit).append(", administrateur=").append(administrateur)
+				.append(", achete=").append(achete).append(", vend=").append(vend).append(", encherit=")
+				.append(encherit).append("]");
+		return builder.toString();
+	}
+	
+	
+
 }

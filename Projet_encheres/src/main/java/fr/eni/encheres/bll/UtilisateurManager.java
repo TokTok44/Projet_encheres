@@ -33,7 +33,7 @@ public class UtilisateurManager {
 		return DAOFactory.getUtilisateurDAO().insertUser(utilisateur);
 	}
 	
-	public Utilisateur updateUser(Utilisateur utilisateur, String newMdp, String confirmationNewMdp) throws BusinessException {
+	public void updateUser(Utilisateur utilisateur, String newMdp, String confirmationNewMdp) throws BusinessException {
 		
 		BusinessException be = new BusinessException();
 		
@@ -48,8 +48,6 @@ public class UtilisateurManager {
 		if(be.getListeCodesErreur().size() > 0) {
 			throw be;
 		}
-		
-		return DAOFactory.getUtilisateurDAO().updateUser(utilisateur);
 	}
 	
 	public void deleteUser(Utilisateur utilisateur, String motDePasse) throws BusinessException {

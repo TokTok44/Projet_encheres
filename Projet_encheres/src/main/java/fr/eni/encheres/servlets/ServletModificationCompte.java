@@ -40,6 +40,7 @@ public class ServletModificationCompte extends HttpServlet {
 			throws ServletException, IOException {
 
 		RequestDispatcher rd = null;
+		HttpSession session = request.getSession();
 
 		String pseudo = request.getParameter("pseudo");
 		String nom = request.getParameter("nom");
@@ -54,13 +55,16 @@ public class ServletModificationCompte extends HttpServlet {
 		String confirmationNewMdp = request.getParameter("confirmationNewMdp");
 
 		Utilisateur utilisateur = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, mdp);
-
+		Utilisateur utilisateurSession = (Utilisateur) session.getAttribute("utilisateur");
+		utilisateur.setNoUtilisateur(utilisateurSession.getNoUtilisateur());
+		utilisateur.setCredit(utilisateurSession.getCredit());
+		
 		try {
 			switch (request.getParameter("modifier")) {
 			case "Enregistrer":
-				utilisateur = UtilisateurManager.getManager().updateUser(utilisateur, newMdp, confirmationNewMdp);
+				UtilisateurManager.getManager().updateUser(utilisateur, newMdp, confirmationNewMdp);
 
-				HttpSession session = request.getSession();
+				
 				session.setAttribute("utilisateur", utilisateur);
 
 				rd = request.getRequestDispatcher("/WEB-INF/JSP/AffichageCompte.jsp");

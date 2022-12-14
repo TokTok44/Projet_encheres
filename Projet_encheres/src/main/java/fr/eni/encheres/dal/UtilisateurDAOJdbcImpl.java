@@ -85,12 +85,10 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public Utilisateur updateUser(Utilisateur utilisateur) throws BusinessException {
+	public void updateUser(Utilisateur utilisateur) throws BusinessException {
 
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 
-			try {
-				cnx.setAutoCommit(false);
 				PreparedStatement pstmt = cnx.prepareStatement(UPDATE_USER);
 				pstmt.setString(1, utilisateur.getPseudo());
 				pstmt.setString(2, utilisateur.getNom());
@@ -105,19 +103,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 
 				int nbUpdate = pstmt.executeUpdate();
 
-				if (nbUpdate <= 1) {
-					cnx.commit();
-				} else {
-					cnx.rollback();
-					throw new Exception();
-				}
-				
-				Utilisateur user = selectConnexion(utilisateur.getPseudo(), utilisateur.getMotDePasse());
-				
-				return user;
-
 			} catch (Exception e) {
-				cnx.rollback();
 				e.printStackTrace();
 				BusinessException be = new BusinessException();
 				
@@ -133,12 +119,6 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				throw be;
 				
 			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		
-		return null;
 
 	}
 
