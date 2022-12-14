@@ -48,6 +48,8 @@ public class UtilisateurManager {
 		if(be.getListeCodesErreur().size() > 0) {
 			throw be;
 		}
+		
+		DAOFactory.getUtilisateurDAO().updateUser(utilisateur);
 	}
 	
 	public void deleteUser(Utilisateur utilisateur, String motDePasse) throws BusinessException {
