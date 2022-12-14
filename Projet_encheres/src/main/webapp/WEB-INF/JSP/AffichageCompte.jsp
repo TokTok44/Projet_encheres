@@ -38,6 +38,7 @@
 			<a class="modifier"
 				href="${pageContext.request.contextPath }/Encheres/ServletModificationCompte">Modifier</a>
 		</core:if>
+		
 		<a class="accueil"
 			href="${pageContext.request.contextPath }/Encheres/ServletPageAccueil">Accueil</a>
 

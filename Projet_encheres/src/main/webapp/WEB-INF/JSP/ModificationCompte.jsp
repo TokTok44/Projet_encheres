@@ -8,6 +8,58 @@
 <title>Modifier mon compte</title>
 </head>
 <body>
+	<header>
+		<p>ENI-Encheres</p>
+		<a href="">Enchères</a> <a
+			href="${pageContext.request.contextPath }/Encheres/ServletVendre">Vendre
+			un article</a> <a
+			href="${pageContext.request.contextPath }/Encheres/ServletDeconnexion">Déconnexion</a>
+	</header>
+	<main>
 
+	<form action="${pageContext.request.contextPath }/Encheres/ServletModificationCompte" method="post">
+				<label>Pseudo : </label>
+				<input value="${utilisateur.pseudo }" type="text" name="pseudo" required />
+				
+				<label>Nom : </label>
+				<input value="${utilisateur.nom }" type="text" name="nom" required />
+				
+				<label>Prénom : </label>
+				<input value="${utilisateur.prenom }" type="text" name="prenom" required />
+				
+				<label>Email : </label>
+				<input value="${utilisateur.email }" type="text" name="email" required />
+				
+				<label>Téléphone : </label>
+				<input value="${utilisateur.telephone }" type="text" name="telephone" />
+				
+				<label>Rue : </label>
+				<input value="${utilisateur.rue }" type="text" name="rue" required />
+				
+				<label>Code postal : </label>
+				<input value="${utilisateur.codePostal }" type="text" name="codePostal" required />
+				
+				<label>Ville : </label>
+				<input value="${utilisateur.ville }" type="text" name="ville" required />
+				
+				<label>Mot de passe actuel : </label>
+				<input type="password" name="mdp" required>
+				
+				<label>Nouveau mot de passe : </label>
+				<input type="password" name="newMdp" required />
+				
+				<label>Confirmation du nouveau mot de passe : </label>
+				<input type="password" name="confirmationNewMdp" required />
+				
+				<p>Crédit : ${utilisateur.credit }</p>
+				
+				<input class="creer" type="submit" value="Enregistrer">
+				
+				<a class="annuler" href="${pageContext.request.contextPath }/Encheres/ServletPageAccueil">Annuler</a>
+				
+				<a class="supprimer" href="${pageContext.request.contextPath }/Encheres/ServletSuppressionCompte">Supprimer mon compte</a>
+
+			</form>
+	</main>
 </body>
 </html>
