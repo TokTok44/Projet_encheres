@@ -34,6 +34,7 @@
 
 			<p>Ville : ${utilisateur.ville }</p>
 
+			<p>Crédit : ${utilisateur.credit }</p>
 
 			<a class="modifier"
 				href="${pageContext.request.contextPath }/Encheres/ServletModificationCompte">Modifier</a>

@@ -23,20 +23,24 @@ public class ServletModificationCompte extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/JSP/ModificationCompte.jsp");
 		rd.forward(request, response);
 	}
 
 	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse
+	 *      response)
 	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
 		RequestDispatcher rd = null;
-		
+
 		String pseudo = request.getParameter("pseudo");
 		String nom = request.getParameter("nom");
 		String prenom = request.getParameter("prenom");
@@ -48,26 +52,41 @@ public class ServletModificationCompte extends HttpServlet {
 		String mdp = request.getParameter("mdp");
 		String newMdp = request.getParameter("newMdp");
 		String confirmationNewMdp = request.getParameter("confirmationNewMdp");
-		
-		Utilisateur utilisateur = new Utilisateur(pseudo,nom,prenom,email,telephone,rue,codePostal,ville,mdp);
-		
+
+		Utilisateur utilisateur = new Utilisateur(pseudo, nom, prenom, email, telephone, rue, codePostal, ville, mdp);
+
 		try {
-			utilisateur = UtilisateurManager.getManager().updateUser(utilisateur,newMdp,confirmationNewMdp);
-			
-			HttpSession session = request.getSession();
-			session.setAttribute("utilisateur", utilisateur);
-			
-			rd = request.getRequestDispatcher("/WEB-INF/JSP/AffichageCompte.jsp");
-			
+			switch (request.getParameter("modifier")) {
+			case "Enregistrer":
+				utilisateur = UtilisateurManager.getManager().updateUser(utilisateur, newMdp, confirmationNewMdp);
+
+				HttpSession session = request.getSession();
+				session.setAttribute("utilisateur", utilisateur);
+
+				rd = request.getRequestDispatcher("/WEB-INF/JSP/AffichageCompte.jsp");
+				break;
+
+			case "Supprimer mon compte":
+				Utilisateur utilisateurASupprimer = (Utilisateur) request.getSession().getAttribute("utilisateur");
+				UtilisateurManager.getManager().deleteUser(utilisateurASupprimer, mdp);
+				request.getSession().invalidate();
+				rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueil.jsp");
+				break;
+
+			default:
+				break;
+			}
+			;
+
 		} catch (BusinessException e) {
 			e.printStackTrace();
-			
+
 			List<Integer> listeErreur = e.getListeCodesErreur();
 			request.setAttribute("listeErreur", listeErreur);
-			
+
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/ModificationCompte.jsp");
 		}
-		
+
 		rd.forward(request, response);
 	}
 

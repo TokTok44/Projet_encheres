@@ -53,11 +53,12 @@
 				
 				<p>Crédit : ${utilisateur.credit }</p>
 				
-				<input class="creer" type="submit" value="Enregistrer">
+				<input name="modifier" type="submit" value="Enregistrer">
+				
+				<input name="modifier" type="submit" value="Supprimer mon compte">
 				
 				<a class="annuler" href="${pageContext.request.contextPath }/Encheres/ServletPageAccueil">Annuler</a>
 				
-				<a class="supprimer" href="${pageContext.request.contextPath }/Encheres/ServletSuppressionCompte">Supprimer mon compte</a>
 
 			</form>
 	</main>
