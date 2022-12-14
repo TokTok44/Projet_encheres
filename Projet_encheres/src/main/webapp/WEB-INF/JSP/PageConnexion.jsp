@@ -5,11 +5,14 @@
 <html>
 	<head>
 		<meta charset="ISO-8859-1">
-		<title>Insert title here</title>
+		<title>Connexion</title>
 	</head>
 	<body>
 		<header>
 			<p>ENI-Enchères</p>
+			<jsp:include page="ListeErreur.jsp">
+				<jsp:param value="" name=""/>
+			</jsp:include>
 		</header>
 		
 		<main>

@@ -1,6 +1,7 @@
 package fr.eni.encheres.servlets;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -51,13 +52,12 @@ public class ServletPageConnexion extends HttpServlet {
 				rd = request.getRequestDispatcher("/WEB-INF/JSP/PageConnexion.jsp");
 			}
 		} catch (BusinessException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			List<Integer> listeErreur = e.getListeCodesErreur();
+			request.setAttribute("listeErreur", listeErreur);
+			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageConnexion.jsp");
 		}
-		
-		
-		
-		
+
 		rd.forward(request, response);
 		
 	}

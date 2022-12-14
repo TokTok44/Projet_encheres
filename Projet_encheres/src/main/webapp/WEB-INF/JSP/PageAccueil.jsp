@@ -5,13 +5,16 @@
 <html lang="fr">
 	<head>
 		<meta charset="ISO-8859-1">
-		<title>Page Accuei</title>
+		<title>Accueil</title>
 		
 	</head>
 	
 	<body>
 		<header>
 			<p>ENI-Encheres</p>
+			<jsp:include page="ListeErreur.jsp">
+				<jsp:param value="" name=""/>
+			</jsp:include>
 			<a href="${pageContext.request.contextPath }/Encheres/ServletCreationCompte">S'inscrire</a>
 			<p> - </p>
 			<a href="${pageContext.request.contextPath }/Encheres/ServletPageConnexion">Se connecter</a>

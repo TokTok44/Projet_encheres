@@ -10,6 +10,9 @@
 <body>
 	<header>
 		<p>ENI-Encheres</p>
+		<jsp:include page="ListeErreur.jsp">
+			<jsp:param value="" name="" />
+		</jsp:include>
 		<a href="">Enchères</a> <a
 			href="${pageContext.request.contextPath }/Encheres/ServletVendre">Vendre
 			un article</a> <a
@@ -39,7 +42,7 @@
 			<a class="modifier"
 				href="${pageContext.request.contextPath }/Encheres/ServletModificationCompte">Modifier</a>
 		</core:if>
-		
+
 		<a class="accueil"
 			href="${pageContext.request.contextPath }/Encheres/ServletPageAccueil">Accueil</a>
 
