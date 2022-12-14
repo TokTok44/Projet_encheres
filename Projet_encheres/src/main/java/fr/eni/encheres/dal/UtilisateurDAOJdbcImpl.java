@@ -17,7 +17,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	private static final String SELECT_USER = "SELECT pseudo, nom, prenom, email, telephone, rue, code_postal, ville FROM UTILISATEURS WHERE pseudo = ?;";
 	private static final String SELECT_CONNEXION = "SELECT pseudo, email, mot_de_passe, no_utilisateur, nom, prenom, telephone, rue, code_postal, ville, credit, administrateur FROM UTILISATEURS WHERE ((pseudo = ? OR email = ?) AND mot_de_passe = ?);";
 	private static final String DELETE_USER = "DELETE FROM UTILISATEURS WHERE no_utilisateur = ?;";
-
+	
 	@Override
 	public List<Utilisateur> selectAll() {
 		// TODO Auto-generated method stub

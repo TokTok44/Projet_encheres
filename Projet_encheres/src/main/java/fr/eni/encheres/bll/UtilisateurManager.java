@@ -39,23 +39,8 @@ public class UtilisateurManager {
 		
 		verificationDonneesUtilisateur(utilisateur,be);
 		
-		Utilisateur utilisateurTest = null;
-		
 		if(!(newMdp.equals(confirmationNewMdp))) {
 			be.ajouterErreur(CodesResultatBLL.ECHEC_CONFIRMATION);
-		}
-		
-		utilisateurTest = DAOFactory.getUtilisateurDAO().selectConnexion(utilisateur.getPseudo(), utilisateur.getMotDePasse());
-		if(utilisateurTest != null) {
-			if(utilisateur.getNoUtilisateur() != utilisateurTest.getNoUtilisateur()) {
-				be.ajouterErreur(CodesResultatBLL.PSEUDO_UNIQUE);
-			}
-		}
-		utilisateurTest = DAOFactory.getUtilisateurDAO().selectConnexion(utilisateur.getEmail(), utilisateur.getMotDePasse());
-		if(utilisateurTest != null) {
-			if(utilisateur.getNoUtilisateur() != utilisateurTest.getNoUtilisateur()) {
-				be.ajouterErreur(CodesResultatBLL.EMAIL_UNIQUE);
-			}
 		}
 		
 		if(be.getListeCodesErreur().size() > 0) {
@@ -104,7 +89,7 @@ public class UtilisateurManager {
 		if(utilisateur.getNom().length() > 30 || utilisateur.getPrenom().length() > 30) {
 			be.ajouterErreur(CodesResultatBLL.NOM_PRENOM_INVALIDE);
 		}
-		if(utilisateur.getEmail().length() > 40 /*|| !(utilisateur.getEmail().matches("[@]"))*/) {
+		if(utilisateur.getEmail().length() > 40 || !(utilisateur.getEmail().matches("\\@"))) {
 			be.ajouterErreur(CodesResultatBLL.EMAIL_INVALIDE);
 		}
 		if(utilisateur.getRue().length() > 30) {
