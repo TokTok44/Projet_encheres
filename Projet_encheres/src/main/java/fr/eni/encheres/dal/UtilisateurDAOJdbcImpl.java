@@ -64,13 +64,14 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 				e.printStackTrace();
 				BusinessException be = new BusinessException();
 				
+				be.ajouterErreur(CodesResultatDAL.ECHEC_INSERTION);
+				
 				if(e.getMessage().contains("pseudo_UNIQUE")) {
 					be.ajouterErreur(CodesResultatDAL.PSEUDO_UNIQUE);
 				}
 				if(e.getMessage().contains("email_UNIQUE")) {
 					be.ajouterErreur(CodesResultatDAL.EMAIL_UNIQUE);
 				}
-				be.ajouterErreur(CodesResultatDAL.ECHEC_INSERTION);
 				
 				throw be;
 
@@ -84,7 +85,7 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public void updateUser(Utilisateur utilisateur) throws BusinessException {
+	public Utilisateur updateUser(Utilisateur utilisateur) throws BusinessException {
 
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 
@@ -110,11 +111,15 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 					cnx.rollback();
 					throw new Exception();
 				}
+				
+				return utilisateur;
 
 			} catch (Exception e) {
 				cnx.rollback();
 				e.printStackTrace();
 				BusinessException be = new BusinessException();
+				
+				be.ajouterErreur(CodesResultatDAL.ECHEC_UPDATE);
 				
 				if(e.getMessage().contains("pseudo_UNIQUE")) {
 					be.ajouterErreur(CodesResultatDAL.PSEUDO_UNIQUE);
@@ -123,7 +128,6 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 					be.ajouterErreur(CodesResultatDAL.EMAIL_UNIQUE);
 				}
 				
-				be.ajouterErreur(CodesResultatDAL.ECHEC_UPDATE);
 				throw be;
 				
 			}
@@ -131,6 +135,8 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
+		return null;
 
 	}
 
