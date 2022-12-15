@@ -16,8 +16,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	
 	private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES_VENDUS nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie VALUES (?,?,?,?,?,?,?,?);";
 	private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS no_article, rue, code_postal, ville VALUES (?,?,?,?);";
-	private static String selectArticleCategorie = "SELECT nom_article, date_fin_encheres, prix_vente, pseudo FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur";
-	private static String selectArticleConnecte = "SELECT nom_article, prix_vente, pseudo, ";
+	private static String selectArticleCategorie = "SELECT no_article, nom_article, date_fin_encheres, prix_vente, pseudo FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur";
+	private static String selectArticleConnecte = "SELECT no_article, nom_article, prix_vente, pseudo, ";
 	
 	@Override
 	public ArticleVendu insertArticle(ArticleVendu article) {
@@ -52,8 +52,9 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		return article;
 		
 	}
-
-	public List<ArticleVendu> selectArticle(String condition, int noCategorie){
+	
+	@Override
+	public List<ArticleVendu> selectArticle(String condition, int noCategorie, String recherche){
 		
 		List<ArticleVendu> listeArticle = new ArrayList<>();
 		
@@ -66,13 +67,23 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			if(condition.equals(";")) {
 				Statement stmt = cnx.createStatement();
 				rs = stmt.executeQuery(selectArticleCategorie);
-			}else {
+			}else if(condition.contains("no_categorie") && condition.contains("nom_article")){
 				PreparedStatement pstmt = cnx.prepareStatement(selectArticleCategorie);
 				pstmt.setInt(1, noCategorie);
+				pstmt.setString(2, recherche);
+				rs = pstmt.executeQuery();
+			}else if(condition.contains("no_categorie")) {
+				PreparedStatement pstmt = cnx.prepareStatement(selectArticleCategorie);
+				pstmt.setInt(1, noCategorie);
+				rs = pstmt.executeQuery();
+			}else if(condition.contains("nom_article")){
+				PreparedStatement pstmt = cnx.prepareStatement(selectArticleCategorie);
+				pstmt.setString(1, recherche);
 				rs = pstmt.executeQuery();
 			}
 			
 			Utilisateur vendeur = null;
+			int noArticle;
 			String pseudo;
 			String nomArticle;
 			LocalDate dateFin;
@@ -80,12 +91,13 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			
 			while(rs.next()) {
 				vendeur = new Utilisateur(rs.getString("pseudo"));
+				noArticle = rs.getInt("no_article");
 				pseudo = rs.getString("pseudo");
 				nomArticle = rs.getString("nom_article");
 				dateFin = rs.getDate("date_fin_encheres").toLocalDate();
 				prixVente = rs.getInt("prix_vente");
 				
-				listeArticle.add(new ArticleVendu(nomArticle,prixVente,dateFin,vendeur));
+				listeArticle.add(new ArticleVendu(noArticle,nomArticle,prixVente,dateFin,vendeur));
 			}
 			
 		} catch (Exception e) {
@@ -95,21 +107,13 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		return listeArticle;
 		
 	}
+
 	
-	public List<ArticleVendu> selectVentes(String requete, int noCategorie){
-		List<ArticleVendu> listeVentes = new ArrayList<>();
-		
-		
-		
-		return listeVentes;
+	@Override
+	public List<ArticleVendu> selectArticlesConnecte(String condition, int noCategorie, String recherche) {
+		// TODO Auto-generated method stub
+		return null;
 	}
-	
-	public List<ArticleVendu> selectAchats(String requete, int noCategorie){
-		List<ArticleVendu> listeAchats = new ArrayList<>();
-		
-		
-		
-		return listeAchats;
-	}
+
 	
 }

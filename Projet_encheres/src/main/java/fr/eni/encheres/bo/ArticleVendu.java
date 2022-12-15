@@ -52,8 +52,9 @@ public class ArticleVendu {
 	}
 
 
-	public ArticleVendu(String nomArticle, int prixVente, LocalDate dateFin, Utilisateur vendeur) {
+	public ArticleVendu(int noArticle, String nomArticle, int prixVente, LocalDate dateFin, Utilisateur vendeur) {
 		this();
+		this.noArticle = noArticle;
 		this.nomArticle = nomArticle;
 		this.prixVente = prixVente;
 		this.dateFinEncheres = dateFin;
