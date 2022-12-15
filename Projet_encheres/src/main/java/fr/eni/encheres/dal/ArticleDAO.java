@@ -10,6 +10,6 @@ public interface ArticleDAO {
 	
 	public List<ArticleVendu> selectArticle(String condition, int noCategorie, String recherche);
 	
-	public List<ArticleVendu> selectArticlesConnecte(String condition, int noCategorie, String recherche);
+	public List<ArticleVendu> selectArticlesConnecte(String condition, int noCategorie, String recherche, boolean venteEnCours, boolean venteAVenir, boolean venteTermine);
 
 }

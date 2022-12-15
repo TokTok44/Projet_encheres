@@ -26,7 +26,7 @@ public class UtilisateurManager {
 		
 		verificationDonneesUtilisateur(utilisateur,be);
 		
-		if(be.getListeCodesErreur().size() > 0) {
+		if(be.hasErreurs()) {
 			throw be;
 		}
 		
@@ -76,8 +76,6 @@ public class UtilisateurManager {
 	}
 	
 	private void verificationDonneesUtilisateur(Utilisateur utilisateur, BusinessException be) {
-		
-		be = new BusinessException();
 		
 		if (utilisateur.getCodePostal() == null || utilisateur.getEmail() == null || utilisateur.getMotDePasse() == null
 				|| utilisateur.getNom() == null || utilisateur.getPrenom() == null || utilisateur.getPseudo() == null

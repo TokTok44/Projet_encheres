@@ -110,7 +110,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
 	
 	@Override
-	public List<ArticleVendu> selectArticlesConnecte(String condition, int noCategorie, String recherche) {
+	public List<ArticleVendu> selectArticlesConnecte(String condition, int noCategorie, String recherche, ) {
 		
 		
 		
