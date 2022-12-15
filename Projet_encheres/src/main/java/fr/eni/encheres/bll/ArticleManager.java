@@ -26,6 +26,22 @@ public class ArticleManager {
 	public List<ArticleVendu> selectArticle(int noCategorie, String recherche){
 		String condition = null;
 		
+		if(noCategorie != 0 && !recherche.isBlank()) {
+			
+			condition = " WHERE no_categorie = ? AND nom_article LIKE %?%;";
+			
+		}else if(noCategorie != 0){
+			
+			condition = " WHERE no_categorie = ?;";
+			
+		}else if(!recherche.isBlank()) {
+			
+			condition = " WHERE nom_article LIKE %?%;";
+			
+		}else {
+			condition = ";";
+		}
+		
 		return DAOFactory.getArticleDAO().selectArticle(condition, noCategorie, recherche);
 	}
 
