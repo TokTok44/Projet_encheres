@@ -4,6 +4,7 @@ import java.util.List;
 
 import fr.eni.encheres.bo.ArticleVendu;
 import fr.eni.encheres.dal.DAOFactory;
+import fr.eni.encheres.exception.BusinessException;
 
 public class ArticleManager {
 	
@@ -18,8 +19,12 @@ public class ArticleManager {
 		return manager;
 	}
 	
-	public ArticleVendu insertArticle(ArticleVendu article) {
-		// TODO : gestion
+	public ArticleVendu insertArticle(ArticleVendu article) throws BusinessException {
+		
+		if(article.getMiseAPrix() < 0) {
+			throw new BusinessException();
+		}
+		
 		return DAOFactory.getArticleDAO().insertArticle(article);
 	}
 	
