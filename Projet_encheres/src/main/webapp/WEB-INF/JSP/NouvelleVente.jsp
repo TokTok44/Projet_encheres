@@ -34,7 +34,8 @@
 				    </core:forEach>
 				</select>
 				
-				<p>Photo de l'article :<p>
+				<label for="photo">Photo de l'article :</label>
+				<input type="file" id="photo" name="photo" accept="image/png, image/jpeg">
 				
 				
 				<label>Mise à prix :</label>

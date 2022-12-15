@@ -31,7 +31,7 @@
 				<input value="${param.prenom }" type="text" name="prenom" required />
 				
 				<label>Email :</label>
-				<input value="${param.email }" type="text" name="email" required />
+				<input value="${param.email }" type="email" name="email" required />
 				
 				<label>Téléphone :</label>
 				<input value="${param.telephone }" type="text" name="telephone" />

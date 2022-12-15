@@ -14,7 +14,7 @@
 				<jsp:param value="" name=""/>
 			</jsp:include>
 		<a href="">Enchères</a> <a
-			href="${pageContext.request.contextPath }/Encheres/ServletVendre">Vendre
+			href="${pageContext.request.contextPath }/Encheres/ServletNouvelleVente">Vendre
 			un article</a> <a
 			href="${pageContext.request.contextPath }/Encheres/ServletDeconnexion">Déconnexion</a>
 	</header>
@@ -31,7 +31,7 @@
 				<input value="${utilisateur.prenom }" type="text" name="prenom" required />
 				
 				<label>Email : </label>
-				<input value="${utilisateur.email }" type="text" name="email" required />
+				<input value="${utilisateur.email }" type="email" name="email" required />
 				
 				<label>Téléphone : </label>
 				<input value="${utilisateur.telephone }" type="text" name="telephone" />
