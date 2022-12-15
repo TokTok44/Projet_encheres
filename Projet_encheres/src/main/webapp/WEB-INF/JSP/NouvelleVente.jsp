@@ -28,7 +28,7 @@
 				
 				<label>Catégorie :</label>
 				<select name="choixCategorie">
-				<option value=""></option>
+				<option value="0"></option>
 				    <core:forEach var="categorie" items="${requestScope.listeCategorie }">
 				     <option value="${categorie.noCategorie }">${categorie.libelle }</option>
 				    </core:forEach>

@@ -37,6 +37,9 @@ public class ServletNouvelleVente extends HttpServlet {
 		
 		List<Categorie> listeCategorie = CategorieManager.getManager().selectAll();
 		request.setAttribute("listeCategorie", listeCategorie);
+
+		List<ArticleVendu> listeArticles = ArticleManager.getManager().selectArticle(0, "");
+		request.setAttribute("listeArticles", listeArticles);
 		
 		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/JSP/NouvelleVente.jsp");
 		rd.forward(request, response);
@@ -56,7 +59,13 @@ public class ServletNouvelleVente extends HttpServlet {
 		
 		String nomArticle = request.getParameter("nomArticle");
 		String description = request.getParameter("description");
-		String choixCategorie = request.getParameter("choixCategorie");
+		int choixCategorie = 0;
+		try {
+			choixCategorie = Integer.parseInt(request.getParameter("choixCategorie"));
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+			//be.ajouterErreur(CodesResultatServlets.CATEGORIE_NON_VALIDE);
+		}
 		int miseAPrix = 0;
 		try {
 			miseAPrix = Integer.parseInt(request.getParameter("miseAPrix"));
@@ -97,7 +106,13 @@ public class ServletNouvelleVente extends HttpServlet {
 			try {
 				ArticleManager.getManager().insertArticle(articleVendu);
 				
-				rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueilConnecter.jsp");
+				/*List<Categorie> listeCategorie = CategorieManager.getManager().selectAll();
+				request.setAttribute("listeCategorie", listeCategorie);
+
+				List<ArticleVendu> listeArticles = ArticleManager.getManager().selectArticle(0, "");
+				request.setAttribute("listeArticles", listeArticles);*/
+				
+				rd = request.getRequestDispatcher("/Encheres/ServletPageAccueil");
 				rd.forward(request, response);
 				
 			} catch (BusinessException e) {

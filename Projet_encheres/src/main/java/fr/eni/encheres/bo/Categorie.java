@@ -18,6 +18,11 @@ public class Categorie {
 		this.libelle = libelle;
 	}
 
+	public Categorie(int choixCategorie) {
+		this();
+		this.noCategorie = choixCategorie;
+	}
+
 	public int getNoCategorie() {
 		return noCategorie;
 	}

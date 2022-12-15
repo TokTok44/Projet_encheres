@@ -25,8 +25,8 @@
 	<div>
 		<b><a href="">${articleVendu.nomArticle }</a></b>
 		<p>Prix : ${articleVendu.prixVente }</p>
-		<p>Fin de l'enchère : ${articleVendu.dateFinEnchere }<p>
-		<p>Vendeur : <a href="">${articleVendu.vendeur }</a>
+		<p>Fin de l'enchère : ${articleVendu.dateFinEncheres }<p>
+		<p>Vendeur : <a href="">${articleVendu.vendeur.pseudo }</a>
 	
 	</div>
 
