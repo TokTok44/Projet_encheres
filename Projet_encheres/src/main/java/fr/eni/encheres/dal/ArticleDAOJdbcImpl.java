@@ -14,8 +14,8 @@ import fr.eni.encheres.bo.Utilisateur;
 
 public class ArticleDAOJdbcImpl implements ArticleDAO {
 	
-	private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES_VENDUS nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie VALUES (?,?,?,?,?,?,?,?);";
-	private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS no_article, rue, code_postal, ville VALUES (?,?,?,?);";
+	private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES_VENDUS (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie) VALUES (?,?,?,?,?,?,?,?);";
+	private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS (no_article, rue, code_postal, ville) VALUES (?,?,?,?);";
 	private static String selectArticleCategorie = "SELECT no_article, nom_article, date_fin_encheres, prix_vente, pseudo FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur";
 	private static String selectArticleConnecte = "SELECT no_article, nom_article, prix_vente, pseudo, ";
 	
