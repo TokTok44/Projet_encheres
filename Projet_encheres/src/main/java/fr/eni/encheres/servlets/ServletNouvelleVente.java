@@ -51,7 +51,7 @@ public class ServletNouvelleVente extends HttpServlet {
 		BusinessException be = new BusinessException();
 		
 		HttpSession session = request.getSession();
-		Utilisateur utilisateurSession = (Utilisateur) session.getAttribute("noUtilisateur");
+		Utilisateur utilisateurSession = (Utilisateur) session.getAttribute("utilisateur");
 		Utilisateur vendeur = new Utilisateur(utilisateurSession.getNoUtilisateur());
 		
 		String nomArticle = request.getParameter("nomArticle");
@@ -91,13 +91,13 @@ public class ServletNouvelleVente extends HttpServlet {
 		if (be.hasErreurs()) {
 			request.setAttribute("listeCodesErreur", be.getListeCodesErreur());
 			
-			rd = request.getRequestDispatcher("/WEB-INF/NouvelleVente.jsp");
+			rd = request.getRequestDispatcher("/WEB-INF/JSP/NouvelleVente.jsp");
 			rd.forward(request, response);
 		}else {
 			try {
 				ArticleManager.getManager().insertArticle(articleVendu);
 				
-				rd = request.getRequestDispatcher("/WEB-INF/PageAccueilConnecter.jsp");
+				rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueilConnecter.jsp");
 				rd.forward(request, response);
 				
 			} catch (BusinessException e) {
@@ -105,7 +105,8 @@ public class ServletNouvelleVente extends HttpServlet {
 				
 				request.setAttribute("listeCodesErreur", e.getListeCodesErreur());
 				
-				rd = request.getRequestDispatcher("/WEB-INF/NouvelleVente.jsp");
+				rd = request.getRequestDispatcher("/WEB-INF/JSP/NouvelleVente.jsp");
+				rd.forward(request, response);
 			}
 		}
 		
