@@ -34,8 +34,8 @@
 				    </core:forEach>
 				</select>
 				
-				<label>Photo de l'article :</label>
-				<input  />
+				<p>Photo de l'article :<p>
+				
 				
 				<label>Mise à prix :</label>
 				<input type="number" min="0" name="miseAPrix" />

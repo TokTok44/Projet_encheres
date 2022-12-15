@@ -13,7 +13,7 @@ public class ArticleVendu {
 	private LocalDate dateFinEncheres;
 	private int miseAPrix;
 	private int prixVente;
-	//TODO déclarer etatVente
+	//TODO dï¿½clarer etatVente
 	private Utilisateur acheteur;
 	private Utilisateur vendeur;
 	private List<Enchere> listeEnchere;
@@ -23,6 +23,34 @@ public class ArticleVendu {
 	public ArticleVendu() {
 		this.listeEnchere = new ArrayList<>();
 	}
+	
+	
+
+	public ArticleVendu(String nomArticle, String description, LocalDate dateDebutEncheres, LocalDate dateFinEncheres,
+			int miseAPrix, Categorie categorie, Retrait pointRetrait) {
+		this();
+		this.nomArticle = nomArticle;
+		this.description = description;
+		this.dateDebutEncheres = dateDebutEncheres;
+		this.dateFinEncheres = dateFinEncheres;
+		this.miseAPrix = miseAPrix;
+		this.categorie = categorie;
+		this.pointRetrait = pointRetrait;
+	}
+
+	public ArticleVendu(Utilisateur vendeur,String nomArticle, String description, LocalDate dateDebutEncheres, LocalDate dateFinEncheres,
+			int miseAPrix, Categorie categorie, Retrait pointRetrait) {
+		this();
+		this.vendeur = vendeur;
+		this.nomArticle = nomArticle;
+		this.description = description;
+		this.dateDebutEncheres = dateDebutEncheres;
+		this.dateFinEncheres = dateFinEncheres;
+		this.miseAPrix = miseAPrix;
+		this.categorie = categorie;
+		this.pointRetrait = pointRetrait;
+	}
+
 
 	public Utilisateur getAcheteur() {
 		return acheteur;

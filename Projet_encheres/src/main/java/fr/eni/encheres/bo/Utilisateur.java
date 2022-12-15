@@ -99,6 +99,11 @@ public class Utilisateur {
 		this.administrateur = administrateur;
 	}
 
+	public Utilisateur(int noUtilisateur) {
+		this();
+		this.noUtilisateur = noUtilisateur;
+	}
+
 	public int getNoUtilisateur() {
 		return noUtilisateur;
 	}
