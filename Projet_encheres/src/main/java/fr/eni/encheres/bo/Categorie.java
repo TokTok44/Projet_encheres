@@ -6,6 +6,17 @@ public class Categorie {
 	private String libelle;
 	
 	public Categorie() {}
+	
+	public Categorie(String libelle) {
+		this();
+		this.libelle = libelle;
+	}
+	
+	public Categorie(int noCategorie, String libelle) {
+		this();
+		this.noCategorie = noCategorie;
+		this.libelle = libelle;
+	}
 
 	public int getNoCategorie() {
 		return noCategorie;
