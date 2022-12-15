@@ -51,13 +51,13 @@
 				
 				<p>Retrait</p>
 				<label>Rue :</label>
-				<input value="${param.rue }" type="text" name="rue" required />
+				<input value="${sessionScope.utilisateur.rue }" type="text" name="rue" required />
 				
 				<label>Code postal :</label>
-				<input value="${param.codePostal }" type="text" name="codePostal" required />
+				<input value="${sessionScope.utilisateur.codePostal }" type="text" name="codePostal" required />
 				
 				<label>Ville :</label>
-				<input value="${param.ville }" type="text" name="ville" required />
+				<input value="${sessionScope.utilisateur.ville }" type="text" name="ville" required />
 				
 				<input class="creer" type="submit" value="Enregistrer">
 				
