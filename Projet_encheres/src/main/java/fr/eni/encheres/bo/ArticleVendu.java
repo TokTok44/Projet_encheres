@@ -52,6 +52,16 @@ public class ArticleVendu {
 	}
 
 
+	public ArticleVendu(String nomArticle, int prixVente, LocalDate dateFin, Utilisateur vendeur) {
+		this();
+		this.nomArticle = nomArticle;
+		this.prixVente = prixVente;
+		this.dateFinEncheres = dateFin;
+		this.vendeur = vendeur;
+	}
+
+
+
 	public Utilisateur getAcheteur() {
 		return acheteur;
 	}
