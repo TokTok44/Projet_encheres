@@ -33,6 +33,12 @@ public class Utilisateur {
 
 	}
 	
+	public Utilisateur(int noUtilisateur, String pseudo) {
+		this();
+		this.noUtilisateur = noUtilisateur;
+		this.pseudo = pseudo;
+	}
+	
 	public Utilisateur(String pseudo, String email, String motDePasse) {
 		this();
 		this.pseudo = pseudo;

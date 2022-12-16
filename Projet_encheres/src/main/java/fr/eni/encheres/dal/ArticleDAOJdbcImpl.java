@@ -16,8 +16,37 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	
 	private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES_VENDUS (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie) VALUES (?,?,?,?,?,?,?,?);";
 	private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS (no_article, rue, code_postal, ville) VALUES (?,?,?,?);";
-	private static String selectArticleCategorie = "SELECT no_article, nom_article, date_fin_encheres, prix_vente, pseudo FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur";
-	private static String selectArticleConnecte = "SELECT no_article, nom_article, prix_vente, pseudo, date_fin_encheres FROM ARTICLES_VENDUS INNER JOIN ENCHERES ON ";
+	
+	
+	private static String selectArticleCategorie = "SELECT UTILISATEURS.no_utilisateur,no_article, nom_article, date_fin_encheres, prix_vente, pseudo FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur";
+	
+	// Les différents morceaux pour la requete de selection des articles 
+	//en fonction des filtres sélctionnes
+	
+	private static final String COMMUN_ACHATS_VENTES = "SELECT UTILISATEURS.no_utilisateur,ENCHERES.no_article,nom_article,date_fin_encheres,prix_vente,pseudo FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur";
+	private static final String CHOIX_CATEGORIES = " AND (ARTICLES_VENDUS.no_categorie = ?)";
+	
+	// Les ventes de l'utilisateur
+	
+	private static final String VENTES_UTILISATEUR = " WHERE (UTILISATEUR.no_utilisateur = ?";
+	private static final String VENTES_UTILISATEUR_ENCOURS = " AND (DATEDIFF(day,date_debut_encheres,getDate()) > 0) AND (DATEDIFF(day,getDate(),date_fin_encheres) > 0)";
+	private static final String VENTES_A_VENIR = " AND (DATEDIFF(day,getDate(),date_debut_encheres) > 0)";
+	private static final String VENTES_TERMINEES = " AND (DATEDIFF(day,date_fin_encheres,getDate()) > 0)";
+	private static final String VENTES_ENCOURS_ET_A_VENIR = " AND (DATEDIFF(day,date_fin_encheres,getDate()) < 0)";
+	private static final String VENTES_ENCOURS_ET_TERMINEES = " AND (DATEDIFF(day,getDate(),date_debut_encheres) < 0)";
+	private static final String VENTES_UTILISATEUR_PAS_ENCOURS = " AND ((DATEDIFF(day,date_debut_encheres,getDate()) < 0) OR (DATEDIFF(day,getDate(),date_fin_encheres) < 0))";
+	
+	// Les achats de l'utilisateur
+	
+	private static final String SELECT_PRIX_VENTE = "SELECT no_article, MAX(montant_enchere) as prix_vente_actuel INTO #TEMP_1 FROM ENCHERES GROUP BY no_article;";
+	
+	private static final String COMMUN_ACHATS = "INNER JOIN ENCHERES ON ARTICLES_VENDUS.no_article = ENCHERES.no_article";
+	
+	private static final String ENCHERES_EN_COURS = "INNER JOIN #TEMP_1 ON (ENCHERES.no_article = #TEMP_1.no_article AND ENCHERES.montant_enchere = #TEMP_1.prix_vente_actuel)";
+	private static final String MES_ENCHERES_EN_COURS = "WHERE (ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_debut_encheres,getDate()) > 0) AND  (DATEDIFF(day,getDate(),date_fin_encheres) > 0)";
+	private static final String MES_ENCHERES_FINIES = "WHERE (ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_fin_encheres,getDate()) > 0)";
+	private static final String ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES = "WHERE (((ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_fin_encheres,getDate()) > 0)) OR (DATEDIFF(day,date_fin_encheres,getDate()) < 0))";
+	private static final String MES_ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES = "WHERE ((ENCHERES.no_utilisateur = ?) AND ((DATEDIFF(day,date_fin_encheres,getDate()) > 0) OR (DATEDIFF(day,date_fin_encheres,getDate()) < 0))";
 	
 	@Override
 	public ArticleVendu insertArticle(ArticleVendu article) {
@@ -108,13 +137,128 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		
 	}
 
-
-	@Override
-	public List<ArticleVendu> selectArticlesConnecte(String condition, int noCategorie, String recherche,
-			boolean venteEnCours, boolean venteAVenir, boolean venteTermine) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	
+	@Override
+	public List<ArticleVendu> selectArticlesConnecte(String condition, int noCategorie, int noUtilisateur, String recherche,boolean ventes, boolean ventesEnCours,
+			boolean ventesAVenir, boolean ventesTerminees, boolean encheresOuvertes, boolean mesEncheresOuvertes,
+			boolean mesEncheresTerminees) {
+		List<ArticleVendu> listeArticle = new ArrayList<>();
+		
+		String requete = "";
+		
+		if(ventes) {
+			requete += COMMUN_ACHATS_VENTES + VENTES_UTILISATEUR;
+		}else {
+			requete += SELECT_PRIX_VENTE + COMMUN_ACHATS_VENTES + COMMUN_ACHATS;
+		}
+		
+		// Mes Ventes
+		if(ventes && (ventesAVenir && ventesEnCours && !ventesTerminees)) {
+			requete += VENTES_ENCOURS_ET_A_VENIR;
+		}
+		if(ventes && (ventesAVenir && !ventesEnCours && ventesTerminees)) {
+			requete += VENTES_UTILISATEUR_PAS_ENCOURS;
+		}
+		if(ventes && (!ventesAVenir && ventesEnCours && ventesTerminees)) {
+			requete += VENTES_ENCOURS_ET_TERMINEES;
+		}
+		if(ventes && (ventesAVenir && !ventesEnCours && !ventesTerminees)) {
+			requete += VENTES_A_VENIR;
+		}
+		if(ventes && (!ventesAVenir && !ventesEnCours && ventesTerminees)) {
+			requete += VENTES_TERMINEES;
+		}
+		if(ventes && (!ventesAVenir && ventesEnCours && !ventesTerminees)) {
+			requete += VENTES_UTILISATEUR_ENCOURS;
+		}
+		
+		// Mes Achats
+		if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees))) {
+			requete += ENCHERES_EN_COURS;
+		}
+		if(!ventes && (encheresOuvertes && !mesEncheresOuvertes && mesEncheresTerminees)) {
+			requete += ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES;
+		}
+		if(!ventes && (!encheresOuvertes && mesEncheresOuvertes && mesEncheresTerminees)) {
+			requete += MES_ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES;
+		}
+		if(!ventes && (!encheresOuvertes && !mesEncheresOuvertes && mesEncheresTerminees)) {
+			requete += MES_ENCHERES_FINIES;
+		}
+		if(!ventes && (!encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) {
+			requete += MES_ENCHERES_EN_COURS;
+		}
+		if(noCategorie != 0) {
+			requete += CHOIX_CATEGORIES;
+		}
+		if(!(condition.isBlank())) {
+			requete += condition;
+		}
+		
+		requete += ");";
+		
+		try(Connection cnx = ConnectionProvider.getConnection()){
+			
+			ResultSet rs = null;
+			
+			if(noCategorie != 0 && !(condition.isBlank())) {
+				if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees))) {
+					PreparedStatement pstmt = cnx.prepareStatement(requete);
+					rs = pstmt.executeQuery();
+				}else {
+					PreparedStatement pstmt = cnx.prepareStatement(requete);
+					pstmt.setInt(1, noUtilisateur);
+					pstmt.setInt(2, noCategorie);
+					pstmt.setString(3, recherche);
+					rs = pstmt.executeQuery();
+				}
+			}else if(noCategorie != 0) {
+				if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees))) {
+					PreparedStatement pstmt = cnx.prepareStatement(requete);
+					pstmt.setInt(1, noCategorie);
+					rs = pstmt.executeQuery();
+				}else {
+					PreparedStatement pstmt = cnx.prepareStatement(requete);
+					pstmt.setInt(1, noUtilisateur);
+					pstmt.setInt(2, noCategorie);
+					rs = pstmt.executeQuery();
+				}
+			}else if(!(condition.isBlank())) {
+				if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees))) {
+					PreparedStatement pstmt = cnx.prepareStatement(requete);
+					pstmt.setString(1, recherche);
+					rs = pstmt.executeQuery();
+				}else {
+					PreparedStatement pstmt = cnx.prepareStatement(requete);
+					pstmt.setInt(1, noUtilisateur);
+					pstmt.setString(2, recherche);
+					rs = pstmt.executeQuery();
+				}
+			}else {
+				if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees))) {
+					Statement stmt = cnx.createStatement();
+					rs = stmt.executeQuery(requete);
+				}else {
+					PreparedStatement pstmt = cnx.prepareStatement(requete);
+					pstmt.setInt(1, noUtilisateur);
+					rs = pstmt.executeQuery();
+				}
+			}
+			
+			while(rs.next()) {
+				
+				Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"),rs.getString("pseudo"));
+				ArticleVendu article = new ArticleVendu(rs.getInt("no_article"),rs.getString("nom_article"),rs.getInt("prix_vente"),rs.getDate("date_fin_enchere").toLocalDate(),utilisateur);
+				listeArticle.add(article);
+				
+			}
+			
+		}catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		
+		return listeArticle;
+	}
 }
