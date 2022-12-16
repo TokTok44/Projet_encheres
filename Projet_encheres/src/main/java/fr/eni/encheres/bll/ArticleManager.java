@@ -1,5 +1,6 @@
 package fr.eni.encheres.bll;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.encheres.bo.ArticleVendu;
@@ -32,17 +33,11 @@ public class ArticleManager {
 		String condition = null;
 		
 		if(noCategorie != 0 && !recherche.isBlank()) {
-			
 			condition = " WHERE no_categorie = ? AND nom_article LIKE %?%;";
-			
 		}else if(noCategorie != 0){
-			
 			condition = " WHERE no_categorie = ?;";
-			
 		}else if(!recherche.isBlank()) {
-			
 			condition = " WHERE nom_article LIKE %?%;";
-			
 		}else {
 			condition = ";";
 		}
@@ -50,4 +45,16 @@ public class ArticleManager {
 		return DAOFactory.getArticleDAO().selectArticle(condition, noCategorie, recherche);
 	}
 
+	public List<ArticleVendu> selectArticleConnecte(int noCategorie, int noUtilisateur, String recherche,boolean ventes, boolean ventesEnCours,
+			boolean ventesAVenir, boolean ventesTerminees, boolean encheresOuvertes, boolean mesEncheresOuvertes,
+			boolean mesEncheresTerminees){
+		if(!ventesEnCours && !ventesAVenir && !ventesTerminees && !encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees) {
+			
+		}else {
+			return DAOFactory.getArticleDAO().selectArticlesConnecte(recherche, noCategorie, noUtilisateur, recherche, ventes, ventesEnCours, ventesAVenir, ventesTerminees, encheresOuvertes, mesEncheresOuvertes, mesEncheresTerminees);
+		}
+		
+		
+		return DAOFactory.getArticleDAO().selectArticlesConnecte(recherche, noCategorie, noUtilisateur, recherche, ventes, ventesEnCours, ventesAVenir, ventesTerminees, encheresOuvertes, mesEncheresOuvertes, mesEncheresTerminees);
+	}
 }

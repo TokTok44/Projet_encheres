@@ -23,8 +23,6 @@ public class ArticleVendu {
 	public ArticleVendu() {
 		this.listeEnchere = new ArrayList<>();
 	}
-	
-	
 
 	public ArticleVendu(String nomArticle, String description, LocalDate dateDebutEncheres, LocalDate dateFinEncheres,
 			int miseAPrix, Categorie categorie, Retrait pointRetrait) {

@@ -120,6 +120,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			while(rs.next()) {
 				vendeur = new Utilisateur(rs.getInt("no_utilisateur"),rs.getString("pseudo"));
 				noArticle = rs.getInt("no_article");
+
 				nomArticle = rs.getString("nom_article");
 				dateFin = rs.getDate("date_fin_encheres").toLocalDate();
 				prixVente = rs.getInt("prix_vente");
@@ -135,7 +136,6 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		
 	}
 
-	
 	@Override
 	public List<ArticleVendu> selectArticlesConnecte(String condition, int noCategorie, int noUtilisateur, String recherche,boolean ventes, boolean ventesEnCours,
 			boolean ventesAVenir, boolean ventesTerminees, boolean encheresOuvertes, boolean mesEncheresOuvertes,
@@ -259,4 +259,5 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		
 		return listeArticle;
 	}
+
 }
