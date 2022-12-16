@@ -113,15 +113,13 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			
 			Utilisateur vendeur = null;
 			int noArticle;
-			String pseudo;
 			String nomArticle;
 			LocalDate dateFin;
 			int prixVente;
 			
 			while(rs.next()) {
-				vendeur = new Utilisateur(rs.getString("pseudo"));
+				vendeur = new Utilisateur(rs.getInt("no_utilisateur"),rs.getString("pseudo"));
 				noArticle = rs.getInt("no_article");
-				pseudo = rs.getString("pseudo");
 				nomArticle = rs.getString("nom_article");
 				dateFin = rs.getDate("date_fin_encheres").toLocalDate();
 				prixVente = rs.getInt("prix_vente");
