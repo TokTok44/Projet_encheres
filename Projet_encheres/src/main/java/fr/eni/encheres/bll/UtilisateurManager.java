@@ -89,7 +89,7 @@ public class UtilisateurManager {
 		if(utilisateur.getNom().length() > 30 || utilisateur.getPrenom().length() > 30) {
 			be.ajouterErreur(CodesResultatBLL.NOM_PRENOM_INVALIDE);
 		}
-		if(utilisateur.getEmail().length() > 40 || !(utilisateur.getEmail().matches("\\@"))) {
+		if(utilisateur.getEmail().length() > 40 /*|| !(utilisateur.getEmail().matches("\\@"))*/) {
 			be.ajouterErreur(CodesResultatBLL.EMAIL_INVALIDE);
 		}
 		if(utilisateur.getRue().length() > 30) {
