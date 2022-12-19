@@ -78,6 +78,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
                 pstmtRetrait.setString(3, article.getPointRetrait().getCodePostal());
                 pstmtRetrait.setString(4, article.getPointRetrait().getVille());
                 
+                pstmtRetrait.execute();
+                
                 article.setNoArticle(rs.getInt(1));
             }
 
