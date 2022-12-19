@@ -48,12 +48,26 @@ public class ArticleManager {
 	public List<ArticleVendu> selectArticleFiltre(int noCategorie, int noUtilisateur, String recherche,boolean ventes, boolean ventesEnCours,
 			boolean ventesAVenir, boolean ventesTerminees, boolean encheresOuvertes, boolean mesEncheresOuvertes,
 			boolean mesEncheresTerminees){
-		if(!ventesEnCours && !ventesAVenir && !ventesTerminees && !encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees) {
-			return selectAllArticle(noCategorie, recherche);
+		String condition = "";
+		if(!ventes && !mesEncheresOuvertes && !mesEncheresTerminees) {
+			if(noCategorie != 0 && !recherche.isBlank()) {
+				condition = " WHERE (ARTICLES_VENDUS.no_categorie = ?) AND (ARTICLES_VENDUS.nom_article LIKE %?%";
+			}else if(noCategorie != 0){
+				condition = " WHERE (ARTICLES_VENDUS.no_categorie = ?";
+			}else if(!recherche.isBlank()) {
+				condition = " WHERE (ARTICLES_VENDUS.nom_article LIKE %?%";
+			}
 		}else {
-			return DAOFactory.getArticleDAO().selectArticlesFiltre(recherche, noCategorie, noUtilisateur, recherche, ventes, ventesEnCours, ventesAVenir, ventesTerminees, encheresOuvertes, mesEncheresOuvertes, mesEncheresTerminees);
+			if(noCategorie != 0 && !recherche.isBlank()) {
+				condition = " AND (ARTICLES_VENDUS.no_categorie = ?) AND (ARTICLES_VENDUS.nom_article LIKE %?%)";
+			}else if(noCategorie != 0){
+				condition = " AND ARTICLES_VENDUS.no_categorie = ?";
+			}else if(!recherche.isBlank()) {
+				condition = " AND ARTICLES_VENDUS.nom_article LIKE %?%";
+			}
 		}
+		
+		return DAOFactory.getArticleDAO().selectArticlesFiltre(condition, noCategorie, noUtilisateur, recherche, ventes, ventesEnCours, ventesAVenir, ventesTerminees, encheresOuvertes, mesEncheresOuvertes, mesEncheresTerminees);
+		
 	}
-
-	
 }

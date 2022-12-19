@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.encheres.bo.ArticleVendu;
+import fr.eni.encheres.bo.Categorie;
+import fr.eni.encheres.bo.Retrait;
 import fr.eni.encheres.bo.Utilisateur;
 
 public class ArticleDAOJdbcImpl implements ArticleDAO {
@@ -24,7 +26,6 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	//en fonction des filtres sélctionnes
 	
 	private static final String COMMUN_ACHATS_VENTES = "SELECT UTILISATEURS.no_utilisateur,ENCHERES.no_article,nom_article,date_fin_encheres,prix_vente,pseudo FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur";
-	private static final String CHOIX_CATEGORIES = " AND (ARTICLES_VENDUS.no_categorie = ?)";
 	
 	// Les ventes de l'utilisateur
 	
@@ -38,9 +39,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	
 	// Les achats de l'utilisateur
 	
-	private static final String SELECT_PRIX_VENTE = "SELECT no_article, MAX(montant_enchere) as prix_vente_actuel INTO #TEMP_1 FROM ENCHERES GROUP BY no_article;";
-	
-	private static final String COMMUN_ACHATS = "INNER JOIN ENCHERES ON ARTICLES_VENDUS.no_article = ENCHERES.no_article";
+	private static final String COMMUN_ACHATS = "INNER JOIN ENCHERES ON (ARTICLES_VENDUS.no_article = ENCHERES.no_article AND ARTICLES_VENDUS.prix_vente = ENCHERES.montant_enchere)";
 	
 	private static final String ENCHERES_EN_COURS = "INNER JOIN #TEMP_1 ON (ENCHERES.no_article = #TEMP_1.no_article AND ENCHERES.montant_enchere = #TEMP_1.prix_vente_actuel)";
 	private static final String MES_ENCHERES_EN_COURS = "WHERE (ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_debut_encheres,getDate()) > 0) AND  (DATEDIFF(day,getDate(),date_fin_encheres) > 0)";
@@ -48,7 +47,11 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private static final String ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES = "WHERE (((ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_fin_encheres,getDate()) > 0)) OR (DATEDIFF(day,date_fin_encheres,getDate()) < 0))";
 	private static final String MES_ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES = "WHERE ((ENCHERES.no_utilisateur = ?) AND ((DATEDIFF(day,date_fin_encheres,getDate()) > 0) OR (DATEDIFF(day,date_fin_encheres,getDate()) < 0))";
 	
-	private static final String SELECT_ARTICLE = "SELECT nom_article, description, libelle, prix_vente, ENCHERES.pseudo, prix_initial, date_fin_encheres, rue, code_postal, ville, ARTICLES_VENDUS.pseudo FROM ";
+	private static final String SELECT_ARTICLE_EN_VENTE = "SELECT nom_article, description, libelle, prix_vente, ENCHERES.pseudo, prix_initial, date_fin_encheres, rue, code_postal, ville, ARTICLES_VENDUS.pseudo FROM ARTICLES_VENDUS INNER JOIN ENCHERES ON (ARTICLES_VENDUS.prix_vente = ENCHERES.montant_enchere AND ARTICLES_VENDUS.no_article = ENCHERES.no_article) INNER JOIN UTILISATEURS ON UTILISATEURS.no_utilisateur = ENCHERES.no_utilisateur INNER JOIN RETRAITS ON ARTICLES_VENDUS.no_article = RETRAITS.no_article WHERE ARTICLES_VENDUS.no_article = ?;";
+	private static final String SELECT_ARTICLE_SANS_ENCHERES = "SELECT nom_article, description, libelle, prix_vente, prix_initial, date_fin_encheres, rue, code_postal, ville, pseudo FROM ARTICLES_VENDUS INNER JOIN RETRAITS ON ARTICLES_VENDUS.no_article = RETRAITS.no_article WHERE ARTICLES_VENDUS.no_article = ?";
+	
+	
+	private static final String SELECT_PRIX_VENTE = "SELECT no_article, MAX(montant_enchere) as prix_vente_actuel INTO #TEMP_1 FROM ENCHERES GROUP BY no_article;";
 	
 	@Override
 	public ArticleVendu insertArticle(ArticleVendu article) {
@@ -149,7 +152,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		if(ventes) {
 			requete += COMMUN_ACHATS_VENTES + VENTES_UTILISATEUR;
 		}else {
-			requete += SELECT_PRIX_VENTE + COMMUN_ACHATS_VENTES + COMMUN_ACHATS;
+			requete += COMMUN_ACHATS_VENTES + COMMUN_ACHATS;
 		}
 		
 		// Mes Ventes
@@ -188,13 +191,9 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		if(!ventes && (!encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) {
 			requete += MES_ENCHERES_EN_COURS;
 		}
-		if(noCategorie != 0) {
-			requete += CHOIX_CATEGORIES;
-		}
-		if(!(condition.isBlank())) {
-			requete += condition;
-		}
 		
+		requete += condition;
+	
 		requete += ");";
 		
 		try(Connection cnx = ConnectionProvider.getConnection()){
@@ -263,10 +262,46 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	}
 
 	@Override
-	public ArticleVendu selectArticle(int noArticle) {
+	public ArticleVendu selectArticle(int noArticle, boolean debute) {
 		ArticleVendu article = null;
 		
-		
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			PreparedStatement pstmt = null;
+			if(debute) {
+				pstmt = cnx.prepareStatement(SELECT_ARTICLE_EN_VENTE);
+			}else {
+				pstmt = cnx.prepareStatement(SELECT_ARTICLE_SANS_ENCHERES);
+			}
+			pstmt.setInt(1, noArticle);
+			
+			ResultSet rs = pstmt.executeQuery();
+			
+			if(rs.next()) {
+				
+				Retrait pointRetrait = new Retrait(rs.getString("rue"),rs.getString("code_postal"),rs.getString("ville"));
+				Categorie categorie = new Categorie(rs.getString("libelle"));
+				LocalDate dateFin = rs.getDate("date_fin_encheres").toLocalDate();
+				article = new ArticleVendu(rs.getString("nom_article"),rs.getString("description"),rs.getInt("prix_vente"),rs.getInt("prix_initial"),dateFin);
+				Utilisateur vendeur = null;
+				Utilisateur acheteur = null;
+				if(debute) {
+					acheteur = new Utilisateur(rs.getString(5));
+					vendeur = new Utilisateur(rs.getString(11));
+					article.setVendeur(vendeur);
+					article.setAcheteur(acheteur);
+				}else {
+					vendeur = new Utilisateur(rs.getString(10));
+					article.setVendeur(vendeur);
+				}
+				
+				article.setPointRetrait(pointRetrait);
+				article.setCategorie(categorie);
+				
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		return article;
 	}
