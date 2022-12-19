@@ -29,7 +29,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	
 	// Les ventes de l'utilisateur
 	
-	private static final String VENTES_UTILISATEUR = " WHERE (UTILISATEURS.no_utilisateur = ?";
+	private static final String VENTES_UTILISATEUR = " WHERE (UTILISATEURS.no_utilisateur = ?)";
 	private static final String VENTES_UTILISATEUR_ENCOURS = " AND (DATEDIFF(day,date_debut_encheres,getDate()) > 0) AND (DATEDIFF(day,getDate(),date_fin_encheres) > 0)";
 	private static final String VENTES_A_VENIR = " AND (DATEDIFF(day,getDate(),date_debut_encheres) > 0)";
 	private static final String VENTES_TERMINEES = " AND (DATEDIFF(day,date_fin_encheres,getDate()) > 0)";
@@ -41,10 +41,9 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	
 	private static final String COMMUN_ACHATS = "INNER JOIN ENCHERES ON (ARTICLES_VENDUS.no_article = ENCHERES.no_article AND ARTICLES_VENDUS.prix_vente = ENCHERES.montant_enchere)";
 	
-	private static final String ENCHERES_EN_COURS = "INNER JOIN #TEMP_1 ON (ENCHERES.no_article = #TEMP_1.no_article AND ENCHERES.montant_enchere = #TEMP_1.prix_vente_actuel)";
-	private static final String MES_ENCHERES_EN_COURS = "WHERE (ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_debut_encheres,getDate()) > 0) AND  (DATEDIFF(day,getDate(),date_fin_encheres) > 0)";
+	private static final String MES_ENCHERES_EN_COURS = "WHERE (ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_debut_encheres,getDate()) > 0) AND  (DATEDIFF(day,getDate(),date_fin_encheres) > 0))";
 	private static final String MES_ENCHERES_FINIES = "WHERE (ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_fin_encheres,getDate()) > 0)";
-	private static final String ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES = "WHERE (((ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_fin_encheres,getDate()) > 0)) OR (DATEDIFF(day,date_fin_encheres,getDate()) < 0))";
+	private static final String ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES = "WHERE (((ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_fin_encheres,getDate()) > 0)) OR (DATEDIFF(day,date_fin_encheres,getDate()) < 0)))";
 	private static final String MES_ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES = "WHERE ((ENCHERES.no_utilisateur = ?) AND ((DATEDIFF(day,date_fin_encheres,getDate()) > 0) OR (DATEDIFF(day,date_fin_encheres,getDate()) < 0))";
 	
 	
@@ -179,9 +178,6 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		}
 		
 		// Mes Achats
-		if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees))) {
-			requete += ENCHERES_EN_COURS;
-		}
 		if(!ventes && (encheresOuvertes && !mesEncheresOuvertes && mesEncheresTerminees)) {
 			requete += ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES;
 		}
@@ -197,7 +193,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		
 		requete += condition;
 	
-		requete += ");";
+		requete += ";";
 		
 		try(Connection cnx = ConnectionProvider.getConnection()){
 			
@@ -319,10 +315,12 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 				PreparedStatement pstmtRetrait = cnx.prepareStatement(UPDATE_RETRAIT);
 				
 				pstmtArticle.setString(1, );
-				pstmtArticle.setString(1, );
-				pstmtArticle.setDate(1, );
-				pstmtArticle.setString(1, );
-				pstmtArticle.setString(1, );
+				pstmtArticle.setString(2, );
+				pstmtArticle.setDate(3, );
+				pstmtArticle.setDate(4, );
+				pstmtArticle.setString(5, );
+				pstmtArticle.setString(6, );
+				pstmtArticle.setString(7, );
 				
 			} catch (Exception e) {
 				e.printStackTrace();

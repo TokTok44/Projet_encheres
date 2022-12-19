@@ -51,19 +51,19 @@ public class ArticleManager {
 		String condition = "";
 		if(!ventes && !mesEncheresOuvertes && !mesEncheresTerminees) {
 			if(noCategorie != 0 && !recherche.isBlank()) {
-				condition = " WHERE (ARTICLES_VENDUS.no_categorie = ?) AND (ARTICLES_VENDUS.nom_article LIKE %?%";
+				condition = " WHERE (ARTICLES_VENDUS.no_categorie = ?) AND (ARTICLES_VENDUS.nom_article LIKE %?%)";
 			}else if(noCategorie != 0){
-				condition = " WHERE (ARTICLES_VENDUS.no_categorie = ?";
+				condition = " WHERE (ARTICLES_VENDUS.no_categorie = ?)";
 			}else if(!recherche.isBlank()) {
-				condition = " WHERE (ARTICLES_VENDUS.nom_article LIKE %?%";
+				condition = " WHERE (ARTICLES_VENDUS.nom_article LIKE %?%)";
 			}
 		}else {
 			if(noCategorie != 0 && !recherche.isBlank()) {
 				condition = " AND (ARTICLES_VENDUS.no_categorie = ?) AND (ARTICLES_VENDUS.nom_article LIKE %?%)";
 			}else if(noCategorie != 0){
-				condition = " AND ARTICLES_VENDUS.no_categorie = ?";
+				condition = " AND (ARTICLES_VENDUS.no_categorie = ?)";
 			}else if(!recherche.isBlank()) {
-				condition = " AND ARTICLES_VENDUS.nom_article LIKE %?%";
+				condition = " AND (ARTICLES_VENDUS.nom_article LIKE %?%)";
 			}
 		}
 		
