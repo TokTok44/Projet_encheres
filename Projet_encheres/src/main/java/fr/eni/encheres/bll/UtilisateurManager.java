@@ -65,9 +65,9 @@ public class UtilisateurManager {
 		}
 	}
 	
-	public Utilisateur selectUser(String pseudo) throws BusinessException {
+	public Utilisateur selectUser(int noUtilisateur) throws BusinessException {
 		//TODO : gestion
-		return DAOFactory.getUtilisateurDAO().selectUser(pseudo);
+		return DAOFactory.getUtilisateurDAO().selectUser(noUtilisateur);
 	}
 	
 	public Utilisateur selectConnexion(String identifiant, String mdp) throws BusinessException {

@@ -26,12 +26,11 @@
 	<p>${requestScope.articleRecherche.nomArticle }</p>
 	<p>Description : ${requestScope.articleRecherche.description }</p>
 	<p>Catégorie : ${requestScope.articleRecherche.categorie.libelle }</p>
-	<p>Meilleure offre : ${requestScope.articleRecherche.prixVente } pts par ${requestScope.articleRecherche.acheteur }</p>
+	<p>Meilleure offre : ${requestScope.articleRecherche.prixVente } pts par ${requestScope.articleRecherche.acheteur.pseudo }</p>
 	<p>Mise à prix : ${requestScope.articleRecherche.miseAPrix } points</p>
 	<p>Fin de l'enchère : ${requestScope.articleRecherche.dateFinEncheres }</p>
-	<p>Retrait : ${requestScope.articleRecherche.retrait.rue }<br>
-				${requestScope.articleRecherche.retrait.codePostal } ${requestScope.articleRecherche.retrait.ville }</p>
-	<p>Vendeur : ${requestScope.articleRecherche.vendeur }</p>
+	<p>Retrait : ${requestScope.articleRecherche.pointRetrait.rue } ${requestScope.articleRecherche.pointRetrait.codePostal } ${requestScope.articleRecherche.pointRetrait.ville }</p>
+	<p>Vendeur : ${requestScope.articleRecherche.vendeur.pseudo }</p>
 	<p>Ma proposition : 
 	<form action="${pageContext.request.contextPath }/Encheres/Servlet" method="post">
 		<input name="noArticle" type="hidden" value="${requestScope.articleRecherche.noArticle }"/>

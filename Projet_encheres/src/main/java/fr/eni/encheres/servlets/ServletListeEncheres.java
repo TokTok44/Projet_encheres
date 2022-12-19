@@ -10,10 +10,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.swing.JCheckBox;
 
 import fr.eni.encheres.bll.ArticleManager;
+import fr.eni.encheres.bll.CategorieManager;
 import fr.eni.encheres.bo.ArticleVendu;
+import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Utilisateur;
 
 /**
@@ -53,6 +54,9 @@ public class ServletListeEncheres extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		List<Categorie> listeCategorie = CategorieManager.getManager().selectAll();
+		request.setAttribute("listeCategorie", listeCategorie);
+		
 		RequestDispatcher rd = null;
 		HttpSession session = request.getSession();
 		if (session.getAttribute("utilisateur") != null) {
