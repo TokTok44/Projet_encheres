@@ -74,4 +74,12 @@ public class ArticleManager {
 	public ArticleVendu selectArticle(int noArticle) {
 		return DAOFactory.getArticleDAO().selectArticle(noArticle);
 	}
+
+	public void updateArticle(ArticleVendu article) {
+		DAOFactory.getArticleDAO().updateArticle(article);
+	}
+	
+	public void deleteArticle(ArticleVendu article) {
+		
+	}
 }

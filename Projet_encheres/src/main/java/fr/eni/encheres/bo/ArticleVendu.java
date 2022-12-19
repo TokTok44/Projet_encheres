@@ -59,12 +59,13 @@ public class ArticleVendu {
 		this.vendeur = vendeur;
 	}
 
-	public ArticleVendu(String nomArticle, String description, int prixVente, int miseAPrix, LocalDate dateFin) {
+	public ArticleVendu(String nomArticle, String description, int prixVente, int miseAPrix, LocalDate dateFin, LocalDate dateDebut) {
 		this.nomArticle = nomArticle;
 		this.description = description;
 		this.prixVente = prixVente;
 		this.miseAPrix = miseAPrix;
 		this.dateFinEncheres = dateFin;
+		this.dateDebutEncheres = dateDebut;
 	}
 
 	public Utilisateur getAcheteur() {

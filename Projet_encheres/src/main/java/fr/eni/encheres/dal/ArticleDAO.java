@@ -13,4 +13,8 @@ public interface ArticleDAO {
 	public List<ArticleVendu> selectArticlesFiltre(String condition, int noCategorie, int noUtilisateur, String recherche, boolean ventes, boolean ventesEnCours, boolean ventesAVenir, boolean ventesTerminees, boolean encheresOuvertes, boolean mesEncheresOuvertes, boolean mesEncheresTerminees);
 
 	public ArticleVendu selectArticle(int noArticle);
+
+	public void updateArticle(ArticleVendu article);
+	
+	public void deleteArticle(int noArticle);
 }

@@ -153,12 +153,12 @@ public class UtilisateurDAOJdbcImpl implements UtilisateurDAO {
 	}
 
 	@Override
-	public Utilisateur selectUser(String pseudo) throws BusinessException {
+	public Utilisateur selectUser(int noUtilisateur) throws BusinessException {
 		Utilisateur utilisateur = null;
 		try (Connection cnx = ConnectionProvider.getConnection()) {
 
 			PreparedStatement pstmt = cnx.prepareStatement(SELECT_USER);
-			pstmt.setString(1, pseudo);
+			pstmt.setInt(1, noUtilisateur);
 			ResultSet rs = pstmt.executeQuery();
 			if (rs.next()) {
 				String pseudoUtilisateur = rs.getString("pseudo");

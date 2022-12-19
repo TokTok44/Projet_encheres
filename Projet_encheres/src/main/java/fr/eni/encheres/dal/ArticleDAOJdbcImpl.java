@@ -15,13 +15,12 @@ import fr.eni.encheres.bo.Retrait;
 import fr.eni.encheres.bo.Utilisateur;
 
 public class ArticleDAOJdbcImpl implements ArticleDAO {
-	
+	//******************************************************************************
 	private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES_VENDUS (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie) VALUES (?,?,?,?,?,?,?,?);";
 	private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS (no_article, rue, code_postal, ville) VALUES (?,?,?,?);";
-	
-	
+	//******************************************************************************
 	private static String selectArticleCategorie = "SELECT UTILISATEURS.no_utilisateur,no_article, nom_article, date_fin_encheres, prix_vente, pseudo FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur";
-	
+	//******************************************************************************
 	// Les différents morceaux pour la requete de selection des articles 
 	//en fonction des filtres sélctionnes
 	
@@ -45,13 +44,14 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private static final String MES_ENCHERES_FINIES = " WHERE (ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_fin_encheres,getDate()) > 0)";
 	private static final String ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES = " WHERE (((ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_fin_encheres,getDate()) > 0)) OR (DATEDIFF(day,date_fin_encheres,getDate()) < 0)))";
 	private static final String MES_ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES = " WHERE ((ENCHERES.no_utilisateur = ?) AND ((DATEDIFF(day,date_fin_encheres,getDate()) > 0) OR (DATEDIFF(day,date_fin_encheres,getDate()) < 0))";
-	
-	
-	private static final String SELECT_ARTICLE = "SELECT nom_article, description, libelle, prix_vente, prix_initial, date_fin_encheres, RETRAITS.rue, RETRAITS.code_postal, RETRAITS.ville, pseudo FROM ARTICLES_VENDUS INNER JOIN RETRAITS ON ARTICLES_VENDUS.no_article = RETRAITS.no_article INNER JOIN CATEGORIES ON CATEGORIES.no_categorie = ARTICLES_VENDUS.no_categorie INNER JOIN UTILISATEURS ON UTILISATEURS.no_utilisateur = ARTICLES_VENDUS.no_utilisateur WHERE ARTICLES_VENDUS.no_article = ?;";
+	//******************************************************************************
+	private static final String SELECT_ARTICLE = "SELECT nom_article, description, libelle, prix_vente, prix_initial, date_fin_encheres, date_debut_encheres, RETRAITS.rue, RETRAITS.code_postal, RETRAITS.ville, pseudo FROM ARTICLES_VENDUS INNER JOIN RETRAITS ON ARTICLES_VENDUS.no_article = RETRAITS.no_article INNER JOIN CATEGORIES ON CATEGORIES.no_categorie = ARTICLES_VENDUS.no_categorie INNER JOIN UTILISATEURS ON UTILISATEURS.no_utilisateur = ARTICLES_VENDUS.no_utilisateur WHERE ARTICLES_VENDUS.no_article = ?;";
 	private static final String SELECT_ACHETEUR = "SELECT pseudo FROM UTILISATEURS INNER JOIN ENCHERES ON ENCHERES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN ARTICLES_VENDUS ON (ARTICLES_VENDUS.prix_vente = ENCHERES.montant_enchere AND ARTICLES_VENDUS.no_article = ENCHERES.no_article) WHERE ARTICLES_VENDUS.no_article = ?;";
-	
+	//******************************************************************************
 	private static final String UPDATE_ARTICLE = "UPDATE ARTICLES_VENDUS SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, no_categorie = ? WHERE no_article = ?;";
 	private static final String UPDATE_RETRAIT = "UPDATE RETRAITS SET rue = ?, code_postal = ?, ville = ? WHERE no_article = ?;";
+	//******************************************************************************
+	private static final String DELETE_ARTICLE = "DELETE FROM ARTICLES_VENDUS WHERE no_article = ?";
 	
 	private static final String SELECT_PRIX_VENTE = "SELECT no_article, MAX(montant_enchere) as prix_vente_actuel INTO #TEMP_1 FROM ENCHERES GROUP BY no_article;";
 	
@@ -283,7 +283,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 				Retrait pointRetrait = new Retrait(rs.getString("rue"),rs.getString("code_postal"),rs.getString("ville"));
 				Categorie categorie = new Categorie(rs.getString("libelle"));
 				LocalDate dateFin = rs.getDate("date_fin_encheres").toLocalDate();
-				article = new ArticleVendu(rs.getString("nom_article"),rs.getString("description"),rs.getInt("prix_vente"),rs.getInt("prix_initial"),dateFin);
+				LocalDate dateDebut = rs.getDate("date_debut_encheres").toLocalDate();
+				article = new ArticleVendu(rs.getString("nom_article"),rs.getString("description"),rs.getInt("prix_vente"),rs.getInt("prix_initial"),dateFin, dateDebut);
 				Utilisateur vendeur = null;
 				
 				vendeur = new Utilisateur(rs.getString("pseudo"));
@@ -311,7 +312,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		return article;
 	}
 
-	public ArticleVendu updateArticle(ArticleVendu article) {
+	public void updateArticle(ArticleVendu article) {
 		
 		try(Connection cnx = ConnectionProvider.getConnection()) {
 			
@@ -334,14 +335,34 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 				pstmtRetrait.setString(2, article.getPointRetrait().getCodePostal());
 				pstmtRetrait.setString(3, article.getPointRetrait().getVille());
 				
+				pstmtRetrait.executeUpdate();
+				
+				cnx.commit();
 			} catch (Exception e) {
 				e.printStackTrace();
 				cnx.rollback();
 			}
 			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+	
+	@Override
+	public void deleteArticle(int noArticle) {
+		
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			
+			PreparedStatement pstmt = cnx.prepareStatement(DELETE_ARTICLE);
+			pstmt.setInt(1, noArticle);
+			
+			pstmt.executeUpdate();
+			
 			
 		} catch (Exception e) {
-			// TODO: handle exception
+			e.printStackTrace();
 		}
 		
 	}
