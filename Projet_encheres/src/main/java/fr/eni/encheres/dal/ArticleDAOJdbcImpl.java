@@ -39,7 +39,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	
 	// Les achats de l'utilisateur
 	
-	private static final String COMMUN_ACHATS = "INNER JOIN ENCHERES ON (ARTICLES_VENDUS.no_article = ENCHERES.no_article AND ARTICLES_VENDUS.prix_vente = ENCHERES.montant_enchere)";
+	private static final String COMMUN_ACHATS = " INNER JOIN ENCHERES ON (ARTICLES_VENDUS.no_article = ENCHERES.no_article AND ARTICLES_VENDUS.prix_vente = ENCHERES.montant_enchere)";
 	
 	private static final String MES_ENCHERES_EN_COURS = "WHERE (ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_debut_encheres,getDate()) > 0) AND  (DATEDIFF(day,getDate(),date_fin_encheres) > 0))";
 	private static final String MES_ENCHERES_FINIES = "WHERE (ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_fin_encheres,getDate()) > 0)";
