@@ -293,7 +293,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			
 			PreparedStatement pstmtAcheteur = cnx.prepareStatement(SELECT_ACHETEUR);
 
-			pstmtArticle.setInt(1, noArticle);
+			pstmtAcheteur.setInt(1, noArticle);
 			
 			ResultSet rsAcheteur = pstmtArticle.executeQuery();
 			
@@ -301,7 +301,6 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 				Utilisateur acheteur = new Utilisateur(rsAcheteur.getString("pseudo"));
 				article.setAcheteur(acheteur);
 			}
-			
 			
 		} catch (Exception e) {
 			e.printStackTrace();
