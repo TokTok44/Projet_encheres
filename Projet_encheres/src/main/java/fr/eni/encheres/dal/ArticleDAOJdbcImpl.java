@@ -48,6 +48,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private static final String ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES = "WHERE (((ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_fin_encheres,getDate()) > 0)) OR (DATEDIFF(day,date_fin_encheres,getDate()) < 0))";
 	private static final String MES_ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES = "WHERE ((ENCHERES.no_utilisateur = ?) AND ((DATEDIFF(day,date_fin_encheres,getDate()) > 0) OR (DATEDIFF(day,date_fin_encheres,getDate()) < 0))";
 	
+	private static final String SELECT_ARTICLE = "SELECT nom_article, description, libelle, prix_vente, ENCHERES.pseudo, prix_initial, date_fin_encheres, rue, code_postal, ville, ARTICLES_VENDUS.pseudo FROM ";
+	
 	@Override
 	public ArticleVendu insertArticle(ArticleVendu article) {
 	
@@ -83,7 +85,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	}
 	
 	@Override
-	public List<ArticleVendu> selectArticle(String condition, int noCategorie, String recherche){
+	public List<ArticleVendu> selectAllArticle(String condition, int noCategorie, String recherche){
 		
 		List<ArticleVendu> listeArticle = new ArrayList<>();
 		
@@ -137,7 +139,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	}
 
 	@Override
-	public List<ArticleVendu> selectArticlesConnecte(String condition, int noCategorie, int noUtilisateur, String recherche,boolean ventes, boolean ventesEnCours,
+	public List<ArticleVendu> selectArticlesFiltre(String condition, int noCategorie, int noUtilisateur, String recherche,boolean ventes, boolean ventesEnCours,
 			boolean ventesAVenir, boolean ventesTerminees, boolean encheresOuvertes, boolean mesEncheresOuvertes,
 			boolean mesEncheresTerminees) {
 		List<ArticleVendu> listeArticle = new ArrayList<>();
@@ -258,6 +260,15 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		
 		
 		return listeArticle;
+	}
+
+	@Override
+	public ArticleVendu selectArticle(int noArticle) {
+		ArticleVendu article = null;
+		
+		
+		
+		return article;
 	}
 
 }

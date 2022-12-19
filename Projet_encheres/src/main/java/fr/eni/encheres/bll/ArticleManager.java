@@ -29,7 +29,7 @@ public class ArticleManager {
 		return DAOFactory.getArticleDAO().insertArticle(article);
 	}
 	
-	public List<ArticleVendu> selectArticle(int noCategorie, String recherche){
+	public List<ArticleVendu> selectAllArticle(int noCategorie, String recherche){
 		String condition = null;
 		
 		if(noCategorie != 0 && !recherche.isBlank()) {
@@ -42,19 +42,18 @@ public class ArticleManager {
 			condition = ";";
 		}
 		
-		return DAOFactory.getArticleDAO().selectArticle(condition, noCategorie, recherche);
+		return DAOFactory.getArticleDAO().selectAllArticle(condition, noCategorie, recherche);
 	}
 
-	public List<ArticleVendu> selectArticleConnecte(int noCategorie, int noUtilisateur, String recherche,boolean ventes, boolean ventesEnCours,
+	public List<ArticleVendu> selectArticleFiltre(int noCategorie, int noUtilisateur, String recherche,boolean ventes, boolean ventesEnCours,
 			boolean ventesAVenir, boolean ventesTerminees, boolean encheresOuvertes, boolean mesEncheresOuvertes,
 			boolean mesEncheresTerminees){
 		if(!ventesEnCours && !ventesAVenir && !ventesTerminees && !encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees) {
-			
+			return selectAllArticle(noCategorie, recherche);
 		}else {
-			return DAOFactory.getArticleDAO().selectArticlesConnecte(recherche, noCategorie, noUtilisateur, recherche, ventes, ventesEnCours, ventesAVenir, ventesTerminees, encheresOuvertes, mesEncheresOuvertes, mesEncheresTerminees);
+			return DAOFactory.getArticleDAO().selectArticlesFiltre(recherche, noCategorie, noUtilisateur, recherche, ventes, ventesEnCours, ventesAVenir, ventesTerminees, encheresOuvertes, mesEncheresOuvertes, mesEncheresTerminees);
 		}
-		
-		
-		return DAOFactory.getArticleDAO().selectArticlesConnecte(recherche, noCategorie, noUtilisateur, recherche, ventes, ventesEnCours, ventesAVenir, ventesTerminees, encheresOuvertes, mesEncheresOuvertes, mesEncheresTerminees);
 	}
+
+	
 }

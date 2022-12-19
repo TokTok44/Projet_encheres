@@ -8,8 +8,9 @@ public interface ArticleDAO {
 	
 	public ArticleVendu insertArticle(ArticleVendu article);
 	
-	public List<ArticleVendu> selectArticle(String condition, int noCategorie, String recherche);
+	public List<ArticleVendu> selectAllArticle(String condition, int noCategorie, String recherche);
 	
-	public List<ArticleVendu> selectArticlesConnecte(String condition, int noCategorie, int noUtilisateur, String recherche, boolean ventes, boolean ventesEnCours, boolean ventesAVenir, boolean ventesTerminees, boolean encheresOuvertes, boolean mesEncheresOuvertes, boolean mesEncheresTerminees);
+	public List<ArticleVendu> selectArticlesFiltre(String condition, int noCategorie, int noUtilisateur, String recherche, boolean ventes, boolean ventesEnCours, boolean ventesAVenir, boolean ventesTerminees, boolean encheresOuvertes, boolean mesEncheresOuvertes, boolean mesEncheresTerminees);
 
+	public ArticleVendu selectArticle(int noArticle);
 }
