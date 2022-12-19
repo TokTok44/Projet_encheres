@@ -29,7 +29,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	
 	// Les ventes de l'utilisateur
 	
-	private static final String VENTES_UTILISATEUR = " WHERE (UTILISATEUR.no_utilisateur = ?";
+	private static final String VENTES_UTILISATEUR = " WHERE (UTILISATEURS.no_utilisateur = ?";
 	private static final String VENTES_UTILISATEUR_ENCOURS = " AND (DATEDIFF(day,date_debut_encheres,getDate()) > 0) AND (DATEDIFF(day,getDate(),date_fin_encheres) > 0)";
 	private static final String VENTES_A_VENIR = " AND (DATEDIFF(day,getDate(),date_debut_encheres) > 0)";
 	private static final String VENTES_TERMINEES = " AND (DATEDIFF(day,date_fin_encheres,getDate()) > 0)";
@@ -47,9 +47,12 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private static final String ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES = "WHERE (((ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_fin_encheres,getDate()) > 0)) OR (DATEDIFF(day,date_fin_encheres,getDate()) < 0))";
 	private static final String MES_ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES = "WHERE ((ENCHERES.no_utilisateur = ?) AND ((DATEDIFF(day,date_fin_encheres,getDate()) > 0) OR (DATEDIFF(day,date_fin_encheres,getDate()) < 0))";
 	
+	
 	private static final String SELECT_ARTICLE_EN_VENTE = "SELECT nom_article, description, libelle, prix_vente, ENCHERES.pseudo, prix_initial, date_fin_encheres, rue, code_postal, ville, ARTICLES_VENDUS.pseudo FROM ARTICLES_VENDUS INNER JOIN ENCHERES ON (ARTICLES_VENDUS.prix_vente = ENCHERES.montant_enchere AND ARTICLES_VENDUS.no_article = ENCHERES.no_article) INNER JOIN UTILISATEURS ON UTILISATEURS.no_utilisateur = ENCHERES.no_utilisateur INNER JOIN RETRAITS ON ARTICLES_VENDUS.no_article = RETRAITS.no_article WHERE ARTICLES_VENDUS.no_article = ?;";
 	private static final String SELECT_ARTICLE_SANS_ENCHERES = "SELECT nom_article, description, libelle, prix_vente, prix_initial, date_fin_encheres, rue, code_postal, ville, pseudo FROM ARTICLES_VENDUS INNER JOIN RETRAITS ON ARTICLES_VENDUS.no_article = RETRAITS.no_article WHERE ARTICLES_VENDUS.no_article = ?";
 	
+	private static final String UPDATE_ARTICLE = "UPDATE ARTICLES_VENDUS SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, no_categorie = ? WHERE no_article = ?;";
+	private static final String UPDATE_RETRAIT = "UPDATE RETRAITS SET rue = ?, code_postal = ?, ville = ? WHERE no_article = ?;";
 	
 	private static final String SELECT_PRIX_VENTE = "SELECT no_article, MAX(montant_enchere) as prix_vente_actuel INTO #TEMP_1 FROM ENCHERES GROUP BY no_article;";
 	
@@ -306,4 +309,30 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		return article;
 	}
 
+	public ArticleVendu updateArticle(ArticleVendu article) {
+		
+		try(Connection cnx = ConnectionProvider.getConnection()) {
+			
+			try {
+				cnx.setAutoCommit(false);
+				PreparedStatement pstmtArticle = cnx.prepareStatement(UPDATE_ARTICLE);
+				PreparedStatement pstmtRetrait = cnx.prepareStatement(UPDATE_RETRAIT);
+				
+				pstmtArticle.setString(1, );
+				pstmtArticle.setString(1, );
+				pstmtArticle.setDate(1, );
+				pstmtArticle.setString(1, );
+				pstmtArticle.setString(1, );
+				
+			} catch (Exception e) {
+				e.printStackTrace();
+				cnx.rollback();
+			}
+			
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		
+	}
 }
