@@ -222,7 +222,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 					rs = pstmt.executeQuery();
 				}
 			}else if(!(condition.isBlank())) {
-				if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees))) {
+				if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees) || (!ventes && (!encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees)))) {
 					PreparedStatement pstmt = cnx.prepareStatement(requete);
 					pstmt.setString(1, recherche);
 					rs = pstmt.executeQuery();
