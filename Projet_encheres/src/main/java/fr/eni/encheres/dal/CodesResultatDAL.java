@@ -10,5 +10,7 @@ public interface CodesResultatDAL {
 	int ECHEC_SELECT_USER = 10_005;
 	int ECHEC_SELECT_CONNEXION = 10_006;
 	int ERREUR_INCONNUE = 10_007;
+	int ECHEC_CREATION_VENTE = 10_008;
+	int ECHEC_MAJ_VENTE = 10_009;
 
 }

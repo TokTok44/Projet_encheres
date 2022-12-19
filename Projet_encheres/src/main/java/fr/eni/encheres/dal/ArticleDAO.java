@@ -3,10 +3,11 @@ package fr.eni.encheres.dal;
 import java.util.List;
 
 import fr.eni.encheres.bo.ArticleVendu;
+import fr.eni.encheres.exception.BusinessException;
 
 public interface ArticleDAO {
 	
-	public ArticleVendu insertArticle(ArticleVendu article);
+	public ArticleVendu insertArticle(ArticleVendu article) throws BusinessException;
 	
 	public List<ArticleVendu> selectAllArticle(String condition, int noCategorie, String recherche);
 	

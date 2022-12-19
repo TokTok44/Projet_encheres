@@ -13,6 +13,7 @@ import fr.eni.encheres.bo.ArticleVendu;
 import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Retrait;
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.exception.BusinessException;
 
 public class ArticleDAOJdbcImpl implements ArticleDAO {
 	//******************************************************************************
@@ -56,32 +57,42 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private static final String SELECT_PRIX_VENTE = "SELECT no_article, MAX(montant_enchere) as prix_vente_actuel INTO #TEMP_1 FROM ENCHERES GROUP BY no_article;";
 	
 	@Override
-	public ArticleVendu insertArticle(ArticleVendu article) {
+	public ArticleVendu insertArticle(ArticleVendu article) throws BusinessException {
 	
 		try(Connection cnx = ConnectionProvider.getConnection()){
 	            
-            PreparedStatement pstmtArticle = cnx.prepareStatement(INSERT_ARTICLE, Statement.RETURN_GENERATED_KEYS);
-            PreparedStatement pstmtRetrait = cnx.prepareStatement(INSERT_RETRAIT);
-            pstmtArticle.setString(1, article.getNomArticle());
-            pstmtArticle.setString(2, article.getDescription());
-            pstmtArticle.setDate(3, Date.valueOf(article.getDateDebutEncheres()));
-            pstmtArticle.setDate(4, Date.valueOf(article.getDateFinEncheres()));
-            pstmtArticle.setInt(5, article.getMiseAPrix());
-            pstmtArticle.setInt(6, article.getMiseAPrix());
-            pstmtArticle.setInt(7, article.getVendeur().getNoUtilisateur());
-            pstmtArticle.setInt(8, article.getCategorie().getNoCategorie());
-            pstmtArticle.executeUpdate();
-            ResultSet rs = pstmtArticle.getGeneratedKeys();
-            if(rs.next()) {
-                pstmtRetrait.setInt(1, rs.getInt(1));
-                pstmtRetrait.setString(2, article.getPointRetrait().getRue());
-                pstmtRetrait.setString(3, article.getPointRetrait().getCodePostal());
-                pstmtRetrait.setString(4, article.getPointRetrait().getVille());
-                
-                pstmtRetrait.execute();
-                
-                article.setNoArticle(rs.getInt(1));
-            }
+            try {
+            	cnx.setAutoCommit(false);
+				PreparedStatement pstmtArticle = cnx.prepareStatement(INSERT_ARTICLE, Statement.RETURN_GENERATED_KEYS);
+				PreparedStatement pstmtRetrait = cnx.prepareStatement(INSERT_RETRAIT);
+				pstmtArticle.setString(1, article.getNomArticle());
+				pstmtArticle.setString(2, article.getDescription());
+				pstmtArticle.setDate(3, Date.valueOf(article.getDateDebutEncheres()));
+				pstmtArticle.setDate(4, Date.valueOf(article.getDateFinEncheres()));
+				pstmtArticle.setInt(5, article.getMiseAPrix());
+				pstmtArticle.setInt(6, article.getMiseAPrix());
+				pstmtArticle.setInt(7, article.getVendeur().getNoUtilisateur());
+				pstmtArticle.setInt(8, article.getCategorie().getNoCategorie());
+				pstmtArticle.executeUpdate();
+				ResultSet rs = pstmtArticle.getGeneratedKeys();
+				if(rs.next()) {
+				    pstmtRetrait.setInt(1, rs.getInt(1));
+				    pstmtRetrait.setString(2, article.getPointRetrait().getRue());
+				    pstmtRetrait.setString(3, article.getPointRetrait().getCodePostal());
+				    pstmtRetrait.setString(4, article.getPointRetrait().getVille());
+				    
+				    pstmtRetrait.execute();
+				    
+				    article.setNoArticle(rs.getInt(1));
+				}
+				cnx.commit();
+			} catch (Exception e) {
+				cnx.rollback();
+				e.printStackTrace();
+				BusinessException be = new BusinessException();
+				be.ajouterErreur(CodesResultatDAL.ECHEC_CREATION_VENTE);
+				throw be;
+			}
 
 	    }catch (Exception e) {
 	    	e.printStackTrace();
@@ -341,6 +352,9 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			} catch (Exception e) {
 				e.printStackTrace();
 				cnx.rollback();
+				BusinessException be = new BusinessException();
+				be.ajouterErreur(CodesResultatDAL.ECHEC_MAJ_VENTE);
+				throw be;
 			}
 			
 		} catch (Exception e) {
@@ -366,4 +380,5 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		}
 		
 	}
+
 }

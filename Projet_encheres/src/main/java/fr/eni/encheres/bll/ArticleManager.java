@@ -21,9 +21,11 @@ public class ArticleManager {
 	}
 	
 	public ArticleVendu insertArticle(ArticleVendu article) throws BusinessException {
+		BusinessException be = new BusinessException();
 		
-		if(article.getMiseAPrix() < 0) {
-			throw new BusinessException();
+		verifArticle(article, be);
+		if(be.hasErreurs()) {
+			throw be;
 		}
 		
 		return DAOFactory.getArticleDAO().insertArticle(article);
@@ -75,11 +77,36 @@ public class ArticleManager {
 		return DAOFactory.getArticleDAO().selectArticle(noArticle);
 	}
 
-	public void updateArticle(ArticleVendu article) {
+	public void updateArticle(ArticleVendu article) throws BusinessException {
+		BusinessException be = new BusinessException();
+		
+		verifArticle(article,be);
+		if(be.hasErreurs()) {
+			throw be;
+		}
+		
 		DAOFactory.getArticleDAO().updateArticle(article);
 	}
 	
-	public void deleteArticle(ArticleVendu article) {
+	public void deleteArticle(int noArticle) {
+		DAOFactory.getArticleDAO().deleteArticle(noArticle);
+	}
+	
+	private void verifArticle(ArticleVendu article, BusinessException be) {
+		if(article.getMiseAPrix() < 0) {
+			be.ajouterErreur(CodesResultatBLL.PRIX_POSITIF);
+		}
+		if(article.getDateDebutEncheres().isAfter(article.getDateFinEncheres())) {
+			be.ajouterErreur(CodesResultatBLL.INCOHERENCE_DATES);
+		}
+		if(article.getNomArticle().length() > 30) {
+			be.ajouterErreur(CodesResultatBLL.NOM_TROP_LONG);
+		}
+		if(article.getDescription().length() > 300) {
+			be.ajouterErreur(CodesResultatBLL.DESCRIPTION_TROP_LONGUE);
+		}
+		
 		
 	}
+	
 }
