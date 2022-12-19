@@ -199,8 +199,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			
 			ResultSet rs = null;
 			
-			if(noCategorie != 0 && !(condition.isBlank())) {
-				if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees))) {
+			if(noCategorie != 0 && !(recherche.isBlank())) {
+				if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (!encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees))) {
 					PreparedStatement pstmt = cnx.prepareStatement(requete);
 					rs = pstmt.executeQuery();
 				}else {
@@ -211,7 +211,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 					rs = pstmt.executeQuery();
 				}
 			}else if(noCategorie != 0) {
-				if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees))) {
+				if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (!encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees))) {
 					PreparedStatement pstmt = cnx.prepareStatement(requete);
 					pstmt.setInt(1, noCategorie);
 					rs = pstmt.executeQuery();
@@ -233,7 +233,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 					rs = pstmt.executeQuery();
 				}
 			}else {
-				if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees))) {
+				if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (!encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees))) {
 					Statement stmt = cnx.createStatement();
 					rs = stmt.executeQuery(requete);
 				}else {
