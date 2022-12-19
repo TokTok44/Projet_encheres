@@ -33,11 +33,11 @@ public class ArticleManager {
 		String condition = null;
 		
 		if(noCategorie != 0 && !recherche.isBlank()) {
-			condition = " WHERE no_categorie = ? AND nom_article LIKE %?%;";
+			condition = " WHERE no_categorie = ? AND nom_article LIKE ?;";
 		}else if(noCategorie != 0){
 			condition = " WHERE no_categorie = ?;";
 		}else if(!recherche.isBlank()) {
-			condition = " WHERE nom_article LIKE %?%;";
+			condition = " WHERE nom_article LIKE ?;";
 		}else {
 			condition = ";";
 		}
@@ -55,15 +55,15 @@ public class ArticleManager {
 			}else if(noCategorie != 0){
 				condition = " WHERE (ARTICLES_VENDUS.no_categorie = ?)";
 			}else if(!recherche.isBlank()) {
-				condition = " WHERE (ARTICLES_VENDUS.nom_article LIKE %?%)";
+				condition = " WHERE (ARTICLES_VENDUS.nom_article LIKE ?)";
 			}
 		}else {
 			if(noCategorie != 0 && !recherche.isBlank()) {
-				condition = " AND (ARTICLES_VENDUS.no_categorie = ?) AND (ARTICLES_VENDUS.nom_article LIKE %?%)";
+				condition = " AND (ARTICLES_VENDUS.no_categorie = ?) AND (ARTICLES_VENDUS.nom_article LIKE ?)";
 			}else if(noCategorie != 0){
 				condition = " AND (ARTICLES_VENDUS.no_categorie = ?)";
 			}else if(!recherche.isBlank()) {
-				condition = " AND (ARTICLES_VENDUS.nom_article LIKE %?%)";
+				condition = " AND (ARTICLES_VENDUS.nom_article LIKE ?)";
 			}
 		}
 		

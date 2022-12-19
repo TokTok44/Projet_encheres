@@ -98,6 +98,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		
 		ResultSet rs = null;
 		
+		recherche = "%" + recherche + "%";
+		
 		try(Connection cnx = ConnectionProvider.getConnection()) {
 			
 			if(condition.equals(";")) {
@@ -194,6 +196,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		requete += condition;
 	
 		requete += ";";
+		
+		recherche = "%" + recherche + "%";
 		
 		try(Connection cnx = ConnectionProvider.getConnection()){
 			
