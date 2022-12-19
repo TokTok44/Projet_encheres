@@ -28,7 +28,22 @@ public class ServletModificationCompte extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/JSP/ModificationCompte.jsp");
+		
+		RequestDispatcher rd = null;
+		HttpSession session = request.getSession();
+		
+		if (session.getAttribute("utilisateur") != null) {
+
+			/*
+			 * Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+			 * int noUtilisateur = utilisateur.getNoUtilisateur();
+			 */
+
+			rd = request.getRequestDispatcher("/WEB-INF/JSP/ModificationCompte.jsp");
+		} else {
+			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageConnexion.jsp");
+
+		}
 		rd.forward(request, response);
 	}
 
@@ -58,13 +73,12 @@ public class ServletModificationCompte extends HttpServlet {
 		Utilisateur utilisateurSession = (Utilisateur) session.getAttribute("utilisateur");
 		utilisateur.setNoUtilisateur(utilisateurSession.getNoUtilisateur());
 		utilisateur.setCredit(utilisateurSession.getCredit());
-		
+
 		try {
 			switch (request.getParameter("modifier")) {
 			case "Enregistrer":
 				UtilisateurManager.getManager().updateUser(utilisateur, newMdp, confirmationNewMdp);
 
-				
 				session.setAttribute("utilisateur", utilisateur);
 
 				rd = request.getRequestDispatcher("/WEB-INF/JSP/AffichageCompte.jsp");

@@ -18,42 +18,41 @@
 			</core:forEach>
 		</select>
 	
+	<core:if test="${!empty sessionScope.utilisateur }">
+	
 	<fieldset>
-	
-
-	
-	
-	<input id="achats" type="radio" name="achatsOuVente" value="achats" checked>
+		
+	<input id="achats" type="radio" name="achatsOuVentes" value="achats" ${(param.achatsOuVentes == 'achats')?'checked':'' }>
 	<label for="achats">Achats</label>
 	
 	
-	<input id="ouvert" type="checkbox" name="ouvert" value="ouvert" checked>
+	<input id="ouvert" type="checkbox" name="ouvert" value="ouvert" ${(!empty param.ouvert)?'checked':'' }>
 	<label for="ouvert">enchères ouvertes</label>
 	
 	
-	<input id="enCours" type="checkbox" name="enCours" value="enCours">
+	<input id="enCours" type="checkbox" name="enCours" value="enCours" ${(!empty param.enCours)?'checked':'' }>
 	<label for="enCours">mes enchères en cours</label>
 	
 	
-	<input id="remportees" type="checkbox" name="remportees" value="remportees">
-	<label for="remportées">mes enchères remportées</label>
+	<input id="remportees" type="checkbox" name="remportees" value="remportees" ${(!empty param.remportees)?'checked':'' }>
+	<label for="remportees">mes enchères remportées</label>
 	
 	
-	<input id="ventes" type="radio" name="achatsOuVente" value="ventes">
+	<input id="ventes" type="radio" name="achatsOuVentes" value="ventes" ${(param.achatsOuVentes == 'ventes')?'checked':'' }>
 	<label for="ventes">Mes ventes</label>
 	
-	<input id="ventesEnCours" type="checkbox" name="ventesEnCours" value="ventesEnCours">
+	<input id="ventesEnCours" type="checkbox" name="ventesEnCours" value="ventesEnCours" ${(!empty param.ventesEnCours)?'checked':'' }>
 	<label for="ventesEnCours">mes ventes en cours</label>
 	
-	<input id="ventesNonDebutees" type="checkbox" name="ventesNonDebutees" value="ventesNonDebutees">
+	<input id="ventesNonDebutees" type="checkbox" name="ventesNonDebutees" value="ventesNonDebutees" ${(!empty param.ventesNonDebutees)?'checked':'' }>
 	<label for="ventesNonDebutees">ventes non débutées</label>
 	
-	<input id="ventesTerminees" type="checkbox" name="ventesTerminees" value="ventesTerminees">
+	<input id="ventesTerminees" type="checkbox" name="ventesTerminees" value="ventesTerminees" ${(!empty param.ventesTerminees)?'checked':'' }>
 	<label for="ventesTerminees">ventes terminées</label>
 
 	</fieldset>
 	
-	
+	</core:if>
 	
 <input class="rechercher" type="submit" value="Rechercher"/>
 </form>

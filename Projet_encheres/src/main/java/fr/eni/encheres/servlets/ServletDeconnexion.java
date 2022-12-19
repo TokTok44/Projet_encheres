@@ -30,7 +30,7 @@ public class ServletDeconnexion extends HttpServlet {
 		List<Categorie> listeCategorie = CategorieManager.getManager().selectAll();
 		request.setAttribute("listeCategorie", listeCategorie);
 
-		List<ArticleVendu> listeArticles = ArticleManager.getManager().selectArticle(0, "");
+		List<ArticleVendu> listeArticles = ArticleManager.getManager().selectAllArticle(0, "");
 		request.setAttribute("listeArticles", listeArticles);
 		
 		request.getSession().invalidate();

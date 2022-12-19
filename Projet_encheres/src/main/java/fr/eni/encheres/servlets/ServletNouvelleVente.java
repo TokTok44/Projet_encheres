@@ -38,10 +38,23 @@ public class ServletNouvelleVente extends HttpServlet {
 		List<Categorie> listeCategorie = CategorieManager.getManager().selectAll();
 		request.setAttribute("listeCategorie", listeCategorie);
 
-		List<ArticleVendu> listeArticles = ArticleManager.getManager().selectArticle(0, "");
+		List<ArticleVendu> listeArticles = ArticleManager.getManager().selectAllArticle(0, "");
 		request.setAttribute("listeArticles", listeArticles);
 		
-		RequestDispatcher rd = request.getRequestDispatcher("/WEB-INF/JSP/NouvelleVente.jsp");
+		
+		RequestDispatcher rd = null;
+		HttpSession session = request.getSession();
+		if (session.getAttribute("utilisateur") != null) {
+
+			
+			/*Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
+			int noUtilisateur = utilisateur.getNoUtilisateur();*/
+			
+			rd = request.getRequestDispatcher("/WEB-INF/JSP/NouvelleVente.jsp");
+		} else {
+			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageConnexion.jsp");
+
+		}
 		rd.forward(request, response);
 	}
 

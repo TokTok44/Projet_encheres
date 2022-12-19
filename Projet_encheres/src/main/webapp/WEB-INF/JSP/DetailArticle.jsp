@@ -26,7 +26,7 @@
 	<p>${requestScope.articleRecherche.nomArticle }</p>
 	<p>Description : ${requestScope.articleRecherche.description }</p>
 	<p>Catégorie : ${requestScope.articleRecherche.categorie.libelle }</p>
-	<p>Mailleure offre : ${requestScope.articleRecherche.prixVente } pts par ${requestScope.articleRecherche.acheteur }</p>
+	<p>Meilleure offre : ${requestScope.articleRecherche.prixVente } pts par ${requestScope.articleRecherche.acheteur }</p>
 	<p>Mise à prix : ${requestScope.articleRecherche.miseAPrix } points</p>
 	<p>Fin de l'enchère : ${requestScope.articleRecherche.dateFinEncheres }</p>
 	<p>Retrait : ${requestScope.articleRecherche.retrait.rue }<br>
