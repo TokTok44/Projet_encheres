@@ -70,4 +70,8 @@ public class ArticleManager {
 		return DAOFactory.getArticleDAO().selectArticlesFiltre(condition, noCategorie, noUtilisateur, recherche, ventes, ventesEnCours, ventesAVenir, ventesTerminees, encheresOuvertes, mesEncheresOuvertes, mesEncheresTerminees);
 		
 	}
+
+	public ArticleVendu selectArticle(int noArticle) {
+		return DAOFactory.getArticleDAO().selectArticle(noArticle, false);
+	}
 }
