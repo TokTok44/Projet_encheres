@@ -202,6 +202,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			if(noCategorie != 0 && !(recherche.isBlank())) {
 				if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (!encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees))) {
 					PreparedStatement pstmt = cnx.prepareStatement(requete);
+					pstmt.setInt(1, noCategorie);
+					pstmt.setString(2, recherche);
 					rs = pstmt.executeQuery();
 				}else {
 					PreparedStatement pstmt = cnx.prepareStatement(requete);
