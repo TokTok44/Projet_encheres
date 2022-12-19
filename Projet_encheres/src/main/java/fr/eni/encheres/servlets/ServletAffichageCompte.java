@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import fr.eni.encheres.bll.ArticleManager;
+import fr.eni.encheres.bll.UtilisateurManager;
 import fr.eni.encheres.bo.ArticleVendu;
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.exception.BusinessException;
 
 /**
  * Servlet implementation class ServletAffichageCompte
@@ -29,12 +31,28 @@ public class ServletAffichageCompte extends HttpServlet {
 		RequestDispatcher rd = null;
 		HttpSession session = request.getSession();
 		if (session.getAttribute("utilisateur") != null) {
-
 			
-			/*Utilisateur utilisateur = (Utilisateur) session.getAttribute("utilisateur");
-			int noUtilisateur = utilisateur.getNoUtilisateur();*/
+			Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateur");
+			int noUtilisateurCo = utilisateurConnecte.getNoUtilisateur();
 			
-			rd = request.getRequestDispatcher("/WEB-INF/JSP/AffichageCompte.jsp");
+			int noVendeur = Integer.parseInt(request.getParameter("noUtilisateur"));
+			
+			if (noUtilisateurCo == noVendeur) {
+				rd = request.getRequestDispatcher("/WEB-INF/JSP/AffichageCompte.jsp");
+			}else {
+				
+				try {
+					Utilisateur utilisateurRecherche = UtilisateurManager.getManager().selectUser(noVendeur);
+					request.setAttribute("utilisateurRecherche", utilisateurRecherche);
+				} catch (BusinessException e) {
+					e.printStackTrace();
+				}
+				
+				
+				rd = request.getRequestDispatcher("/WEB-INF/JSP/AffichageAutreCompte.jsp");
+			}
+			
+			
 		} else {
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageConnexion.jsp");
 

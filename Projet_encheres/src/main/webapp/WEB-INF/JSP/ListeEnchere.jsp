@@ -62,7 +62,7 @@
 		<b><a href="${pageContext.request.contextPath }/Encheres/ServletDetailArticle?noArticle=${articleVendu.noArticle}">${articleVendu.nomArticle }</a></b>
 		<p>Prix : ${articleVendu.prixVente }</p>
 		<p>Fin de l'enchère : ${articleVendu.dateFinEncheres }<p>
-		<p>Vendeur : <a href="">${articleVendu.vendeur.pseudo }</a>
+		<p>Vendeur : <a href="${pageContext.request.contextPath }/Encheres/ServletAffichageCompte?noUtilisateur=${articleVendu.vendeur.noUtilisateur }">${articleVendu.vendeur.pseudo }</a>
 	</div>
 
 </core:forEach>
