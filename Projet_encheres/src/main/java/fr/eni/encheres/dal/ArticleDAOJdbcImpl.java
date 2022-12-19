@@ -197,8 +197,6 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	
 		requete += ";";
 		
-		recherche = "%" + recherche + "%";
-		
 		try(Connection cnx = ConnectionProvider.getConnection()){
 			
 			ResultSet rs = null;
@@ -207,13 +205,13 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 				if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (!encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees))) {
 					PreparedStatement pstmt = cnx.prepareStatement(requete);
 					pstmt.setInt(1, noCategorie);
-					pstmt.setString(2, recherche);
+					pstmt.setString(2, "%"+recherche+"%");
 					rs = pstmt.executeQuery();
 				}else {
 					PreparedStatement pstmt = cnx.prepareStatement(requete);
 					pstmt.setInt(1, noUtilisateur);
 					pstmt.setInt(2, noCategorie);
-					pstmt.setString(3, recherche);
+					pstmt.setString(3, "%"+recherche+"%");
 					rs = pstmt.executeQuery();
 				}
 			}else if(noCategorie != 0) {
@@ -230,12 +228,12 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			}else if(!(condition.isBlank())) {
 				if((!ventes && (encheresOuvertes && mesEncheresOuvertes && !mesEncheresTerminees)) || (!ventes && (encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees) || (!ventes && (!encheresOuvertes && !mesEncheresOuvertes && !mesEncheresTerminees)))) {
 					PreparedStatement pstmt = cnx.prepareStatement(requete);
-					pstmt.setString(1, recherche);
+					pstmt.setString(1, "%"+recherche+"%");
 					rs = pstmt.executeQuery();
 				}else {
 					PreparedStatement pstmt = cnx.prepareStatement(requete);
 					pstmt.setInt(1, noUtilisateur);
-					pstmt.setString(2, recherche);
+					pstmt.setString(2, "%"+recherche+"%");
 					rs = pstmt.executeQuery();
 				}
 			}else {
