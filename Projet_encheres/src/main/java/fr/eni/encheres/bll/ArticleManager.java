@@ -72,6 +72,6 @@ public class ArticleManager {
 	}
 
 	public ArticleVendu selectArticle(int noArticle) {
-		return DAOFactory.getArticleDAO().selectArticle(noArticle, false);
+		return DAOFactory.getArticleDAO().selectArticle(noArticle);
 	}
 }
