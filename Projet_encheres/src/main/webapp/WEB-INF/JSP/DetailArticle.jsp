@@ -33,10 +33,10 @@
 	<p>Vendeur : ${requestScope.articleRecherche.vendeur.pseudo }</p>
 	<core:if test="${sessionScope.utilisateur.pseudo != requestScope.pseudoVendeur }">
 		<p>Ma proposition : 
-		<form action="${pageContext.request.contextPath }/Encheres/ServletEncherir" method="post">
+		<form action="${pageContext.request.contextPath }/Encheres/ServletDetailArticle" method="post">
 			<input name="noArticle" type="hidden" value="${requestScope.articleRecherche.noArticle }"/>
 			<input name="valeurEnchere" type="number" min="${(requestScope.articleRecherche.prixVente)+1 }" value="${(requestScope.articleRecherche.prixVente)+1 }"/>
-			<input class="encherir" type="submit" value="Enchérir"/>
+			<input type="submit" value="Enchérir"/>
 		</form>
 	</core:if>
 	

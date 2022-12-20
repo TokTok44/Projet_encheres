@@ -46,7 +46,7 @@
 					<label>Ville :</label>
 					<input type="text" name="ville" value="${requestScope.articleRecherche.pointRetrait.ville }">
 				</fieldset>
-				<input type="hidden" value="${param.noArticle }" name="noArticle">
+				<input type="hidden" value="${requestScope.articleRecherche.noArticle }" name="noArticle">
 				<input type="submit" value="Enregistrer" name="validation">
 				<a href="${pageContext.request.contextPath }/Encheres/PageAccueilConnecter">Annuler</a>
 				<input type="submit" value="Annuler la vente" name="validation">

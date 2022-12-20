@@ -54,7 +54,11 @@ public class ServletDetailArticle extends HttpServlet {
 				
 				rd = request.getRequestDispatcher("/WEB-INF/JSP/ModificationVente.jsp");
 				
-			} else {
+			} else if(articleRecherche.getDateFinEncheres().isBefore(LocalDate.now())){
+				
+				rd = request.getRequestDispatcher("/WEB-INF/JSP/FinEnchere.jsp");
+				
+			}else {
 				request.setAttribute("pseudoVendeur", articleRecherche.getVendeur().getPseudo());
 
 				rd = request.getRequestDispatcher("/WEB-INF/JSP/DetailArticle.jsp");
