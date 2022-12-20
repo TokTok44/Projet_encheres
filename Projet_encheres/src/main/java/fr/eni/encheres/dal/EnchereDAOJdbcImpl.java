@@ -23,17 +23,52 @@ public class EnchereDAOJdbcImpl implements EnchereDAO{
 	@Override
 	public Enchere insertEnchere(Enchere enchere) {
 		
+		ResultSet rs = null;
+		PreparedStatement pstmt = null;
+		
 		try (Connection cnx = ConnectionProvider.getConnection()){
 			try {
+				cnx.setAutoCommit(false);
+	//Récupère l'utilisateur ayant fait l'enchère la plus élevée
+				String sql = "SELECT U.no_utilisateur, U.credit FROM Utilisateur U INNER JOIN ENCHERES E ON E.no_utilisateur = U.no_utilisateur WHERE E.no_article = ? AND E.montant_enchere = (SELECT MAX(montant_enchere) FROM ENCHERES WHERE no_article = ?);";
+				pstmt = cnx.prepareStatement(sql);
+				pstmt.setInt(1, enchere.getArticle().getNoArticle());
+				pstmt.setInt(2, enchere.getArticle().getNoArticle());
+				rs = pstmt.executeQuery();
 				
-				PreparedStatement pstmtEnchere = cnx.prepareStatement(INSERT_ENCHERE, Statement.RETURN_GENERATED_KEYS);
-				pstmtEnchere.setInt(1, enchere.getUtilisateur().getNoUtilisateur());
-				pstmtEnchere.setInt(2, enchere.getArticle().getNoArticle());
-				pstmtEnchere.setDate(3, Date.valueOf(enchere.getDateEnchere()));
-				pstmtEnchere.setInt(4, enchere.getMontantEnchere());
-				pstmtEnchere.executeUpdate();
+				int noAcheteur = -1;
+				int credit = 0;
+				if (rs.next()) {
+					noAcheteur = rs.getInt("no_utilisateur");
+					credit = rs.getInt("credit");
+				}
+	
+	//Insère une nouvelle enchère dans la table ENCHERES
 				
-								
+				pstmt = cnx.prepareStatement(INSERT_ENCHERE, Statement.RETURN_GENERATED_KEYS);
+				pstmt.setInt(1, enchere.getUtilisateur().getNoUtilisateur());
+				pstmt.setInt(2, enchere.getArticle().getNoArticle());
+				pstmt.setDate(3, Date.valueOf(enchere.getDateEnchere()));
+				pstmt.setInt(4, enchere.getMontantEnchere());
+				pstmt.executeUpdate();
+				rs = pstmt.getGeneratedKeys();
+				
+	//Met à jour le prix de vente de l'article dans la table ARTICLES_VENDUS
+				
+				sql = "UPDATE ARTICLES_VENDUS SET prix_vente = ? WHERE no_article = ?;";
+				pstmt = cnx.prepareStatement(sql);
+				pstmt.setInt(1, enchere.getMontantEnchere());
+				pstmt.setInt(2, enchere.getArticle().getNoArticle());
+				pstmt.executeUpdate();
+				
+	//Met à jour les crédits de l'utilisateur ayant fait l'enchère la plus élevée
+				
+				sql = "UPDATE UTILISATEUR SET credit = credit + ? WHERE no_utilisateur = ?;";
+				pstmt = cnx.prepareStatement(sql);
+				pstmt.setInt(1, enchere.getMontantEnchere());
+				pstmt.setInt(2, enchere.getUtilisateur().getNoUtilisateur());
+				
+				cnx.commit();				
 			} catch (Exception e) {
 				cnx.rollback();
 				e.printStackTrace();
