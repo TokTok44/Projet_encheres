@@ -1,6 +1,7 @@
 package fr.eni.encheres.servlets;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 import javax.servlet.RequestDispatcher;
@@ -15,6 +16,8 @@ import fr.eni.encheres.bll.ArticleManager;
 import fr.eni.encheres.bll.CategorieManager;
 import fr.eni.encheres.bo.ArticleVendu;
 import fr.eni.encheres.bo.Categorie;
+import fr.eni.encheres.bo.Enchere;
+import fr.eni.encheres.bo.Utilisateur;
 
 /**
  * Servlet implementation class ServletDetailArticle
@@ -40,11 +43,22 @@ public class ServletDetailArticle extends HttpServlet {
 				e.printStackTrace();
 				// TODO ajouter une erreur be ?
 			}
-
+			Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateur");
 			ArticleVendu articleRecherche = ArticleManager.getManager().selectArticle(noArticle);
 			request.setAttribute("articleRecherche", articleRecherche);
+			
+			if (utilisateurConnecte.getPseudo().equals(articleRecherche.getVendeur().getPseudo()) && articleRecherche.getDateDebutEncheres().isAfter(LocalDate.now())) {
+				
+				List<Categorie> listeCategorie = CategorieManager.getManager().selectAll();
+				request.setAttribute("listeCategorie", listeCategorie);
+				
+				rd = request.getRequestDispatcher("/WEB-INF/JSP/ModificationVente.jsp");
+				
+			} else {
+				request.setAttribute("pseudoVendeur", articleRecherche.getVendeur().getPseudo());
 
-			rd = request.getRequestDispatcher("/WEB-INF/JSP/DetailArticle.jsp");
+				rd = request.getRequestDispatcher("/WEB-INF/JSP/DetailArticle.jsp");
+			}
 		} else {
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageConnexion.jsp");
 
@@ -61,7 +75,7 @@ public class ServletDetailArticle extends HttpServlet {
 			throws ServletException, IOException {
 		RequestDispatcher rd = null;
 		HttpSession session = request.getSession();
-		int noUtilisateur = (int) session.getAttribute("noUtilisateur");
+		Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateur");
 		
 		int noArticle = 0;
 		try {
@@ -77,10 +91,12 @@ public class ServletDetailArticle extends HttpServlet {
 			e.printStackTrace();
 		}
 		
-		ArticleVendu articleRecherche = ArticleManager.getManager().updateArticle(noArticle,noUtilisateur,valeurEnchere);
-		request.setAttribute("articleRecherche", articleRecherche);
+		ArticleVendu article = ArticleManager.getManager().selectArticle(noArticle);
+		Enchere enchere = new Enchere(utilisateurConnecte,article,article.getDateFinEncheres(),valeurEnchere);
 		
-		doGet(request, response);
+		EncheresManager.getManager().insertEnchere(enchere);
+		
+		response.sendRedirect(request.getContextPath() + "/Encheres/ServletDetailArticle?noArticle=" + noArticle);
 	}
 
 }

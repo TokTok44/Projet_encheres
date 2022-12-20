@@ -73,6 +73,18 @@ public class ArticleVendu {
 		this.noArticle = noArticle;
 	}
 
+	public ArticleVendu(int noArticle, String nomArticle, String description, int miseAPrix,
+			LocalDate dateDebutEncheres, LocalDate dateFinEncheres, Retrait retrait) {
+		this();
+		this.noArticle = noArticle;
+		this.nomArticle = nomArticle;
+		this.description = description;
+		this.miseAPrix = miseAPrix;
+		this.dateDebutEncheres = dateDebutEncheres;
+		this.dateFinEncheres = dateFinEncheres;
+		this.pointRetrait = retrait;
+	}
+
 	public Utilisateur getAcheteur() {
 		return acheteur;
 	}
