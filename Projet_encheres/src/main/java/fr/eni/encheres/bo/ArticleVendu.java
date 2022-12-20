@@ -68,6 +68,11 @@ public class ArticleVendu {
 		this.dateDebutEncheres = dateDebut;
 	}
 
+	public ArticleVendu(int noArticle) {
+		this();
+		this.noArticle = noArticle;
+	}
+
 	public Utilisateur getAcheteur() {
 		return acheteur;
 	}
