@@ -31,7 +31,7 @@
 	<p>Fin de l'enchère : ${requestScope.articleRecherche.dateFinEncheres }</p>
 	<p>Retrait : ${requestScope.articleRecherche.pointRetrait.rue } ${requestScope.articleRecherche.pointRetrait.codePostal } ${requestScope.articleRecherche.pointRetrait.ville }</p>
 	<p>Vendeur : ${requestScope.articleRecherche.vendeur.pseudo }</p>
-	<core:if test="${sessionScope.utilisateur.noUtilisateur != requestScope.articleRecherche.noUtilisateur || requestScope.articleRecherche.dateDebutEncheres.isBefore(requestScope.dateJour) }">
+	<core:if test="${sessionScope.utilisateur.noUtilisateur != requestScope.articleRecherche.noUtilisateur && requestScope.ouverte }">
 		<p>Ma proposition : 
 		<form action="${pageContext.request.contextPath }/Encheres/ServletDetailArticle" method="post">
 			<input name="noArticle" type="hidden" value="${requestScope.noArticle }"/>
