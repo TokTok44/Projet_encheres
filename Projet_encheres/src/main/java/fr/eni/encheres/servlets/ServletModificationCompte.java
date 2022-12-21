@@ -77,7 +77,7 @@ public class ServletModificationCompte extends HttpServlet {
 		try {
 			switch (request.getParameter("modifier")) {
 			case "Enregistrer":
-				UtilisateurManager.getManager().updateUser(utilisateur, newMdp, confirmationNewMdp);
+				UtilisateurManager.getManager().updateUser(utilisateur, utilisateurSession, newMdp, confirmationNewMdp);
 
 				session.setAttribute("utilisateur", utilisateur);
 

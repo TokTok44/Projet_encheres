@@ -33,11 +33,15 @@ public class UtilisateurManager {
 		return DAOFactory.getUtilisateurDAO().insertUser(utilisateur);
 	}
 	
-	public void updateUser(Utilisateur utilisateur, String newMdp, String confirmationNewMdp) throws BusinessException {
+	public void updateUser(Utilisateur utilisateur, Utilisateur utilisateurSession, String newMdp, String confirmationNewMdp) throws BusinessException {
 		
 		BusinessException be = new BusinessException();
 		
 		verificationDonneesUtilisateur(utilisateur,be);
+		
+		if(!utilisateur.getMotDePasse().equals(utilisateurSession.getMotDePasse())) {
+			be.ajouterErreur(CodesResultatBLL.ERREUR_MDP);
+		}
 		
 		if(!(newMdp.equals(confirmationNewMdp))) {
 			be.ajouterErreur(CodesResultatBLL.ECHEC_CONFIRMATION);

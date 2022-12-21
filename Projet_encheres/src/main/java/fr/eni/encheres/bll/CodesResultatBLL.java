@@ -25,5 +25,6 @@ public interface CodesResultatBLL {
 	int MEME_UTILISATEUR = 20_020;
 	int ENCHERE_NON_OUVERTE = 20_021;
 	int ENCHERE_TERMINEE = 20_022;
+	int ERREUR_MDP = 20_023;
 
 }
