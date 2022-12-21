@@ -100,6 +100,7 @@ public class ServletDetailArticle extends HttpServlet {
 		}
 		
 		ArticleVendu article = ArticleManager.getManager().selectArticle(noArticle);
+		article.setNoArticle(noArticle);
 		Enchere enchere = new Enchere(utilisateurConnecte,article,article.getDateFinEncheres(),valeurEnchere);
 		
 		try {
