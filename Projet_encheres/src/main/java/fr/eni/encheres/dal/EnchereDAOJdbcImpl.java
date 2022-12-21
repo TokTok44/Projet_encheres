@@ -70,7 +70,10 @@ public class EnchereDAOJdbcImpl implements EnchereDAO{
 				
 	//Recréditer l'ancien enchérisseur de sa précédente enchère
 				
-				
+				sql = "UPDATE UTILISATEURS SET credit = credit + ? WHERE no_utilisateur = ?;";
+				pstmt = cnx.prepareStatement(sql);
+				pstmt.setInt(1, credit);
+				pstmt.setInt(2, noAcheteur);
 				
 				cnx.commit();				
 			} catch (Exception e) {
