@@ -66,6 +66,9 @@ public class ServletCreationCompte extends HttpServlet {
 			List<ArticleVendu> listeArticles = ArticleManager.getManager().selectAllArticle(0, "");
 			request.setAttribute("listeArticles", listeArticles);
 			
+			List<Categorie> listeCategorie = CategorieManager.getManager().selectAll();
+			request.setAttribute("listeCategorie", listeCategorie);
+			
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueilConnecter.jsp");
 			
 		} catch (BusinessException e) {
@@ -74,8 +77,7 @@ public class ServletCreationCompte extends HttpServlet {
 			List<Integer> listeErreur = e.getListeCodesErreur();
 			request.setAttribute("listeErreur", listeErreur);
 			
-			List<Categorie> listeCategorie = CategorieManager.getManager().selectAll();
-			request.setAttribute("listeCategorie", listeCategorie);
+			
 			
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/CreationCompte.jsp");
 		}
