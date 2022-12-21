@@ -45,9 +45,11 @@ public class ServletDetailArticle extends HttpServlet {
 				e.printStackTrace();
 				// TODO ajouter une erreur be ?
 			}
+			
 			Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateur");
 			ArticleVendu articleRecherche = ArticleManager.getManager().selectArticle(noArticle);
 			request.setAttribute("articleRecherche", articleRecherche);
+			request.setAttribute("noArticle", noArticle);
 			
 			if (utilisateurConnecte.getPseudo().equals(articleRecherche.getVendeur().getPseudo()) && articleRecherche.getDateDebutEncheres().isAfter(LocalDate.now())) {
 				
