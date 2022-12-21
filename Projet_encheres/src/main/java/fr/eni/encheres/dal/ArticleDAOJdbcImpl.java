@@ -52,7 +52,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private static final String UPDATE_ARTICLE = "UPDATE ARTICLES_VENDUS SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, no_categorie = ? WHERE no_article = ?;";
 	private static final String UPDATE_RETRAIT = "UPDATE RETRAITS SET rue = ?, code_postal = ?, ville = ? WHERE no_article = ?;";
 	//******************************************************************************
-	private static final String DELETE_ARTICLE = "DELETE FROM ARTICLES_VENDUS WHERE no_article = ?";
+	private static final String DELETE_ARTICLE = "DELETE FROM ARTICLES_VENDUS WHERE no_article = ?;";
+	private static final String DELETE_RETRAIT = "DELETE FROM RETRAITS WHERE no_article = ?;";
 	
 	private static final String SELECT_PRIX_VENTE = "SELECT no_article, MAX(montant_enchere) as prix_vente_actuel INTO #TEMP_1 FROM ENCHERES GROUP BY no_article;";
 	
@@ -367,10 +368,24 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		
 		try(Connection cnx = ConnectionProvider.getConnection()) {
 			
-			PreparedStatement pstmt = cnx.prepareStatement(DELETE_ARTICLE);
-			pstmt.setInt(1, noArticle);
-			
-			pstmt.executeUpdate();
+			try {
+				cnx.setAutoCommit(false);
+				
+				PreparedStatement pstmtRetrait = cnx.prepareStatement(DELETE_RETRAIT);
+				pstmtRetrait.setInt(1, noArticle);
+				
+				pstmtRetrait.executeUpdate();
+				
+				PreparedStatement pstmtArticle = cnx.prepareStatement(DELETE_ARTICLE);
+				pstmtArticle.setInt(1, noArticle);
+				
+				pstmtArticle.executeUpdate();
+				
+				cnx.commit();
+			} catch (Exception e) {
+				e.printStackTrace();
+				cnx.rollback();
+			}
 			
 			
 		} catch (Exception e) {
