@@ -101,7 +101,7 @@ public class ServletDetailArticle extends HttpServlet {
 		
 		ArticleVendu article = ArticleManager.getManager().selectArticle(noArticle);
 		article.setNoArticle(noArticle);
-		Enchere enchere = new Enchere(utilisateurConnecte,article,article.getDateFinEncheres(),valeurEnchere);
+		Enchere enchere = new Enchere(utilisateurConnecte,article,LocalDate.now(),valeurEnchere);
 		
 		try {
 			enchere = EnchereManager.getManager().insertEnchere(enchere);

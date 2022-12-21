@@ -308,7 +308,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 
 			pstmtAcheteur.setInt(1, noArticle);
 			
-			ResultSet rsAcheteur = pstmtArticle.executeQuery();
+			ResultSet rsAcheteur = pstmtAcheteur.executeQuery();
 			
 			if(rsAcheteur.next()) {
 				Utilisateur acheteur = new Utilisateur(rsAcheteur.getString("pseudo"));
@@ -362,7 +362,6 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 		
 	}
 
-	
 	@Override
 	public void deleteArticle(int noArticle) {
 		
