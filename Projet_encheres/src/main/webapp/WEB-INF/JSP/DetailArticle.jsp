@@ -15,7 +15,7 @@
 		</jsp:include>
 		<a href="">Enchères</a>
 		<a href="${pageContext.request.contextPath }/Encheres/ServletNouvelleVente">Vendre un article</a>
-		<a href="${pageContext.request.contextPath }/Encheres/ServletAffichageCompte">Mon compte</a>
+		<a href="${pageContext.request.contextPath }/Encheres/ServletAffichageCompte?noUtilisateur=${sessionScope.utilisateur.noUtilisateur }">Mon compte</a>
 		<a href="${pageContext.request.contextPath }/Encheres/ServletDeconnexion">Déconnexion</a>
 	</header>
 		
@@ -34,7 +34,7 @@
 	<core:if test="${sessionScope.utilisateur.noUtilisateur != requestScope.articleRecherche.vendeur.noUtilisateur && requestScope.ouverte }">
 		<p>Ma proposition : 
 		<form action="${pageContext.request.contextPath }/Encheres/ServletDetailArticle" method="post">
-			<input name="noArticle" type="hidden" value="${requestScope.noArticle }"/>
+			<input name="noArticle" type="hidden" value="${requestScope.articleRecherche.noArticle }"/>
 			<input name="valeurEnchere" type="number" min="${(requestScope.articleRecherche.prixVente)+1 }" value="${(requestScope.articleRecherche.prixVente)+1 }"/>
 			<input type="submit" value="Enchérir"/>
 		</form>
