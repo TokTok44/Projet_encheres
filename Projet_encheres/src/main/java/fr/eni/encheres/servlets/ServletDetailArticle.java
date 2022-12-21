@@ -48,8 +48,8 @@ public class ServletDetailArticle extends HttpServlet {
 			
 			Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateur");
 			ArticleVendu articleRecherche = ArticleManager.getManager().selectArticle(noArticle);
+			articleRecherche.setNoArticle(noArticle);
 			request.setAttribute("articleRecherche", articleRecherche);
-			request.setAttribute("noArticle", noArticle);
 			
 			if (utilisateurConnecte.getPseudo().equals(articleRecherche.getVendeur().getPseudo()) && articleRecherche.getDateDebutEncheres().isAfter(LocalDate.now())) {
 				
@@ -63,6 +63,8 @@ public class ServletDetailArticle extends HttpServlet {
 				rd = request.getRequestDispatcher("/WEB-INF/JSP/FinEnchere.jsp");
 				
 			}else {
+				LocalDate dateJour = LocalDate.now();
+				request.setAttribute("dateJour", dateJour);
 				request.setAttribute("pseudoVendeur", articleRecherche.getVendeur().getPseudo());
 
 				rd = request.getRequestDispatcher("/WEB-INF/JSP/DetailArticle.jsp");
