@@ -20,7 +20,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private static final String INSERT_ARTICLE = "INSERT INTO ARTICLES_VENDUS (nom_article, description, date_debut_encheres, date_fin_encheres, prix_initial, prix_vente, no_utilisateur, no_categorie) VALUES (?,?,?,?,?,?,?,?);";
 	private static final String INSERT_RETRAIT = "INSERT INTO RETRAITS (no_article, rue, code_postal, ville) VALUES (?,?,?,?);";
 	//******************************************************************************
-	private static String selectArticleCategorie = "SELECT UTILISATEURS.no_utilisateur,no_article, nom_article, date_fin_encheres, prix_vente, pseudo FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur";
+	private static final String SELECT_ARTICLE_CATEGORIE = "SELECT UTILISATEURS.no_utilisateur,no_article, nom_article, date_fin_encheres, prix_vente, pseudo FROM ARTICLES_VENDUS INNER JOIN UTILISATEURS ON ARTICLES_VENDUS.no_utilisateur = UTILISATEURS.no_utilisateur ";
 	//******************************************************************************
 	// Les différents morceaux pour la requete de selection des articles 
 	//en fonction des filtres sélctionnes
@@ -106,9 +106,8 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	public List<ArticleVendu> selectAllArticle(String condition, int noCategorie, String recherche){
 		
 		List<ArticleVendu> listeArticle = new ArrayList<>();
-		
-		selectArticleCategorie += condition;
-		
+		String requete = SELECT_ARTICLE_CATEGORIE + condition;
+
 		ResultSet rs = null;
 		
 		recherche = "%" + recherche + "%";
@@ -117,18 +116,18 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			
 			if(condition.equals(";")) {
 				Statement stmt = cnx.createStatement();
-				rs = stmt.executeQuery(selectArticleCategorie);
+				rs = stmt.executeQuery(requete);
 			}else if(condition.contains("no_categorie") && condition.contains("nom_article")){
-				PreparedStatement pstmt = cnx.prepareStatement(selectArticleCategorie);
+				PreparedStatement pstmt = cnx.prepareStatement(requete);
 				pstmt.setInt(1, noCategorie);
 				pstmt.setString(2, recherche);
 				rs = pstmt.executeQuery();
 			}else if(condition.contains("no_categorie")) {
-				PreparedStatement pstmt = cnx.prepareStatement(selectArticleCategorie);
+				PreparedStatement pstmt = cnx.prepareStatement(requete);
 				pstmt.setInt(1, noCategorie);
 				rs = pstmt.executeQuery();
 			}else if(condition.contains("nom_article")){
-				PreparedStatement pstmt = cnx.prepareStatement(selectArticleCategorie);
+				PreparedStatement pstmt = cnx.prepareStatement(requete);
 				pstmt.setString(1, recherche);
 				rs = pstmt.executeQuery();
 			}
@@ -264,7 +263,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			while(rs.next()) {
 				
 				Utilisateur utilisateur = new Utilisateur(rs.getInt("no_utilisateur"),rs.getString("pseudo"));
-				ArticleVendu article = new ArticleVendu(rs.getInt("no_article"),rs.getString("nom_article"),rs.getInt("prix_vente"),rs.getDate("date_fin_enchere").toLocalDate(),utilisateur);
+				ArticleVendu article = new ArticleVendu(rs.getInt("no_article"),rs.getString("nom_article"),rs.getInt("prix_vente"),rs.getDate("date_fin_encheres").toLocalDate(),utilisateur);
 				listeArticle.add(article);
 				
 			}

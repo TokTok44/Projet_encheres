@@ -39,10 +39,7 @@
 			<input type="submit" value="Enchérir"/>
 		</form>
 	</core:if>
-	
-	
-	
-	
+
 	</main>
 </body>
 </html>

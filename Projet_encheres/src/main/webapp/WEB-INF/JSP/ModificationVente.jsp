@@ -48,7 +48,7 @@
 				</fieldset>
 				<input type="hidden" value="${requestScope.articleRecherche.noArticle }" name="noArticle">
 				<input type="submit" value="Enregistrer" name="validation">
-				<a href="${pageContext.request.contextPath }/Encheres/PageAccueilConnecter">Annuler</a>
+				<a href="${pageContext.request.contextPath }/Encheres/ServletPageAccueil">Annuler</a>
 				<input type="submit" value="Annuler la vente" name="validation">
 			</form>
 		</main>

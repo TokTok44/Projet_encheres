@@ -130,11 +130,10 @@ public class ServletListeEncheres extends HttpServlet {
 				e.printStackTrace();
 			}
 
-			List<ArticleVendu> listeArticlesVendus = ArticleManager.getManager().selectAllArticle(choixCategorie,
-					recherche);
+			List<ArticleVendu> listeArticles = ArticleManager.getManager().selectAllArticle(choixCategorie,recherche);
 
-			request.setAttribute("listeArticlesVendus", listeArticlesVendus);
-			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageConnexion.jsp");
+			request.setAttribute("listeArticles", listeArticles);
+			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueil.jsp");
 
 		}
 		rd.forward(request, response);
