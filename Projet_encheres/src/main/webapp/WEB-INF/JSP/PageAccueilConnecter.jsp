@@ -15,7 +15,7 @@
 			</jsp:include>
 			<a href="">Enchères</a>
 			<a href="${pageContext.request.contextPath }/Encheres/ServletNouvelleVente">Vendre un article</a>
-			<a href="${pageContext.request.contextPath }/Encheres/ServletAffichageCompte">Mon compte</a>
+			<a href="${pageContext.request.contextPath }/Encheres/ServletAffichageCompte?noUtilisateur=${sessionScope.utilisateur.noUtilisateur }">Mon compte</a>
 			<a href="${pageContext.request.contextPath }/Encheres/ServletDeconnexion">Déconnexion</a>
 		</header>
 		<main>
