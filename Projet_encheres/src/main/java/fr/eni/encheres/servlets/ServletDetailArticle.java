@@ -65,6 +65,7 @@ public class ServletDetailArticle extends HttpServlet {
 			}else {
 				request.setAttribute("pseudoVendeur", articleRecherche.getVendeur().getPseudo());
 				boolean ouverte = LocalDate.now().isAfter(articleRecherche.getDateDebutEncheres());
+				request.setAttribute("ouverte", ouverte);
 
 				rd = request.getRequestDispatcher("/WEB-INF/JSP/DetailArticle.jsp");
 			}
