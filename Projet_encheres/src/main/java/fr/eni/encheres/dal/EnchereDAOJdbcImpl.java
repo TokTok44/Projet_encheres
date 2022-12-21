@@ -30,17 +30,17 @@ public class EnchereDAOJdbcImpl implements EnchereDAO{
 			try {
 				cnx.setAutoCommit(false);
 	//Récupère l'utilisateur ayant fait l'enchère la plus élevée
-				String sql = "SELECT U.no_utilisateur, U.credit FROM UTILISATEURS U INNER JOIN ENCHERES E ON E.no_utilisateur = U.no_utilisateur WHERE E.no_article = ? AND E.montant_enchere = (SELECT MAX(montant_enchere) FROM ENCHERES WHERE no_article = ?);";
+				String sql = "SELECT U.no_utilisateur, E.montant_enchere FROM UTILISATEURS U INNER JOIN ENCHERES E ON E.no_utilisateur = U.no_utilisateur WHERE E.no_article = ? AND E.montant_enchere = (SELECT MAX(montant_enchere) FROM ENCHERES WHERE no_article = ?);";
 				pstmt = cnx.prepareStatement(sql);
 				pstmt.setInt(1, enchere.getArticle().getNoArticle());
 				pstmt.setInt(2, enchere.getArticle().getNoArticle());
 				rs = pstmt.executeQuery();
 				
 				int noAcheteur = -1;
-				int credit = 0;
+				int montantEnchere = 0;
 				if (rs.next()) {
 					noAcheteur = rs.getInt("no_utilisateur");
-					credit = rs.getInt("credit");
+					montantEnchere = rs.getInt("montant_enchere");
 				}
 	
 	//Insère une nouvelle enchère dans la table ENCHERES
@@ -67,13 +67,15 @@ public class EnchereDAOJdbcImpl implements EnchereDAO{
 				pstmt = cnx.prepareStatement(sql);
 				pstmt.setInt(1, enchere.getMontantEnchere());
 				pstmt.setInt(2, enchere.getUtilisateur().getNoUtilisateur());
+				pstmt.executeUpdate();
 				
 	//Recréditer l'ancien enchérisseur de sa précédente enchère
 				
 				sql = "UPDATE UTILISATEURS SET credit = credit + ? WHERE no_utilisateur = ?;";
 				pstmt = cnx.prepareStatement(sql);
-				pstmt.setInt(1, credit);
+				pstmt.setInt(1, montantEnchere);
 				pstmt.setInt(2, noAcheteur);
+				pstmt.executeUpdate();
 				
 				cnx.commit();				
 			} catch (Exception e) {
