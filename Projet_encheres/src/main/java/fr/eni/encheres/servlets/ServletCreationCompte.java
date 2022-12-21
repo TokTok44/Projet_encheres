@@ -11,7 +11,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import fr.eni.encheres.bll.ArticleManager;
 import fr.eni.encheres.bll.UtilisateurManager;
+import fr.eni.encheres.bo.ArticleVendu;
 import fr.eni.encheres.bo.Utilisateur;
 import fr.eni.encheres.exception.BusinessException;
 
@@ -58,6 +60,9 @@ public class ServletCreationCompte extends HttpServlet {
 			
 			HttpSession session = request.getSession();
 			session.setAttribute("utilisateur", utilisateur);
+			
+			List<ArticleVendu> listeArticles = ArticleManager.getManager().selectAllArticle(0, confirmation);
+			request.setAttribute("listeArticles", listeArticles);
 			
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueilConnecter.jsp");
 			
