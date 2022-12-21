@@ -99,6 +99,7 @@ public class ServletModificationVente extends HttpServlet {
 					request.setAttribute("listeErreur", listeErreur);
 					
 					rd = request.getRequestDispatcher("/WEB-INF/JSP/ModificationVente.jsp");
+					rd.forward(request, response);
 				} else {
 				
 					Retrait retrait = new Retrait(rue,codePostal,ville);
@@ -116,6 +117,7 @@ public class ServletModificationVente extends HttpServlet {
 						request.setAttribute("listeErreur", listeErreur);
 						
 						rd = request.getRequestDispatcher("/WEB-INF/JSP/ModificationVente.jsp");
+						rd.forward(request, response);
 					}
 				}
 				
@@ -131,10 +133,10 @@ public class ServletModificationVente extends HttpServlet {
 		}else {
 			
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageConnexion.jsp");
-			
+			rd.forward(request, response);
 		}
 		
-		rd.forward(request, response);
+		
 	}
 
 }
