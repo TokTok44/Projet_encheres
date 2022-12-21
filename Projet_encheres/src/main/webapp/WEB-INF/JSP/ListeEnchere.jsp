@@ -56,17 +56,16 @@
 	
 <input class="rechercher" type="submit" value="Rechercher"/>
 </form>
-
-<core:forEach var="articleVendu" items="${requestScope.listeArticles }">
-	<div>
-		<b><a href="${pageContext.request.contextPath }/Encheres/ServletDetailArticle?noArticle=${articleVendu.noArticle}">${articleVendu.nomArticle }</a></b>
-		<p>Prix : ${articleVendu.prixVente }</p>
-		<p>Fin de l'enchère : ${articleVendu.dateFinEncheres }<p>
-		<p>Vendeur : <a href="${pageContext.request.contextPath }/Encheres/ServletAffichageCompte?noUtilisateur=${articleVendu.vendeur.noUtilisateur }">${articleVendu.vendeur.pseudo }</a>
-	</div>
-
-</core:forEach>
-
+<div class="liste">
+	<core:forEach var="articleVendu" items="${requestScope.listeArticles }">
+		<div>
+			<b><a href="${pageContext.request.contextPath }/Encheres/ServletDetailArticle?noArticle=${articleVendu.noArticle}">${articleVendu.nomArticle }</a></b>
+			<p>Prix : ${articleVendu.prixVente }</p>
+			<p>Fin de l'enchère : ${articleVendu.dateFinEncheres }<p>
+			<p>Vendeur : <a href="${pageContext.request.contextPath }/Encheres/ServletAffichageCompte?noUtilisateur=${articleVendu.vendeur.noUtilisateur }">${articleVendu.vendeur.pseudo }</a>
+		</div>
+	</core:forEach>
+</div>
 	<script type="text/javascript">
 		const achatsRadio = document.getElementById("achats");
 		const ventesRadio = document.getElementById("ventes");

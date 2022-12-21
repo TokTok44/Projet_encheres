@@ -14,10 +14,12 @@ import javax.servlet.http.HttpSession;
 
 import fr.eni.encheres.bll.ArticleManager;
 import fr.eni.encheres.bll.CategorieManager;
+import fr.eni.encheres.bll.EnchereManager;
 import fr.eni.encheres.bo.ArticleVendu;
 import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Enchere;
 import fr.eni.encheres.bo.Utilisateur;
+import fr.eni.encheres.exception.BusinessException;
 
 /**
  * Servlet implementation class ServletDetailArticle
@@ -98,7 +100,13 @@ public class ServletDetailArticle extends HttpServlet {
 		ArticleVendu article = ArticleManager.getManager().selectArticle(noArticle);
 		Enchere enchere = new Enchere(utilisateurConnecte,article,article.getDateFinEncheres(),valeurEnchere);
 		
-		EncheresManager.getManager().insertEnchere(enchere);
+		try {
+			enchere = EnchereManager.getManager().insertEnchere(enchere);
+		} catch (BusinessException e) {
+			e.printStackTrace();
+			
+			
+		}
 		
 		response.sendRedirect(request.getContextPath() + "/Encheres/ServletDetailArticle?noArticle=" + noArticle);
 	}
