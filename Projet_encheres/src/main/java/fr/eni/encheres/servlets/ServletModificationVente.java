@@ -124,7 +124,7 @@ public class ServletModificationVente extends HttpServlet {
 				
 				ArticleManager.getManager().deleteArticle(noArticle);
 				
-				response.sendRedirect(request.getContextPath() + "/Encheres/Servlet");
+				response.sendRedirect(request.getContextPath() + "/Encheres/ServletPageAccueil");
 
 			}
 			
