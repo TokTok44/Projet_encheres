@@ -61,7 +61,7 @@ public class ServletCreationCompte extends HttpServlet {
 			HttpSession session = request.getSession();
 			session.setAttribute("utilisateur", utilisateur);
 			
-			List<ArticleVendu> listeArticles = ArticleManager.getManager().selectAllArticle(0, confirmation);
+			List<ArticleVendu> listeArticles = ArticleManager.getManager().selectAllArticle(0, "");
 			request.setAttribute("listeArticles", listeArticles);
 			
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueilConnecter.jsp");
