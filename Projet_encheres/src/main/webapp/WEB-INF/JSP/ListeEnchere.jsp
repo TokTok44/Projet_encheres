@@ -8,7 +8,7 @@
 
 <form action="${pageContext.request.contextPath }/Encheres/ServletListeEncheres" method="post">
 
-	<input placeholder="Le nom de l'article contient" type="text" name="recherche"/>
+	<input placeholder="Le nom de l'article contient" type="text" name="recherche" value="${param.recherche }"/>
 
 	<label>Catégorie :</label>
 		<select name="choixCategorie">

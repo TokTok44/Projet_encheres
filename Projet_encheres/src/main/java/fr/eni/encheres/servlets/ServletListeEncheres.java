@@ -75,7 +75,9 @@ public class ServletListeEncheres extends HttpServlet {
 
 			boolean ventes = false;
 			String achatsOuVente = request.getParameter("achatsOuVentes");
-
+			if(achatsOuVente == null) {
+				achatsOuVente = "";
+			}
 			boolean encheresOuvertes = false;
 			boolean mesEncheresOuvertes = false;
 			boolean mesEncheresTerminees = false;
@@ -116,7 +118,7 @@ public class ServletListeEncheres extends HttpServlet {
 					noUtilisateur, recherche, ventes, ventesEnCours, ventesAVenir, ventesTerminees, encheresOuvertes,
 					mesEncheresOuvertes, mesEncheresTerminees);
 			
-			request.setAttribute("listeArticlesVendus", listeArticlesVendus);
+			request.setAttribute("listeArticles", listeArticlesVendus);
 
 			rd = request.getRequestDispatcher("/WEB-INF/JSP/PageAccueilConnecter.jsp");
 		} else {

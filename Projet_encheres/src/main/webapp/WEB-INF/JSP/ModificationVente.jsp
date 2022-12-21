@@ -22,7 +22,7 @@
 				<select name="categorie">
 					<option value="${requestScope.articleRecherche.categorie.noCategorie }">${requestScope.articleRecherche.categorie.libelle }</option>
 					<core:forEach var="categorie" items="${requestScope.listeCategorie }">
-						<core:if test="${categorie.noCategorie != requestScope.articleRecherche.categorie.noCategorie }">
+						<core:if test="${!categorie.libelle.equals(requestScope.articleRecherche.categorie.libelle) }">
 							<option value="${categorie.noCategorie }">${categorie.libelle }</option>
 						</core:if>
 					</core:forEach>
