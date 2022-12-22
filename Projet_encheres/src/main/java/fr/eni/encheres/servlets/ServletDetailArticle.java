@@ -37,7 +37,7 @@ public class ServletDetailArticle extends HttpServlet {
 		RequestDispatcher rd = null;
 		HttpSession session = request.getSession();
 		if (session.getAttribute("utilisateur") != null) {
-
+			
 			int noArticle = 0;
 			try {
 				noArticle = Integer.parseInt(request.getParameter("noArticle"));
@@ -48,10 +48,11 @@ public class ServletDetailArticle extends HttpServlet {
 			
 			Utilisateur utilisateurConnecte = (Utilisateur) session.getAttribute("utilisateur");
 			ArticleVendu articleRecherche = ArticleManager.getManager().selectArticle(noArticle);
+			boolean ouverte = articleRecherche.getDateDebutEncheres().isBefore(LocalDate.now().plusDays(1));
 			articleRecherche.setNoArticle(noArticle);
 			request.setAttribute("articleRecherche", articleRecherche);
 			
-			if (utilisateurConnecte.getPseudo().equals(articleRecherche.getVendeur().getPseudo()) && articleRecherche.getDateDebutEncheres().isAfter(LocalDate.now())) {
+			if (utilisateurConnecte.getPseudo().equals(articleRecherche.getVendeur().getPseudo()) && !ouverte) {
 				
 				List<Categorie> listeCategorie = CategorieManager.getManager().selectAll();
 				request.setAttribute("listeCategorie", listeCategorie);
@@ -64,7 +65,6 @@ public class ServletDetailArticle extends HttpServlet {
 				
 			}else {
 				request.setAttribute("pseudoVendeur", articleRecherche.getVendeur().getPseudo());
-				boolean ouverte = LocalDate.now().isAfter(articleRecherche.getDateDebutEncheres());
 				request.setAttribute("ouverte", ouverte);
 
 				rd = request.getRequestDispatcher("/WEB-INF/JSP/DetailArticle.jsp");
