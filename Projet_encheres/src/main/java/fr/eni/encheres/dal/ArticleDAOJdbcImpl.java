@@ -47,7 +47,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private static final String MES_ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES = " WHERE ((ENCHERES.no_utilisateur = ?) AND ((DATEDIFF(day,date_fin_encheres,getDate()) > 0) OR (DATEDIFF(day,date_fin_encheres,getDate()) < 0))";
 	//******************************************************************************
 	private static final String SELECT_ARTICLE = "SELECT nom_article, telephone, description, libelle, prix_vente, prix_initial, date_fin_encheres, date_debut_encheres, RETRAITS.rue, RETRAITS.code_postal, RETRAITS.ville, pseudo FROM ARTICLES_VENDUS INNER JOIN RETRAITS ON ARTICLES_VENDUS.no_article = RETRAITS.no_article INNER JOIN CATEGORIES ON CATEGORIES.no_categorie = ARTICLES_VENDUS.no_categorie INNER JOIN UTILISATEURS ON UTILISATEURS.no_utilisateur = ARTICLES_VENDUS.no_utilisateur WHERE ARTICLES_VENDUS.no_article = ?;";
-	private static final String SELECT_ACHETEUR = "SELECT pseudo FROM UTILISATEURS INNER JOIN ENCHERES ON ENCHERES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN ARTICLES_VENDUS ON (ARTICLES_VENDUS.prix_vente = ENCHERES.montant_enchere AND ARTICLES_VENDUS.no_article = ENCHERES.no_article) WHERE ARTICLES_VENDUS.no_article = ?;";
+	private static final String SELECT_ACHETEUR = "SELECT UTILILSATEURS.no_utilisateur, pseudo FROM UTILISATEURS INNER JOIN ENCHERES ON ENCHERES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN ARTICLES_VENDUS ON (ARTICLES_VENDUS.prix_vente = ENCHERES.montant_enchere AND ARTICLES_VENDUS.no_article = ENCHERES.no_article) WHERE ARTICLES_VENDUS.no_article = ?;";
 	//******************************************************************************
 	private static final String UPDATE_ARTICLE = "UPDATE ARTICLES_VENDUS SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, no_categorie = ? WHERE no_article = ?;";
 	private static final String UPDATE_RETRAIT = "UPDATE RETRAITS SET rue = ?, code_postal = ?, ville = ? WHERE no_article = ?;";
@@ -314,6 +314,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			
 			if(rsAcheteur.next()) {
 				Utilisateur acheteur = new Utilisateur(rsAcheteur.getString("pseudo"));
+				acheteur.setNoUtilisateur(rsAcheteur.getInt("no_utilisateur"));
 				article.setAcheteur(acheteur);
 			}
 			
