@@ -11,12 +11,11 @@
 	<header>
 		<p>ENI-Encheres</p>
 		<jsp:include page="ListeErreur.jsp">
-				<jsp:param value="" name=""/>
-			</jsp:include>
-		<a href="">Enchères</a> <a
-			href="${pageContext.request.contextPath }/Encheres/ServletNouvelleVente">Vendre
-			un article</a> <a
-			href="${pageContext.request.contextPath }/Encheres/ServletDeconnexion">Déconnexion</a>
+			<jsp:param value="" name=""/>
+		</jsp:include>
+		<a href="">Enchères</a> 
+		<a href="${pageContext.request.contextPath }/Encheres/ServletNouvelleVente">Vendre un article</a>
+		<a href="${pageContext.request.contextPath }/Encheres/ServletDeconnexion">Déconnexion</a>
 	</header>
 	<main>
 

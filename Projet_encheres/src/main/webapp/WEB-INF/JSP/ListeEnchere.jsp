@@ -21,48 +21,62 @@
 	<core:if test="${!empty sessionScope.utilisateur }">
 	
 	<fieldset>
-		
-	<input id="achats" type="radio" name="achatsOuVentes" value="achats" ${(param.achatsOuVentes == 'achats')?'checked':'' }>
-	<label for="achats">Achats</label>
-	
-	
-	<input id="ouvert" type="checkbox" name="ouvert" value="ouvert" ${(!empty param.ouvert)?'checked':'' }>
-	<label for="ouvert">enchères ouvertes</label>
-	
-	
-	<input id="enCours" type="checkbox" name="enCours" value="enCours" ${(!empty param.enCours)?'checked':'' }>
-	<label for="enCours">mes enchères en cours</label>
-	
-	
-	<input id="remportees" type="checkbox" name="remportees" value="remportees" ${(!empty param.remportees)?'checked':'' }>
-	<label for="remportees">mes enchères remportées</label>
-	
-	
-	<input id="ventes" type="radio" name="achatsOuVentes" value="ventes" ${(param.achatsOuVentes == 'ventes')?'checked':'' }>
-	<label for="ventes">Mes ventes</label>
-	
-	<input id="ventesEnCours" type="checkbox" name="ventesEnCours" value="ventesEnCours" ${(!empty param.ventesEnCours)?'checked':'' }>
-	<label for="ventesEnCours">mes ventes en cours</label>
-	
-	<input id="ventesNonDebutees" type="checkbox" name="ventesNonDebutees" value="ventesNonDebutees" ${(!empty param.ventesNonDebutees)?'checked':'' }>
-	<label for="ventesNonDebutees">ventes non débutées</label>
-	
-	<input id="ventesTerminees" type="checkbox" name="ventesTerminees" value="ventesTerminees" ${(!empty param.ventesTerminees)?'checked':'' }>
-	<label for="ventesTerminees">ventes terminées</label>
-
+		<div class="filtre">
+			<div>
+				<input id="achats" type="radio" name="achatsOuVentes" value="achats" ${(param.achatsOuVentes == 'achats')?'checked':'' }>
+				<label for="achats">Achats</label>
+			</div>
+			<div>
+				<input id="ouvert" type="checkbox" name="ouvert" value="ouvert" ${(!empty param.ouvert)?'checked':'' }>
+				<label for="ouvert">enchères ouvertes</label>
+			</div>
+			<div>
+				<input id="enCours" type="checkbox" name="enCours" value="enCours" ${(!empty param.enCours)?'checked':'' }>
+				<label for="enCours">mes enchères en cours</label>
+			</div>
+			<div>
+				<input id="remportees" type="checkbox" name="remportees" value="remportees" ${(!empty param.remportees)?'checked':'' }>
+				<label for="remportees">mes enchères remportées</label>
+			</div>
+		</div>
+		<div class="filtre">
+			<div>
+				<input id="ventes" type="radio" name="achatsOuVentes" value="ventes" ${(param.achatsOuVentes == 'ventes')?'checked':'' }>
+				<label for="ventes">Mes ventes</label>
+			</div>
+			<div>
+				<input id="ventesEnCours" type="checkbox" name="ventesEnCours" value="ventesEnCours" ${(!empty param.ventesEnCours)?'checked':'' }>
+				<label for="ventesEnCours">mes ventes en cours</label>
+			</div>
+			<div>
+				<input id="ventesNonDebutees" type="checkbox" name="ventesNonDebutees" value="ventesNonDebutees" ${(!empty param.ventesNonDebutees)?'checked':'' }>
+				<label for="ventesNonDebutees">ventes non débutées</label>
+			</div>
+			<div>
+				<input id="ventesTerminees" type="checkbox" name="ventesTerminees" value="ventesTerminees" ${(!empty param.ventesTerminees)?'checked':'' }>
+				<label for="ventesTerminees">ventes terminées</label>
+			</div>
+		</div>
 	</fieldset>
 	
 	</core:if>
+	
+	<jsp:include page="ListeErreur.jsp">
+		<jsp:param value="" name=""/>
+	</jsp:include>
 	
 <input class="rechercher" type="submit" value="Rechercher"/>
 </form>
 <div class="liste">
 	<core:forEach var="articleVendu" items="${requestScope.listeArticles }">
-		<div>
-			<b><a href="${pageContext.request.contextPath }/Encheres/ServletDetailArticle?noArticle=${articleVendu.noArticle}">${articleVendu.nomArticle }</a></b>
-			<p>Prix : ${articleVendu.prixVente }</p>
-			<p>Fin de l'enchère : ${articleVendu.dateFinEncheres }<p>
-			<p>Vendeur : <a href="${pageContext.request.contextPath }/Encheres/ServletAffichageCompte?noUtilisateur=${articleVendu.vendeur.noUtilisateur }">${articleVendu.vendeur.pseudo }</a>
+		<div class="articles">
+			<p class="image"></p>
+			<div class="">
+				<b><a href="${pageContext.request.contextPath }/Encheres/ServletDetailArticle?noArticle=${articleVendu.noArticle}">${articleVendu.nomArticle }</a></b>
+				<p>Prix : ${articleVendu.prixVente } points</p>
+				<p>Fin de l'enchère : ${articleVendu.dateFinEncheres }<p>
+				<p>Vendeur : <a href="${pageContext.request.contextPath }/Encheres/ServletAffichageCompte?noUtilisateur=${articleVendu.vendeur.noUtilisateur }">${articleVendu.vendeur.pseudo }</a>
+			</div>
 		</div>
 	</core:forEach>
 </div>

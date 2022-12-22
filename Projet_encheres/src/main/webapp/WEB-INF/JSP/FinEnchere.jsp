@@ -12,7 +12,9 @@
 			
 		</header>
 		<main>
-			
+			<jsp:include page="ListeErreur.jsp">
+				<jsp:param value="" name=""/>
+			</jsp:include>
 			<core:choose>
 				<core:when test="${sessionScope.utilisateur.pseudo.equals(requestScope.articleRecherche.acheteur.pseudo) }">
 					<h1>Vous avez remporté la vente</h1>

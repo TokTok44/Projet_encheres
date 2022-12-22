@@ -3,5 +3,33 @@
 .liste {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
-	
+	align-content: center;
+	justify-content: center;
+	margin-right: 200px;
+	margin-left: 200px;
+}
+
+.articles {
+	margin-left: 50px;
+	margin-right: 50px;
+	margin-bottom: 20px;
+	margin-top: 20px;
+	display: flex;
+	flex-flow: column wrap;
+	justify-content: center;
+	height: 200px;
+	border: solid black 2px;
+}
+
+.image {
+	height: 100%;
+	width: 200px;
+	border: solid black 1px;
+	margin-right: 20px;
+	margin-left: 50px;
+}
+
+.filtre {
+	display: flex;
+	flex-direction: columns;
 }

@@ -13,6 +13,11 @@
 		</header>
 		<main>
 			<h1>Modification de la vente</h1>
+			
+			<jsp:include page="ListeErreur.jsp">
+				<jsp:param value="" name=""/>
+			</jsp:include>
+			
 			<form action="${pageContext.request.contextPath }/Encheres/ServletModificationVente" method="post">
 				<label>Article :</label>
 				<input type="text" name="nomArticle" value="${requestScope.articleRecherche.nomArticle }">

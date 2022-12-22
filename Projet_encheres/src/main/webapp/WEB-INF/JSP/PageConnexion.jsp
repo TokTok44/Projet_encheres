@@ -1,15 +1,16 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="core" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta charset="ISO-8859-1">
+		<meta charset="UTF-8">
 		<title>Connexion</title>
+		
 	</head>
 	<body>
 		<header>
-			<p>ENI-Enchères</p>
+			<p>ENI-EnchÃ¨res</p>
 			<jsp:include page="ListeErreur.jsp">
 				<jsp:param value="" name=""/>
 			</jsp:include>
@@ -30,7 +31,7 @@
 				
 			</form>
 			
-			<a href="${pageContext.request.contextPath }/Encheres/ServletCreationCompte">Créer un compte</a>
+			<a href="${pageContext.request.contextPath }/Encheres/ServletCreationCompte">CrÃ©er un compte</a>
 		</main>
 		
 		<footer>
