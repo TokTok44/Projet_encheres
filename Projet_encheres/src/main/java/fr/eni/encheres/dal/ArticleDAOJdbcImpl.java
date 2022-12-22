@@ -46,10 +46,10 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 	private static final String ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES = " WHERE (((ENCHERES.no_utilisateur = ? AND (DATEDIFF(day,date_fin_encheres,getDate()) > 0)) OR (DATEDIFF(day,date_fin_encheres,getDate()) < 0)))";
 	private static final String MES_ENCHERES_OUVERTES_ET_MES_ENCHERES_REMPORTEES = " WHERE ((ENCHERES.no_utilisateur = ?) AND ((DATEDIFF(day,date_fin_encheres,getDate()) > 0) OR (DATEDIFF(day,date_fin_encheres,getDate()) < 0))";
 	//******************************************************************************
-	private static final String SELECT_ARTICLE = "SELECT nom_article, telephone, description, libelle, prix_vente, prix_initial, date_fin_encheres, date_debut_encheres, RETRAITS.rue, RETRAITS.code_postal, RETRAITS.ville, pseudo FROM ARTICLES_VENDUS INNER JOIN RETRAITS ON ARTICLES_VENDUS.no_article = RETRAITS.no_article INNER JOIN CATEGORIES ON CATEGORIES.no_categorie = ARTICLES_VENDUS.no_categorie INNER JOIN UTILISATEURS ON UTILISATEURS.no_utilisateur = ARTICLES_VENDUS.no_utilisateur WHERE ARTICLES_VENDUS.no_article = ?;";
+	private static final String SELECT_ARTICLE = "SELECT nom_article, telephone, description, CATEGORIES.no_categorie, libelle, prix_vente, prix_initial, date_fin_encheres, date_debut_encheres, RETRAITS.rue, RETRAITS.code_postal, RETRAITS.ville, pseudo FROM ARTICLES_VENDUS INNER JOIN RETRAITS ON ARTICLES_VENDUS.no_article = RETRAITS.no_article INNER JOIN CATEGORIES ON CATEGORIES.no_categorie = ARTICLES_VENDUS.no_categorie INNER JOIN UTILISATEURS ON UTILISATEURS.no_utilisateur = ARTICLES_VENDUS.no_utilisateur WHERE ARTICLES_VENDUS.no_article = ?;";
 	private static final String SELECT_ACHETEUR = "SELECT UTILISATEURS.no_utilisateur, pseudo FROM UTILISATEURS INNER JOIN ENCHERES ON ENCHERES.no_utilisateur = UTILISATEURS.no_utilisateur INNER JOIN ARTICLES_VENDUS ON (ARTICLES_VENDUS.prix_vente = ENCHERES.montant_enchere AND ARTICLES_VENDUS.no_article = ENCHERES.no_article) WHERE ARTICLES_VENDUS.no_article = ?;";
 	//******************************************************************************
-	private static final String UPDATE_ARTICLE = "UPDATE ARTICLES_VENDUS SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, no_categorie = ? WHERE no_article = ?;";
+	private static final String UPDATE_ARTICLE = "UPDATE ARTICLES_VENDUS SET nom_article = ?, description = ?, date_debut_encheres = ?, date_fin_encheres = ?, prix_initial = ?, prix_vente = ?, no_categorie = ? WHERE no_article = ?;";
 	private static final String UPDATE_RETRAIT = "UPDATE RETRAITS SET rue = ?, code_postal = ?, ville = ? WHERE no_article = ?;";
 	//******************************************************************************
 	private static final String DELETE_ARTICLE = "DELETE FROM ARTICLES_VENDUS WHERE no_article = ?;";
@@ -292,7 +292,7 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 			
 			if(rs.next()) {
 				Retrait pointRetrait = new Retrait(rs.getString("rue"),rs.getString("code_postal"),rs.getString("ville"));
-				Categorie categorie = new Categorie(rs.getString("libelle"));
+				Categorie categorie = new Categorie(rs.getInt("no_categorie"),rs.getString("libelle"));
 				LocalDate dateFin = rs.getDate("date_fin_encheres").toLocalDate();
 				LocalDate dateDebut = rs.getDate("date_debut_encheres").toLocalDate();
 				article = new ArticleVendu(rs.getString("nom_article"),rs.getString("description"),rs.getInt("prix_vente"),rs.getInt("prix_initial"),dateFin, dateDebut);
@@ -339,14 +339,16 @@ public class ArticleDAOJdbcImpl implements ArticleDAO {
 				pstmtArticle.setDate(3, (Date) Date.valueOf(article.getDateDebutEncheres()));
 				pstmtArticle.setDate(4, (Date) Date.valueOf(article.getDateFinEncheres()));
 				pstmtArticle.setInt(5, article.getMiseAPrix());
-				pstmtArticle.setInt(6, article.getCategorie().getNoCategorie());
-				pstmtArticle.setInt(7, article.getNoArticle());
+				pstmtArticle.setInt(6, article.getMiseAPrix());
+				pstmtArticle.setInt(7, article.getCategorie().getNoCategorie());
+				pstmtArticle.setInt(8, article.getNoArticle());
 				
 				pstmtArticle.executeUpdate();
 				
 				pstmtRetrait.setString(1, article.getPointRetrait().getRue());
 				pstmtRetrait.setString(2, article.getPointRetrait().getCodePostal());
 				pstmtRetrait.setString(3, article.getPointRetrait().getVille());
+				pstmtRetrait.setInt(4, article.getNoArticle());
 				
 				pstmtRetrait.executeUpdate();
 				

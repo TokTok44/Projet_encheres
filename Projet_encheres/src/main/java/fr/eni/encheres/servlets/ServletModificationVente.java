@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 
 import fr.eni.encheres.bll.ArticleManager;
 import fr.eni.encheres.bo.ArticleVendu;
+import fr.eni.encheres.bo.Categorie;
 import fr.eni.encheres.bo.Retrait;
 import fr.eni.encheres.exception.BusinessException;
 
@@ -75,7 +76,7 @@ public class ServletModificationVente extends HttpServlet {
 					be.ajouterErreur(CodesResultatServlets.PRIX_NON_VALIDE);
 				}
 				try {
-					noCategorie = Integer.parseInt(request.getParameter("categorie"));
+					noCategorie = Integer.parseInt(request.getParameter("choixCategorie"));
 				} catch (NumberFormatException e) {
 					e.printStackTrace();
 					be.ajouterErreur(CodesResultatServlets.ECHEC_CONVERSION_NOCATEGORIE);
@@ -103,8 +104,9 @@ public class ServletModificationVente extends HttpServlet {
 				} else {
 				
 					Retrait retrait = new Retrait(rue,codePostal,ville);
+					Categorie categorie = new Categorie(noCategorie);
 					ArticleVendu article = new ArticleVendu(noArticle,nomArticle,description,miseAPrix,dateDebutEncheres,dateFinEncheres,retrait);
-					
+					article.setCategorie(categorie);
 					try {
 						
 						ArticleManager.getManager().updateArticle(article);

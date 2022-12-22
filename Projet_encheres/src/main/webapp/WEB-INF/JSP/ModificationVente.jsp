@@ -19,7 +19,7 @@
 				<label>Description :</label>
 				<input type="text" name="description" value="${requestScope.articleRecherche.description }">
 				<label>Categorie</label>
-				<select name="categorie">
+				<select name="choixCategorie">
 					<option value="${requestScope.articleRecherche.categorie.noCategorie }">${requestScope.articleRecherche.categorie.libelle }</option>
 					<core:forEach var="categorie" items="${requestScope.listeCategorie }">
 						<core:if test="${!categorie.libelle.equals(requestScope.articleRecherche.categorie.libelle) }">
