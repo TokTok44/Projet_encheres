@@ -31,8 +31,8 @@
 	<p>Fin de l'enchère : ${requestScope.articleRecherche.dateFinEncheres }</p>
 	<p>Retrait : ${requestScope.articleRecherche.pointRetrait.rue } ${requestScope.articleRecherche.pointRetrait.codePostal } ${requestScope.articleRecherche.pointRetrait.ville }</p>
 	<p>Vendeur : ${requestScope.articleRecherche.vendeur.pseudo }</p>
-	<core:if test="${sessionScope.utilisateur.noUtilisateur != requestScope.articleRecherche.vendeur.noUtilisateur && requestScope.ouverte }">
-		<p>Ma proposition : 
+	<core:if test="${!sessionScope.utilisateur.pseudo.equals(requestScope.articleRecherche.vendeur.pseudo) && requestScope.ouverte }">
+		<p>Ma proposition : </p>
 		<form action="${pageContext.request.contextPath }/Encheres/ServletDetailArticle" method="post">
 			<input name="noArticle" type="hidden" value="${requestScope.articleRecherche.noArticle }"/>
 			<input name="valeurEnchere" type="number" min="${(requestScope.articleRecherche.prixVente)+1 }" value="${(requestScope.articleRecherche.prixVente)+1 }"/>
