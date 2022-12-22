@@ -33,9 +33,9 @@
 				 -->
 				<label>Mise à prix :</label>
 				<input type="number" name="miseAPrix" value="${requestScope.articleRecherche.miseAPrix }">
-				<label>Article :</label>
+				<label>Date début enchère :</label>
 				<input type="date" name="dateDebutEncheres" value="${requestScope.articleRecherche.dateDebutEncheres }">
-				<label>Article :</label>
+				<label>Date fin enchère :</label>
 				<input type="date" name="dateFinEncheres" value="${requestScope.articleRecherche.dateFinEncheres }">
 				<fieldset>
 					<legend>Retrait</legend>
