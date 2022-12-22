@@ -29,7 +29,22 @@ public class EnchereManager {
 		return DAOFactory.getEncheresDAO().insertEnchere(enchere);
 	}
 	
-	private void verifEnchere (Enchere enchere, BusinessException be) {
+	private void verifEnchere (Enchere enchere, BusinessException be) throws BusinessException {
+		
+		if (enchere == null || enchere.getArticle() == null || enchere.getUtilisateur() == null) {
+			be.ajouterErreur(CodesResultatBLL.DONNEES_INVALIDES);
+		}
+		
+		ArticleVendu article = DAOFactory.getArticleDAO().selectArticle(enchere.getArticle().getNoArticle());
+		if (article == null) {
+			be.ajouterErreur(CodesResultatBLL.ARTICLE_INEXISTANT);
+		}
+		
+		Utilisateur utilisateur = DAOFactory.getUtilisateurDAO().selectUser(enchere.getUtilisateur().getNoUtilisateur());
+		if (utilisateur == null) {
+			be.ajouterErreur(CodesResultatBLL.UTILISATEUR_INEXISTANT);
+		}
+		
 		if (enchere.getMontantEnchere() < 0 ) {
 			be.ajouterErreur(CodesResultatBLL.ENCHERE_POSITIVE);
 		}

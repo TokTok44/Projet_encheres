@@ -70,13 +70,26 @@ public class UtilisateurManager {
 	}
 	
 	public Utilisateur selectUser(int noUtilisateur) throws BusinessException {
-		//TODO : gestion
-		return DAOFactory.getUtilisateurDAO().selectUser(noUtilisateur);
+		
+		Utilisateur utilisateur = DAOFactory.getUtilisateurDAO().selectUser(noUtilisateur);
+		if (utilisateur == null) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.UTILISATEUR_INEXISTANT);
+			throw be;
+		}
+		
+		return utilisateur;
 	}
 	
 	public Utilisateur selectConnexion(String identifiant, String mdp) throws BusinessException {
-		//TODO : gestion
-		return DAOFactory.getUtilisateurDAO().selectConnexion(identifiant, mdp);
+		
+		Utilisateur utilisateur = DAOFactory.getUtilisateurDAO().selectConnexion(identifiant, mdp);
+		if (utilisateur == null) {
+			BusinessException be = new BusinessException();
+			be.ajouterErreur(CodesResultatBLL.ECHEC_CONNEXION);
+		}
+		
+		return utilisateur;
 	}
 	
 	private void verificationDonneesUtilisateur(Utilisateur utilisateur, BusinessException be) {

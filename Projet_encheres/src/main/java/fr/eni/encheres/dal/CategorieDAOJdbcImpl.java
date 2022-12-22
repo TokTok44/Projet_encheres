@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.eni.encheres.bo.Categorie;
+import fr.eni.encheres.exception.BusinessException;
 
 public class CategorieDAOJdbcImpl implements CategorieDAO {
 	
@@ -18,12 +19,22 @@ public class CategorieDAOJdbcImpl implements CategorieDAO {
 	public void insertCategorie(Categorie categorie) {
 		
 		try(Connection cnx = ConnectionProvider.getConnection()) {
-			
-			PreparedStatement pstmt = cnx.prepareStatement(INSERT_CATEGORIE);
+			try {
+				cnx.setAutoCommit(false);
+				PreparedStatement pstmt = cnx.prepareStatement(INSERT_CATEGORIE);
 
-			pstmt.setString(1, categorie.getLibelle());
+				pstmt.setString(1, categorie.getLibelle());
+				
+				pstmt.executeUpdate();
+				cnx.commit();
+			}catch (Exception e){
+				cnx.rollback();
+				e.printStackTrace();
+				BusinessException be = new BusinessException();
+				be.ajouterErreur(CodesResultatDAL.ECHEC_INSERTION_CATEGORIE);
+				throw be;
+			}
 			
-			pstmt.executeUpdate();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
